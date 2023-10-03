@@ -1,0 +1,51 @@
+{
+    "name": "hive-sql-helper",
+    "version": "0.0.1",
+    "displayName": "Hive SQL Helper",
+    "description": "Adds support for Hive's variant of the SQL language",
+    "publisher": "CamileSing",
+    "author": {
+        "name": "CamileSing",
+        "email": "CamileSing@gmail.com"
+    },
+    "license": "MIT",
+    "icon": "extras/apache_hives.png",
+    "engines": {
+        "vscode": "^1.20.0"
+    },
+    "galleryBanner": {
+        "color": "#F2C45A",
+        "theme": "dark"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/camilesing/Hive-SQL-Helper-VSCode"
+    },
+    "homepage": "https://github.com/camilesing/Hive-SQL-Helper-VSCode/main/README.md",
+    "categories": [
+        "Programming Languages"
+    ],
+    "keywords": [
+        "Hive SQL", "HQL"
+    ],
+    "preview": true,
+    "contributes": {
+        "languages": [{
+            "id": "hive-sql",
+            "aliases": ["HiveSQL", "hive-sql", "HQL"],
+            "extensions": [".sql", ".hql"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "hive-sql",
+            "scopeName": "source.hive",
+            "path": "./syntaxes/hive.tmLanguage.json"
+        }],
+        "snippets": [
+            {
+                "language": "hive-sql",
+                "path": "./snippets/hive-sql.json"
+            }
+        ]
+    }
+}
