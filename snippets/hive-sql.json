@@ -1,1 +1,87 @@
-{}
+{
+    "Select columns from a table": {
+        "prefix": "select",
+        "body": [
+            "SELECT  ${1:column_names}",
+            "FROM    ${2:table_name};"
+        ]
+    },
+    "Insert statement": {
+        "prefix": "insert",
+        "body": [
+            "INSERT ${1|INTO,OVERWRITE|} TABLE ${2:schema_name}.${3:table_name}",
+            "SELECT",
+            "    ${4:column_names}",
+            "FROM",
+            "    ${5:source_schema_name}.${6:source_table_name};"
+        ]
+    },
+    "Create table from table": {
+        "prefix": "create",
+        "body": [
+            "CREATE TABLE IF NOT EXISTS ${1:schema_name}.${2:table_name}",
+            "LIKE ${3:source_table_schema}.${4:source_table_name}",
+            ";"
+        ],
+        "description": "Create a table with the same format and structure as another table."
+    },
+    "Create table from query": {
+        "prefix": "create",
+        "body": [
+            "CREATE TABLE IF NOT EXISTS ${1:schema_name}.${2:table_name} AS ",
+            "SELECT",
+            "    ${3:column_names}",
+            "FROM",
+            "    ${4:source_schema_name}.${5:source_table_name};"
+        ],
+        "description": "Create a table from the results of a query"
+    },
+    "Change table management": {
+        "prefix": "alter",
+        "body": [
+            "USE ${1:schema_name}",
+            "ALTER TABLE ${2:table_name} SET TBLPROPERTIES('EXTERNAL' = '${3|TRUE,FALSE|}');"
+        ]
+    },
+    "Rename table": {
+        "prefix": "alter",
+        "body": [
+            "USE ${1:schema_name};",
+            "ALTER TABLE ${2:table_name} RENAME TO ${3:new_table_name};"
+        ],
+        "description": "Rename a table."
+    },
+    "Set table comment": {
+        "prefix": "alter",
+        "body": [
+            "USE ${1:schema_name};",
+            "ALTER TABLE ${2:table_name} SET TBLPROPERTIES ('comment' = '${3:new_comment}');"
+        ],
+        "description": "Change a table's comment."
+    },
+    "Change partitioned table columns": {
+        "prefix": "alter",
+        "body": [
+            "USE ${1:schema_name};",
+            "ALTER TABLE ${2:table_name} PARTITION (${3:partition_spec})",
+            "CHANGE COLUMN ${4:old_column_name} ${5:new_column_name} ${6:column_data_type} COMMENT '${7:column_comment}';"
+        ],
+        "description": "Change a partitioned table's columns."
+    },
+    "Change table columns": {
+        "prefix": "alter",
+        "body": [
+            "USE ${1:schema_name};",
+            "ALTER TABLE ${2:table_name}",
+            "CHANGE COLUMN ${3:old_column_name} ${4:new_column_name} ${5:column_data_type} COMMENT '${6:column_comment}';"
+        ],
+        "description": "Change a non-partitioned table's columns."
+    },
+    "Change a column": {
+        "prefix": "change",
+        "body": [
+            "CHANGE COLUMN ${1:old_column_name} ${2:new_column_name} ${3:column_data_type} COMMENT '${4:column_comment}';"
+        ],
+        "description": "Specification for changing a column"
+    }
+}
