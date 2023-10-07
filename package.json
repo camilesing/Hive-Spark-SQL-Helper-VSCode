@@ -46,6 +46,10 @@
                 "language": "hive-sql",
                 "path": "./snippets/hive-sql.json"
             }
-        ]
+        ],
+        "capabilities" : {
+            "renameProvider" : "true",
+            "referencesProvider" : "true"
+        }
     }
 }
