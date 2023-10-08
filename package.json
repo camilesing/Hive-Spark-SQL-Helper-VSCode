@@ -9,7 +9,7 @@
         "email": "CamileSing@gmail.com"
     },
     "license": "MIT",
-    "icon": "extras/apache_hive.png",
+    "icon": "icons/Apache_Hive_logo.png",
     "engines": {
         "vscode": "^1.20.0"
     },
@@ -34,7 +34,11 @@
             "id": "hive-sql",
             "aliases": ["HiveSQL", "hive-sql", "HQL"],
             "extensions": [".sql", ".hql"],
-            "configuration": "./language-configuration.json"
+            "configuration": "./language-configuration.json",
+            "icon": {
+                "light": "./icons/Apache_Hive_logo.png",
+                "dark": "./icons/Apache_Hive_logo.png"
+            }
         }],
         "grammars": [{
             "language": "hive-sql",
