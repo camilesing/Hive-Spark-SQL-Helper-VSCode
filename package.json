@@ -28,8 +28,18 @@
     "keywords": [
         "Hive SQL", "HQL"
     ],
-    "preview": true,
+    "preview": false,
     "contributes": {
+        "configuration": {
+            "title": "Error grammar Check Settings",
+            "properties": {
+              "hive-sql-grammar-check.enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable hive sql grammar check."
+              }
+            }
+        },
         "languages": [{
             "id": "hive-sql",
             "aliases": ["HiveSQL", "hive-sql", "HQL"],
