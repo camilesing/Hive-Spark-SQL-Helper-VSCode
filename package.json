@@ -1,6 +1,6 @@
 {
     "name": "hive-sql-helper",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "displayName": "Hive SQL Helper",
     "description": "Adds support for Hive's variant of the SQL language",
     "publisher": "CamileSing",
@@ -80,9 +80,6 @@
     },
     "main": "./out/extension.js",
     "browser": "./out/extension.js",
-    "dependencies": {
-        "sql-formatter-plus": "git+ssh://git@github.com:AChangFeng/sql-formatter-plus.git#v0.0.3"
-    },
     "devDependencies": {
         "@types/glob": "^8.1.0",
         "@types/mocha": "^10.0.1",
