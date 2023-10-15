@@ -1,6 +1,6 @@
 {
     "name": "hive-sql-helper",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "displayName": "Hive SQL Helper",
     "description": "Adds support for Hive's variant of the SQL language",
     "publisher": "CamileSing",

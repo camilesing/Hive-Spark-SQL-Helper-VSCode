@@ -3,20 +3,21 @@ import { ExtensionContext } from 'vscode';
 import { ANTLRInputStream, CommonTokenStream } from 'antlr4ts';
 import { HiveSQLLexer } from './HiveSQLLexer';
 import { HiveSQLParser } from './HiveSQLParser';
-import {HiveSQLVisitor} from './HiveSQLVisitor';
+import { HiveSQLVisitor } from './HiveSQLVisitor';
 import { Token, ParserErrorListener, RecognitionException, Recognizer } from 'antlr4ts';
 import { ATNSimulator } from 'antlr4ts/atn/ATNSimulator'
 
 const selector = 'hive-sql'
+const configName = 'hive-sql-grammar-check'
 
 export function activate(context: ExtensionContext) {
-     // 获取初始配置
-     updateFeatureStatus();
+    // 获取初始配置
+    updateFeatureStatus();
 
-         // 监听配置更改事件
+    // 监听配置更改事件
     context.subscriptions.push(
         vscode.workspace.onDidChangeConfiguration((e) => {
-            if (e.affectsConfiguration('hive-sql-grammar-check.enable')) {
+            if (e.affectsConfiguration(configName + '.enable')) {
                 updateFeatureStatus();
             }
         })
@@ -25,7 +26,7 @@ export function activate(context: ExtensionContext) {
 
 function updateFeatureStatus() {
 
-    if (vscode.workspace.getConfiguration('flink-sql-grammar-check').get('enable')) {
+    if (vscode.workspace.getConfiguration(configName).get('enable',false)) {
         // 创建诊断集合，用于报告语法错误和警告
         const diagnosticCollection = vscode.languages.createDiagnosticCollection(selector);
 
