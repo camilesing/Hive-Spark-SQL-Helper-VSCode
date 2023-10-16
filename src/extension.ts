@@ -6,6 +6,7 @@ import { HiveSQLParser } from './HiveSQLParser';
 import { HiveSQLVisitor } from './HiveSQLVisitor';
 import { Token, ParserErrorListener, RecognitionException, Recognizer } from 'antlr4ts';
 import { ATNSimulator } from 'antlr4ts/atn/ATNSimulator'
+import { HiveSQLRenameProvider } from './Rename';
 
 const selector = 'hive-sql'
 const configName = 'hive-sql-grammar-check'
@@ -22,6 +23,9 @@ export function activate(context: ExtensionContext) {
             }
         })
     );
+
+    context.subscriptions.push(vscode.languages.registerRenameProvider(selector, new HiveSQLRenameProvider()));
+
 }
 
 function updateFeatureStatus() {
