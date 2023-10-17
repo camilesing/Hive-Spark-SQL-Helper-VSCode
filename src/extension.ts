@@ -7,6 +7,7 @@ import { HiveSQLVisitor } from './HiveSQLVisitor';
 import { Token, ParserErrorListener, RecognitionException, Recognizer } from 'antlr4ts';
 import { ATNSimulator } from 'antlr4ts/atn/ATNSimulator'
 import { HiveSQLRenameProvider } from './Rename';
+import { HiveSQLReferenceProvider } from './Reference';
 
 const selector = 'hive-sql'
 const configName = 'hive-sql-grammar-check'
@@ -14,6 +15,11 @@ const configName = 'hive-sql-grammar-check'
 export function activate(context: ExtensionContext) {
     // 获取初始配置
     updateFeatureStatus();
+
+    context.subscriptions.push(vscode.languages.registerReferenceProvider(
+        [{ pattern: '**/*.sql' }, { pattern: '**/*.hql' }],
+        new HiveSQLReferenceProvider()
+    ));
 
     // 监听配置更改事件
     context.subscriptions.push(
