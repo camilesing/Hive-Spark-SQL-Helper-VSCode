@@ -1,0 +1,3 @@
+CREATE VIEW temp_30000 AS
+SELECT * FROM employee
+WHERE salary > 30000;
