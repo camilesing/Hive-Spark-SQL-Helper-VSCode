@@ -58,3 +58,142 @@ snippets keywords:
 Enable the extension on your file, either name the file with a extension `.HQL`.
   
 Or press F1, type 'Change Language Mode', and then choose HiveSQL.
+
+### 2.1 Color theme recommend
+
+Press F1, choose `Preference: Open User Setting(JSON)` then paste:
+
+~~~json
+{
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+                {
+                    "scope": "keyword.control.hive",
+                    "settings": {
+                        "foreground": "#559DD6"
+                    }
+                },
+                {
+                    "scope": "storage.type.hive",
+                    "settings": {
+                        "foreground": "#C27432"
+                    }
+                },
+                {
+                    "scope": "support.type.hive",
+                    "settings": {
+                        "foreground": "#C27432"
+                    }
+                },
+                {
+                    "scope": "constant.language.hive",
+                    "settings": {
+                        "foreground": "#C27432"
+                    }
+                },
+                {
+                    "scope": "constant.language.hive",
+                    "settings": {
+                        "foreground": "#F4BE6B"
+                    }
+                },
+                {
+                    "scope": "string.quoted.double.hive",
+                    "settings": {
+                        "foreground":"#F4BE6B"
+                    }
+                },
+                {
+                    "scope": "string.quoted.single.hive",
+                    "settings": {
+                        "foreground": "#C27432"
+                    }
+                },      
+                {
+                    "scope": "keyword.operator.arithmetic.hive",
+                    "settings": {
+                        "foreground": "#F0F400"
+                    }
+                },
+                {
+                    "scope": "keyword.operator.relational.hive",
+                    "settings": {
+                        "foreground": "#F0F400"
+                    }
+                },
+                {
+                    "scope": "keyword.operator.logical.hive",
+                    "settings": {
+                        "foreground": "#F0F400"
+                    }
+                },
+                {
+                    "scope": "support.function.udf.complex.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                },
+                {
+                    "scope": "support.function.udf.mathematic.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                },
+                {
+                    "scope": "support.function.udf.collection.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                },
+                {
+                    "scope": "support.function.udf.type-cast.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                },
+                {
+                    "scope": "support.function.udf.date.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                },
+                {
+                    "scope": "support.function.udf.conditional.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                },
+                {
+                    "scope": "support.function.udf.string.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                },
+                {
+                    "scope": "support.function.udf.masking.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                },
+                {
+                    "scope": "support.function.udf.misc.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                },
+                {
+                    "scope": "support.function.udaf.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                },
+                {
+                    "scope": "support.function.udtf.hive",
+                    "settings": {
+                        "foreground": "#F2BC69"
+                    }
+                }
+        ],
+    }
+}
+~~~
