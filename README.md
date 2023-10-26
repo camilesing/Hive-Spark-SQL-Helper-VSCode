@@ -52,6 +52,11 @@ snippets keywords:
 
 ![](docs/images/find_all_references.gif)
 
+
+### 1.6 Show References
+
+![](docs/images/show_references.gif)
+
  
 ## 2. User Guide
 
