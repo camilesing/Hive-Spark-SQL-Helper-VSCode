@@ -1,5 +1,8 @@
 import * as vscode from 'vscode';
 import { ExtensionContext } from 'vscode';
+import { Range } from 'vscode'
+import { Selection } from 'vscode'
+import { TextEditorEdit } from 'vscode'
 import { ANTLRInputStream, CommonTokenStream } from 'antlr4ts';
 import { HiveSQLLexer } from './HiveSQLLexer';
 import { HiveSQLParser } from './HiveSQLParser';
@@ -8,6 +11,9 @@ import { Token, ParserErrorListener, RecognitionException, Recognizer } from 'an
 import { ATNSimulator } from 'antlr4ts/atn/ATNSimulator'
 import { HiveSQLRenameProvider } from './Rename';
 import { HiveSQLReferenceProvider } from './Reference';
+
+const vkbeautify = require('./format.js')
+
 
 const selector = 'hive-sql'
 const configName = 'hive-sql-grammar-check'
@@ -32,11 +38,46 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(vscode.languages.registerRenameProvider(selector, new HiveSQLRenameProvider()));
 
+    context.subscriptions.push(vscode.commands.registerCommand('extension.beautifyHql', format));
+}
+
+function format() {
+    format0(text => {
+        var prefix = text.substring(0, 6)
+        if (prefix.length < 6 || prefix.toLowerCase() == "select") {
+            return vkbeautify.sql(text, true, true, false, 150)
+        } else {
+            return vkbeautify.sqlddl(text)
+        }
+    })
+}
+
+function format0(formatter: (text: string) => string) {
+    var editor = vscode.window.activeTextEditor!
+    var doc = editor.document
+    var selections: Range[] = new Array();
+    if (editor.selections.length === 0) {
+        selections.push(new vscode.Range(doc.positionAt(0), doc.positionAt(doc.getText().length)));
+    } else {
+        editor.selections.forEach(s => {
+            if (!s.start.isEqual(s.end)) {
+                selections.push(new vscode.Range(s.start, s.end));
+            }
+        });
+    }
+
+    editor.edit(function (editBuilder: TextEditorEdit) {
+        selections.forEach(range => {
+            var text = editor.document.getText(range);
+            var formatted = formatter(text);
+            editBuilder.replace(range, formatted);
+        });
+    });
 }
 
 function updateFeatureStatus() {
 
-    if (vscode.workspace.getConfiguration(configName).get('enable',false)) {
+    if (vscode.workspace.getConfiguration(configName).get('enable', false)) {
         // 创建诊断集合，用于报告语法错误和警告
         const diagnosticCollection = vscode.languages.createDiagnosticCollection(selector);
 
