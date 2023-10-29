@@ -58,6 +58,10 @@ snippets keywords:
 ![](docs/images/show_references.gif)
 
  
+### 1.6 Format
+
+![](docs/images/format.gif)
+
 ## 2. User Guide
 
 Enable the extension on your file, either name the file with a extension `.HQL`.
@@ -202,3 +206,8 @@ Press F1, choose `Preference: Open User Setting(JSON)` then paste:
     }
 }
 ~~~
+
+
+### 2.2 Format
+
+Press alt+shift+f to format your HiveSQL.
