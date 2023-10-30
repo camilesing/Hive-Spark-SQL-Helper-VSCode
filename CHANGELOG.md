@@ -1,3 +1,8 @@
+### v1.1.0
+
+- Support code format.
+- Update README: show references and color theme recommend.
+
 ### v1.0.0
 
 Support:

@@ -1,6 +1,6 @@
 # Hive-SQL-Helper
 
-Help you efficiently and focus on HiveSQL development. support Hive SQL error grammar check, syntax highlighting, complete keywords, rename, find all references.
+Help you efficiently and focus on HiveSQL development. support Hive SQL error grammar check, syntax highlighting, complete keywords, rename, find all references and code format.
 
 > I suggest that you develop and debug on vscode based on the information (https://learn.microsoft.com/en-us/sql/big-data-cluster/spark-hive-tools-vscode?view=sql-server-ver15) to obtain a better experience.
 
@@ -59,6 +59,8 @@ snippets keywords:
 
  
 ### 1.6 Format
+
+Press `alt+shift+f` to format your HiveSQL.
 
 ![](docs/images/format.gif)
 
@@ -206,8 +208,3 @@ Press F1, choose `Preference: Open User Setting(JSON)` then paste:
     }
 }
 ~~~
-
-
-### 2.2 Format
-
-Press alt+shift+f to format your HiveSQL.
