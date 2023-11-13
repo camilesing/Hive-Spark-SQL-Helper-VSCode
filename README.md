@@ -60,7 +60,7 @@ snippets keywords:
  
 ### 1.6 Format
 
-Press `alt+shift+f` to format your HiveSQL.
+You can use the right-click menu to format:
 
 ![](docs/images/format.gif)
 

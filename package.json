@@ -23,20 +23,13 @@
     },
     "homepage": "https://github.com/camilesing/Hive-SQL-Helper-VSCode/main/README.md",
     "categories": [
-        "Programming Languages"
+        "Programming Languages", "Formatters"
     ],
     "keywords": [
-        "Hive SQL", "HQL"
+        "Hive SQL", "HQL", "Formatter"
     ],
     "preview": false,
     "contributes": {
-        "keybindings": [
-            {
-                "command": "extension.beautifyHql",
-                "key": "alt+shift+f",
-                "when": "editorTextFocus && !editorReadonly && editorLangId =~ /hive-sql/ "
-            }
-        ],
         "configuration": {
             "title": "Error grammar Check Settings",
             "properties": {
@@ -74,7 +67,8 @@
         }
     },
     "activationEvents": [
-        "onLanguage:hql"
+        "onLanguage:hql",
+        "onLanguage:hive-sql"
     ],
     "scripts": {
         "antlr4ts": "antlr4ts -visitor gen/HiveSQL.g4",

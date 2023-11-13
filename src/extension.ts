@@ -38,41 +38,24 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(vscode.languages.registerRenameProvider(selector, new HiveSQLRenameProvider()));
 
-    context.subscriptions.push(vscode.commands.registerCommand('extension.beautifyHql', format));
-}
-
-function format() {
-    format0(text => {
-        var prefix = text.substring(0, 6)
-        if (prefix.length < 6 || prefix.toLowerCase() == "select") {
-            return vkbeautify.sql(text, true, true, false, 150)
-        } else {
-            return vkbeautify.sqlddl(text)
-        }
-    })
-}
-
-function format0(formatter: (text: string) => string) {
-    var editor = vscode.window.activeTextEditor!
-    var doc = editor.document
-    var selections: Range[] = new Array();
-    if (editor.selections.length === 0) {
-        selections.push(new vscode.Range(doc.positionAt(0), doc.positionAt(doc.getText().length)));
-    } else {
-        editor.selections.forEach(s => {
-            if (!s.start.isEqual(s.end)) {
-                selections.push(new vscode.Range(s.start, s.end));
-            }
-        });
-    }
-
-    editor.edit(function (editBuilder: TextEditorEdit) {
-        selections.forEach(range => {
-            var text = editor.document.getText(range);
-            var formatted = formatter(text);
-            editBuilder.replace(range, formatted);
-        });
+    vscode.languages.registerDocumentRangeFormattingEditProvider(selector, {
+        provideDocumentRangeFormattingEdits: (
+            document: vscode.TextDocument,
+            range: vscode.Range,
+            options: vscode.FormattingOptions
+        ): vscode.TextEdit[] => [
+                vscode.TextEdit.replace(range, format(document.getText(range))),
+            ],
     });
+}
+
+function format(text: string): string {
+    var prefix = text.substring(0, 6)
+    if (prefix.length < 6 || prefix.toLowerCase() == "select") {
+        return vkbeautify.sql(text, true, true, false, 150)
+    } else {
+        return vkbeautify.sqlddl(text)
+    }
 }
 
 function updateFeatureStatus() {
