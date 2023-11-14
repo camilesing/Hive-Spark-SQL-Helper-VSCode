@@ -1,6 +1,6 @@
 {
     "name": "hive-sql-helper",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "displayName": "Hive SQL Helper",
     "description": "Help you efficiently and focus on HiveSQL development. support Hive SQL error grammar check, syntax highlighting, complete keywords, rename, find all references and code format.",
     "publisher": "CamileSing",
