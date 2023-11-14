@@ -1,3 +1,7 @@
+### v1.2.0
+
+- Improve code format: adapt to the native way
+
 ### v1.1.0
 
 - Support code format.
