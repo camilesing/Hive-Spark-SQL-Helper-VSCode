@@ -9,8 +9,8 @@ Help you efficiently and focus on Hive & Spark SQL development. support Hive & S
 ### 1.1 Grammar Check
 
 Setting plugin config like
-1. ![](docs/images/setting_1.jpg)
-2. ![](docs/images/setting_2.jpg)
+1. ![](docs/images/setting_1_v2.jpg)
+2. ![](docs/images/setting_2_v2.jpg)
 
 then the plugin will check grammar when you save edit (suggest you turn off automatic saving).
 
