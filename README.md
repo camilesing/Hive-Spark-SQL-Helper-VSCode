@@ -1,6 +1,6 @@
 # Hive-SQL-Helper
 
-Help you efficiently and focus on HiveSQL development. support Hive SQL error grammar check, syntax highlighting, complete keywords, rename, find all references and code format.
+Help you efficiently and focus on Hive & Spark SQL development. support Hive & Spark SQL error grammar check, syntax highlighting, complete keywords, rename, find all references and code format.
 
 > I suggest that you develop and debug on vscode based on the information (https://learn.microsoft.com/en-us/sql/big-data-cluster/spark-hive-tools-vscode?view=sql-server-ver15) to obtain a better experience.
 
@@ -66,9 +66,9 @@ You can use the right-click menu to format:
 
 ## 2. User Guide
 
-Enable the extension on your file, either name the file with a extension `.HQL`.
-  
-Or press F1, type 'Change Language Mode', and then choose HiveSQL.
+If you want to enable Hive SQL feature on your file, either name the file with a extension `.HQL`, Or press F1, type 'Change Language Mode', and then choose HiveSQL.
+
+If you want to enable Spark SQL feature on your file, press F1, type 'Change Language Mode', and then choose SparkSQL.
 
 ### 2.1 Color theme recommend
 
