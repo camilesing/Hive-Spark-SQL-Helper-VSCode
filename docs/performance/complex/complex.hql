@@ -11,6 +11,6 @@ SELECT anon_id,
               AS last_day_of_month,
            date_add ( (from_unixtime (UNIX_TIMESTAMP (reading_date_v2, 'ddMMMyy'))),10)
               AS added_days
-FROM elec_days_c
+FROM elec_days
 ORDER BY proper_date;
  

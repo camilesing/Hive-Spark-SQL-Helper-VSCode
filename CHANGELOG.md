@@ -1,3 +1,7 @@
+### v1.3.0
+
+- Wrapper for spark sql.
+
 ### v1.2.0
 
 - Improve code format: adapt to the native way
