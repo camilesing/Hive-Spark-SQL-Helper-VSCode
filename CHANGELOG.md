@@ -1,6 +1,6 @@
 ### v1.3.1
 
-- Fix bug: spark sql not work.
+- Fix bug: feature about spark sql not work.
 
 ### v1.3.0
 
