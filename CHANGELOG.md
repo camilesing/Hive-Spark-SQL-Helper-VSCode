@@ -1,3 +1,7 @@
+### v1.3.1
+
+- Fix bug: spark sql not work.
+
 ### v1.3.0
 
 - Wrapper for spark sql.

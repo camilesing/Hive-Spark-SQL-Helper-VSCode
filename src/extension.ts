@@ -15,7 +15,8 @@ import { HiveSQLReferenceProvider } from './Reference';
 const vkbeautify = require('./format.js')
 
 
-const selector = 'hive-sql'
+const hiveSqlSelector = 'hive-sql'
+const sparkSqlSelector = 'spark-sql'
 const configName = 'hive-sql-grammar-check'
 
 export function activate(context: ExtensionContext) {
@@ -36,9 +37,21 @@ export function activate(context: ExtensionContext) {
         })
     );
 
-    context.subscriptions.push(vscode.languages.registerRenameProvider(selector, new HiveSQLRenameProvider()));
+    context.subscriptions.push(vscode.languages.registerRenameProvider(hiveSqlSelector, new HiveSQLRenameProvider()));
 
-    vscode.languages.registerDocumentRangeFormattingEditProvider(selector, {
+    vscode.languages.registerDocumentRangeFormattingEditProvider(hiveSqlSelector, {
+        provideDocumentRangeFormattingEdits: (
+            document: vscode.TextDocument,
+            range: vscode.Range,
+            options: vscode.FormattingOptions
+        ): vscode.TextEdit[] => [
+                vscode.TextEdit.replace(range, format(document.getText(range))),
+            ],
+    });
+
+    context.subscriptions.push(vscode.languages.registerRenameProvider(sparkSqlSelector, new HiveSQLRenameProvider()));
+
+    vscode.languages.registerDocumentRangeFormattingEditProvider(sparkSqlSelector, {
         provideDocumentRangeFormattingEdits: (
             document: vscode.TextDocument,
             range: vscode.Range,
@@ -62,12 +75,12 @@ function updateFeatureStatus() {
 
     if (vscode.workspace.getConfiguration(configName).get('enable', false)) {
         // 创建诊断集合，用于报告语法错误和警告
-        const diagnosticCollection = vscode.languages.createDiagnosticCollection(selector);
+        const diagnosticCollection = vscode.languages.createDiagnosticCollection(hiveSqlSelector);
 
         // 保存时触发
         vscode.workspace.onDidSaveTextDocument((event: vscode.TextDocument) => {
-            // 检查文件是否为Flink SQL文件
-            if (event.languageId !== selector) {
+         
+            if (event.languageId !== hiveSqlSelector && event.languageId !== sparkSqlSelector) {
                 return;
             }
             // 清除之前的诊断信息
