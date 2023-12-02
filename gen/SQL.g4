@@ -1,4 +1,4 @@
-grammar HiveSQL;
+grammar SQL;
 
 // starting rule
 statement: (explainStatement | execStatement) SEMICOLON;

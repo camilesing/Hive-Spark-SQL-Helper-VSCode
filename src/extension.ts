@@ -4,13 +4,13 @@ import { Range } from 'vscode'
 import { Selection } from 'vscode'
 import { TextEditorEdit } from 'vscode'
 import { ANTLRInputStream, CommonTokenStream } from 'antlr4ts';
-import { HiveSQLLexer } from './HiveSQLLexer';
-import { HiveSQLParser } from './HiveSQLParser';
-import { HiveSQLVisitor } from './HiveSQLVisitor';
+import { SQLLexer as SQLLexer } from './SQLLexer';
+import { SQLParser as SQLParser } from './SQLParser';
+import { SQLVisitor } from './SQLVisitor';
 import { Token, ParserErrorListener, RecognitionException, Recognizer } from 'antlr4ts';
 import { ATNSimulator } from 'antlr4ts/atn/ATNSimulator'
-import { HiveSQLRenameProvider } from './Rename';
-import { HiveSQLReferenceProvider } from './Reference';
+import { SQLRenameProvider as SQLRenameProvider } from './Rename';
+import { SQLReferenceProvider } from './Reference';
 
 const vkbeautify = require('./format.js')
 
@@ -25,7 +25,7 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(vscode.languages.registerReferenceProvider(
         [{ pattern: '**/*.sql' }, { pattern: '**/*.hql' }],
-        new HiveSQLReferenceProvider()
+        new SQLReferenceProvider()
     ));
 
     // 监听配置更改事件
@@ -37,7 +37,7 @@ export function activate(context: ExtensionContext) {
         })
     );
 
-    context.subscriptions.push(vscode.languages.registerRenameProvider(hiveSqlSelector, new HiveSQLRenameProvider()));
+    context.subscriptions.push(vscode.languages.registerRenameProvider(hiveSqlSelector, new SQLRenameProvider()));
 
     vscode.languages.registerDocumentRangeFormattingEditProvider(hiveSqlSelector, {
         provideDocumentRangeFormattingEdits: (
@@ -49,7 +49,7 @@ export function activate(context: ExtensionContext) {
             ],
     });
 
-    context.subscriptions.push(vscode.languages.registerRenameProvider(sparkSqlSelector, new HiveSQLRenameProvider()));
+    context.subscriptions.push(vscode.languages.registerRenameProvider(sparkSqlSelector, new SQLRenameProvider()));
 
     vscode.languages.registerDocumentRangeFormattingEditProvider(sparkSqlSelector, {
         provideDocumentRangeFormattingEdits: (
@@ -89,9 +89,9 @@ function updateFeatureStatus() {
             // 使用生成的词法分析器和解析器进行语法检查
             const sourceText = event.getText();
             const inputStream = new ANTLRInputStream(sourceText);
-            const lexer = new HiveSQLLexer(inputStream);
+            const lexer = new SQLLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
-            const parser = new HiveSQLParser(tokenStream);
+            const parser = new SQLParser(tokenStream);
             parser.removeErrorListeners();
             parser.addErrorListener({
                 syntaxError: (recognizer: Recognizer<Token, ATNSimulator>, offendingSymbol: Token | undefined, line: number, startPosition: number, msg: string, e: RecognitionException | undefined): void => {
