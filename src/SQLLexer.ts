@@ -15,7 +15,7 @@ import { VocabularyImpl } from "antlr4ts/VocabularyImpl";
 import * as Utils from "antlr4ts/misc/Utils";
 
 
-export class HiveSQLLexer extends Lexer {
+export class SQLLexer extends Lexer {
 	public static readonly KW_ABORT = 1;
 	public static readonly KW_ACTIVATE = 2;
 	public static readonly KW_ACTIVE = 3;
@@ -674,35 +674,35 @@ export class HiveSQLLexer extends Lexer {
 		"Number", "Identifier", "CharSetName", "WHITE_SPACE", "LINE_COMMENT", 
 		"QUERY_HINT", "SHOW_HINT", "HIDDEN_HINT",
 	];
-	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(HiveSQLLexer._LITERAL_NAMES, HiveSQLLexer._SYMBOLIC_NAMES, []);
+	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(SQLLexer._LITERAL_NAMES, SQLLexer._SYMBOLIC_NAMES, []);
 
 	// @Override
 	// @NotNull
 	public get vocabulary(): Vocabulary {
-		return HiveSQLLexer.VOCABULARY;
+		return SQLLexer.VOCABULARY;
 	}
 	// tslint:enable:no-trailing-whitespace
 
 
 	constructor(input: CharStream) {
 		super(input);
-		this._interp = new LexerATNSimulator(HiveSQLLexer._ATN, this);
+		this._interp = new LexerATNSimulator(SQLLexer._ATN, this);
 	}
 
 	// @Override
 	public get grammarFileName(): string { return "HiveSQL.g4"; }
 
 	// @Override
-	public get ruleNames(): string[] { return HiveSQLLexer.ruleNames; }
+	public get ruleNames(): string[] { return SQLLexer.ruleNames; }
 
 	// @Override
-	public get serializedATN(): string { return HiveSQLLexer._serializedATN; }
+	public get serializedATN(): string { return SQLLexer._serializedATN; }
 
 	// @Override
-	public get channelNames(): string[] { return HiveSQLLexer.channelNames; }
+	public get channelNames(): string[] { return SQLLexer.channelNames; }
 
 	// @Override
-	public get modeNames(): string[] { return HiveSQLLexer.modeNames; }
+	public get modeNames(): string[] { return SQLLexer.modeNames; }
 
 	private static readonly _serializedATNSegments: number = 8;
 	private static readonly _serializedATNSegment0: string =
@@ -3075,24 +3075,24 @@ export class HiveSQLLexer extends Lexer {
 		"\u1042\u1048\u104A\u1056\u105D\u1065\u1067\u1074\u1076\x03\x02\x03\x02";
 	public static readonly _serializedATN: string = Utils.join(
 		[
-			HiveSQLLexer._serializedATNSegment0,
-			HiveSQLLexer._serializedATNSegment1,
-			HiveSQLLexer._serializedATNSegment2,
-			HiveSQLLexer._serializedATNSegment3,
-			HiveSQLLexer._serializedATNSegment4,
-			HiveSQLLexer._serializedATNSegment5,
-			HiveSQLLexer._serializedATNSegment6,
-			HiveSQLLexer._serializedATNSegment7,
+			SQLLexer._serializedATNSegment0,
+			SQLLexer._serializedATNSegment1,
+			SQLLexer._serializedATNSegment2,
+			SQLLexer._serializedATNSegment3,
+			SQLLexer._serializedATNSegment4,
+			SQLLexer._serializedATNSegment5,
+			SQLLexer._serializedATNSegment6,
+			SQLLexer._serializedATNSegment7,
 		],
 		"",
 	);
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
-		if (!HiveSQLLexer.__ATN) {
-			HiveSQLLexer.__ATN = new ATNDeserializer().deserialize(Utils.toCharArray(HiveSQLLexer._serializedATN));
+		if (!SQLLexer.__ATN) {
+			SQLLexer.__ATN = new ATNDeserializer().deserialize(Utils.toCharArray(SQLLexer._serializedATN));
 		}
 
-		return HiveSQLLexer.__ATN;
+		return SQLLexer.__ATN;
 	}
 
 }

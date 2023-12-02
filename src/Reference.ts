@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export class HiveSQLReferenceProvider implements vscode.ReferenceProvider {
+export class SQLReferenceProvider implements vscode.ReferenceProvider {
     provideReferences(document: vscode.TextDocument, position: vscode.Position, options: { includeDeclaration: boolean }, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Location[]> {
         const wordRange = document.getWordRangeAtPosition(position);
         if (!wordRange) {

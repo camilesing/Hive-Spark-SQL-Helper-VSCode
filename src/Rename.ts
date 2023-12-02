@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export class HiveSQLRenameProvider implements vscode.RenameProvider {
+export class SQLRenameProvider implements vscode.RenameProvider {
     provideRenameEdits(document: vscode.TextDocument, position: vscode.Position, newName: string, token: vscode.CancellationToken): vscode.ProviderResult<vscode.WorkspaceEdit> {
         const wordRange = document.getWordRangeAtPosition(position);
         const originalWord = document.getText(wordRange);
