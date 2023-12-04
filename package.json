@@ -36,7 +36,7 @@
         "configuration": {
             "title": "Error grammar Check Settings",
             "properties": {
-                "hive-sql-grammar-check.enable": {
+                "sql-grammar-check.enable": {
                     "type": "boolean",
                     "default": false,
                     "description": "Enable hive & spark sql grammar check."

@@ -17,7 +17,7 @@ const vkbeautify = require('./format.js')
 
 const hiveSqlSelector = 'hive-sql'
 const sparkSqlSelector = 'spark-sql'
-const configName = 'hive-sql-grammar-check'
+const configName = 'sql-grammar-check'
 
 export function activate(context: ExtensionContext) {
     // 获取初始配置
