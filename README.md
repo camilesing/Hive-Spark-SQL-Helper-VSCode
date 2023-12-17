@@ -2,7 +2,6 @@
 
 Help you efficiently and focus on Hive & Spark SQL development. support Hive & Spark SQL error grammar check, syntax highlighting, complete keywords, rename, find all references and code format.
 
-> I suggest that you develop and debug on vscode based on the information (https://learn.microsoft.com/en-us/sql/big-data-cluster/spark-hive-tools-vscode?view=sql-server-ver15) to obtain a better experience.
 
 ## 1.Features
 
@@ -10,7 +9,7 @@ Help you efficiently and focus on Hive & Spark SQL development. support Hive & S
 
 Setting plugin config like
 1. ![](docs/images/setting_1_v2.jpg)
-2. ![](docs/images/setting_2_v2.jpg)
+2. ![](docs/images/setting_2_v3.jpg)
 
 then the plugin will check grammar when you save edit (suggest you turn off automatic saving).
 
