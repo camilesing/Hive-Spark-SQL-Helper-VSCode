@@ -24,7 +24,7 @@ export function activate(context: ExtensionContext) {
     updateFeatureStatus();
 
     context.subscriptions.push(vscode.languages.registerReferenceProvider(
-        [{ pattern: '**/*.sql' }, { pattern: '**/*.hql' }],
+        [{ pattern: '**/*.spark_sql' }, { pattern: '**/*.hql' }],
         new SQLReferenceProvider()
     ));
 
