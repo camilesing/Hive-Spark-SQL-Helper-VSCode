@@ -65,9 +65,9 @@ You can use the right-click menu to format:
 
 ## 2. User Guide
 
-If you want to enable Hive SQL feature on your file, either name the file with a extension `.HQL`, Or press F1, type 'Change Language Mode', and then choose HiveSQL.
+If you want to enable Hive SQL feature on your file, either name the file with a extension `.hql` or `.hive_sql`, Or press F1, type 'Change Language Mode', and then choose HiveSQL.
 
-If you want to enable Spark SQL feature on your file, press F1, type 'Change Language Mode', and then choose SparkSQL.
+If you want to enable Spark SQL feature on your file, either name the file with a extension `.ssql` or `.spark_sql`, press F1, type 'Change Language Mode', and then choose SparkSQL.
 
 ### 2.1 Color theme recommend
 

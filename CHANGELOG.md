@@ -1,3 +1,8 @@
+### v1.3.3
+
+- change spark sql file extension be `.ssql`.
+
+
 ### v1.3.2
 
 - Update docs.

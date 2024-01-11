@@ -52,7 +52,7 @@
                     "HQL"
                 ],
                 "extensions": [
-                    ".spark_sql",
+                    ".hive_sql",
                     ".hql"
                 ],
                 "configuration": "./language-configuration.json",
@@ -69,7 +69,8 @@
                     "SQL"
                 ],
                 "extensions": [
-                    ".spark_sql"
+                    ".spark_sql",
+                    ".ssql"
                 ],
                 "configuration": "./language-configuration.json",
                 "icon": {

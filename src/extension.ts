@@ -24,7 +24,7 @@ export function activate(context: ExtensionContext) {
     updateFeatureStatus();
 
     context.subscriptions.push(vscode.languages.registerReferenceProvider(
-        [{ pattern: '**/*.spark_sql' }, { pattern: '**/*.hql' }],
+        [{ pattern: '**/*.ssql' }, { pattern: '**/*.spark_sql' }, { pattern: '**/*.hql' } , { pattern: '**/*.hive_sql' }],
         new SQLReferenceProvider()
     ));
 
@@ -38,6 +38,8 @@ export function activate(context: ExtensionContext) {
     );
 
     context.subscriptions.push(vscode.languages.registerRenameProvider(hiveSqlSelector, new SQLRenameProvider()));
+    context.subscriptions.push(vscode.languages.registerRenameProvider(sparkSqlSelector, new SQLRenameProvider()));
+
 
     vscode.languages.registerDocumentRangeFormattingEditProvider(hiveSqlSelector, {
         provideDocumentRangeFormattingEdits: (
@@ -49,9 +51,31 @@ export function activate(context: ExtensionContext) {
             ],
     });
 
+    vscode.languages.registerDocumentRangeFormattingEditProvider(sparkSqlSelector, {
+        provideDocumentRangeFormattingEdits: (
+            document: vscode.TextDocument,
+            range: vscode.Range,
+            options: vscode.FormattingOptions
+        ): vscode.TextEdit[] => [
+                vscode.TextEdit.replace(range, format(document.getText(range))),
+            ],
+    });
+
+
     context.subscriptions.push(vscode.languages.registerRenameProvider(sparkSqlSelector, new SQLRenameProvider()));
+    context.subscriptions.push(vscode.languages.registerRenameProvider(hiveSqlSelector, new SQLRenameProvider()));
 
     vscode.languages.registerDocumentRangeFormattingEditProvider(sparkSqlSelector, {
+        provideDocumentRangeFormattingEdits: (
+            document: vscode.TextDocument,
+            range: vscode.Range,
+            options: vscode.FormattingOptions
+        ): vscode.TextEdit[] => [
+                vscode.TextEdit.replace(range, format(document.getText(range))),
+            ],
+    });
+
+    vscode.languages.registerDocumentRangeFormattingEditProvider(hiveSqlSelector, {
         provideDocumentRangeFormattingEdits: (
             document: vscode.TextDocument,
             range: vscode.Range,
@@ -74,17 +98,14 @@ function format(text: string): string {
 function updateFeatureStatus() {
 
     if (vscode.workspace.getConfiguration(configName).get('enable', false)) {
-        // 创建诊断集合，用于报告语法错误和警告
-        const diagnosticCollection = vscode.languages.createDiagnosticCollection(hiveSqlSelector);
-
+     
         // 保存时触发
         vscode.workspace.onDidSaveTextDocument((event: vscode.TextDocument) => {
          
             if (event.languageId !== hiveSqlSelector && event.languageId !== sparkSqlSelector) {
                 return;
             }
-            // 清除之前的诊断信息
-            diagnosticCollection.clear();
+         
 
             // 使用生成的词法分析器和解析器进行语法检查
             const sourceText = event.getText();
