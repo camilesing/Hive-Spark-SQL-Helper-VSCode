@@ -1,7 +1,7 @@
-### v1.3.3
+### v1.4.0
 
-- change spark sql file extension be `.ssql`.
-
+- change spark sql file extension be `.spark_sql` or `.ssql`.
+- change hive sql file extension be `.hive_sql` or `.hql`.
 
 ### v1.3.2
 
