@@ -112,7 +112,7 @@
         "onLanguage:spark-sql"
     ],
     "scripts": {
-        "antlr4ts": "antlr4ts -visitor gen/HiveSQL.g4",
+        "antlr4ts": "antlr4ts -visitor gen/SQL.g4",
         "vscode:prepublish": "webpack --mode production",
         "compile": "webpack --mode none",
         "watch": "webpack --mode none --watch",

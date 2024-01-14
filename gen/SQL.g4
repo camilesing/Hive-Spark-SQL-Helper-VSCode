@@ -1,13 +1,16 @@
 grammar SQL;
 
 // starting rule
-statement: (explainStatement | execStatement) SEMICOLON;
+statement: sqlStatement EOF;
+
+sqlStatement: (explainStatement | execStatement)* ;
 
 explainStatement:
 	KW_EXPLAIN (
 		explainOption* execStatement
 		| KW_REWRITE queryStatementExpression
-	);
+	)
+	SEMICOLON;
 
 explainOption:
 	KW_EXTENDED
@@ -33,7 +36,7 @@ vectorizatonDetail:
 	| KW_DETAIL;
 
 execStatement:
-	queryStatementExpression
+	(queryStatementExpression
 	| loadStatement
 	| exportStatement
 	| importStatement
@@ -46,7 +49,8 @@ execStatement:
 	| sqlTransactionStatement
 	| mergeStatement
 	| prepareStatement
-	| executeStatement;
+	| executeStatement)
+	SEMICOLON;
 
 loadStatement:
 	KW_LOAD KW_DATA KW_LOCAL? KW_INPATH StringLiteral KW_OVERWRITE? KW_INTO KW_TABLE

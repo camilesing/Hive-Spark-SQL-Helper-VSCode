@@ -1,4 +1,4 @@
-// Generated from gen/HiveSQL.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from gen/SQL.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 import { ATN } from "antlr4ts/atn/ATN";
@@ -690,7 +690,7 @@ export class SQLLexer extends Lexer {
 	}
 
 	// @Override
-	public get grammarFileName(): string { return "HiveSQL.g4"; }
+	public get grammarFileName(): string { return "SQL.g4"; }
 
 	// @Override
 	public get ruleNames(): string[] { return SQLLexer.ruleNames; }
