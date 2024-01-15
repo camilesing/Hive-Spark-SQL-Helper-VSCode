@@ -1,3 +1,6 @@
+### v1.4.1
+- Fix ineffective validation in multiple SQL statements.
+
 ### v1.4.0
 
 - change spark sql file extension be `.spark_sql` or `.ssql`.
