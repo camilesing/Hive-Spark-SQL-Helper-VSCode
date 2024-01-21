@@ -110,6 +110,7 @@ import { DefinedAsSpecContext } from "./SQLParser";
 import { ShowFunctionIdentifierContext } from "./SQLParser";
 import { ShowStmtIdentifierContext } from "./SQLParser";
 import { TableCommentContext } from "./SQLParser";
+import { TableUsingContext } from "./SQLParser";
 import { CreateTablePartitionSpecContext } from "./SQLParser";
 import { CreateTablePartitionColumnTypeSpecContext } from "./SQLParser";
 import { CreateTablePartitionColumnSpecContext } from "./SQLParser";
@@ -247,6 +248,7 @@ import { AlterMaterializedViewSuffixRewriteContext } from "./SQLParser";
 import { AlterMaterializedViewSuffixRebuildContext } from "./SQLParser";
 import { AlterDatabaseStatementSuffixContext } from "./SQLParser";
 import { AlterDatabaseSuffixPropertiesContext } from "./SQLParser";
+import { AlterScopePropertiesContext } from "./SQLParser";
 import { AlterDatabaseSuffixSetOwnerContext } from "./SQLParser";
 import { AlterDatabaseSuffixSetLocationContext } from "./SQLParser";
 import { AlterDatabaseSuffixSetManagedLocationContext } from "./SQLParser";
@@ -1262,6 +1264,13 @@ export interface SQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitTableComment?: (ctx: TableCommentContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `SQLParser.tableUsing`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTableUsing?: (ctx: TableUsingContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `SQLParser.createTablePartitionSpec`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -2219,6 +2228,13 @@ export interface SQLVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitAlterDatabaseSuffixProperties?: (ctx: AlterDatabaseSuffixPropertiesContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `SQLParser.alterScopeProperties`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAlterScopeProperties?: (ctx: AlterScopePropertiesContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `SQLParser.alterDatabaseSuffixSetOwner`.

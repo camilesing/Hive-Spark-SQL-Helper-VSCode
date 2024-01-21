@@ -110,6 +110,7 @@ import { DefinedAsSpecContext } from "./SQLParser";
 import { ShowFunctionIdentifierContext } from "./SQLParser";
 import { ShowStmtIdentifierContext } from "./SQLParser";
 import { TableCommentContext } from "./SQLParser";
+import { TableUsingContext } from "./SQLParser";
 import { CreateTablePartitionSpecContext } from "./SQLParser";
 import { CreateTablePartitionColumnTypeSpecContext } from "./SQLParser";
 import { CreateTablePartitionColumnSpecContext } from "./SQLParser";
@@ -247,6 +248,7 @@ import { AlterMaterializedViewSuffixRewriteContext } from "./SQLParser";
 import { AlterMaterializedViewSuffixRebuildContext } from "./SQLParser";
 import { AlterDatabaseStatementSuffixContext } from "./SQLParser";
 import { AlterDatabaseSuffixPropertiesContext } from "./SQLParser";
+import { AlterScopePropertiesContext } from "./SQLParser";
 import { AlterDatabaseSuffixSetOwnerContext } from "./SQLParser";
 import { AlterDatabaseSuffixSetLocationContext } from "./SQLParser";
 import { AlterDatabaseSuffixSetManagedLocationContext } from "./SQLParser";
@@ -1685,6 +1687,17 @@ export interface SQLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitTableComment?: (ctx: TableCommentContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `SQLParser.tableUsing`.
+	 * @param ctx the parse tree
+	 */
+	enterTableUsing?: (ctx: TableUsingContext) => void;
+	/**
+	 * Exit a parse tree produced by `SQLParser.tableUsing`.
+	 * @param ctx the parse tree
+	 */
+	exitTableUsing?: (ctx: TableUsingContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `SQLParser.createTablePartitionSpec`.
@@ -3192,6 +3205,17 @@ export interface SQLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitAlterDatabaseSuffixProperties?: (ctx: AlterDatabaseSuffixPropertiesContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `SQLParser.alterScopeProperties`.
+	 * @param ctx the parse tree
+	 */
+	enterAlterScopeProperties?: (ctx: AlterScopePropertiesContext) => void;
+	/**
+	 * Exit a parse tree produced by `SQLParser.alterScopeProperties`.
+	 * @param ctx the parse tree
+	 */
+	exitAlterScopeProperties?: (ctx: AlterScopePropertiesContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `SQLParser.alterDatabaseSuffixSetOwner`.

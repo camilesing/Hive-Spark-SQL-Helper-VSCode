@@ -1,0 +1,7 @@
+SELECT my_table.name, other_table.address
+FROM my_table
+JOIN other_table ON my_table.id = other_table.id;
+
+SELECT name, age
+FROM my_table
+WHERE age > (SELECT AVG(age) FROM my_table);

@@ -111,6 +111,7 @@ ddlStatement:
 	| dropViewStatement
 	| dropMaterializedViewStatement
 	| createFunctionStatement
+	// | addJarForFunctionStatement
 	| createMacroStatement
 	| dropFunctionStatement
 	| reloadFunctionsStatement
@@ -389,6 +390,10 @@ resource: resType = resourceType resPath = StringLiteral;
 
 resourceType: KW_JAR | KW_FILE | KW_ARCHIVE;
 
+
+// addJarForFunctionStatement:
+// 	KW_ADD KW_JAR  KW_HDFS COLON DIVIDE DIVIDE (id_ MINUS? UNDERLINE_SIGN? DIVIDE?)* ;
+
 createFunctionStatement:
 	KW_CREATE temp = KW_TEMPORARY? KW_FUNCTION functionIdentifier KW_AS StringLiteral (
 		KW_USING rList = resourceList
@@ -472,6 +477,8 @@ showFunctionIdentifier: functionIdentifier | StringLiteral;
 showStmtIdentifier: id_ | StringLiteral;
 
 tableComment: KW_COMMENT comment = StringLiteral;
+
+tableUsing: KW_USING (StringLiteral)*;
 
 createTablePartitionSpec:
 	KW_PARTITIONED KW_BY (
@@ -999,10 +1006,14 @@ alterMaterializedViewSuffixRebuild: KW_REBUILD;
 alterDatabaseStatementSuffix:
 	alterDatabaseSuffixProperties
 	| alterDatabaseSuffixSetOwner
+	| alterScopeProperties
 	| alterDatabaseSuffixSetLocation;
 
 alterDatabaseSuffixProperties:
 	name = id_ KW_SET KW_DBPROPERTIES dbProperties;
+
+alterScopeProperties:
+	name =  KW_SET id_ (COMMA id_)* EQUAL id_;
 
 alterDatabaseSuffixSetOwner:
 	dbName = id_ KW_SET KW_OWNER principalName;
@@ -1181,7 +1192,7 @@ createTableStatement:
 		? name = tableName (
 		likeTableOrFile createTablePartitionSpec? tableRowFormat? tableFileFormat? tableLocation?
 			tablePropertiesPrefixed?
-		| (LPAREN columnNameTypeOrConstraintList RPAREN)? tableComment? createTablePartitionSpec?
+		| (LPAREN columnNameTypeOrConstraintList RPAREN)? tableUsing? tableComment? createTablePartitionSpec?
 			tableBuckets? tableSkewed? tableRowFormat? tableFileFormat? tableLocation?
 			tablePropertiesPrefixed? (
 			KW_AS selectStatementWithCTE
@@ -1189,7 +1200,7 @@ createTableStatement:
 	)
 	| KW_CREATE mgd = KW_MANAGED KW_TABLE ifNotExists? name = tableName (
 		likeTableOrFile tableRowFormat? tableFileFormat? tableLocation? tablePropertiesPrefixed?
-		| (LPAREN columnNameTypeOrConstraintList RPAREN)? tableComment? createTablePartitionSpec?
+		| (LPAREN columnNameTypeOrConstraintList RPAREN)? tableUsing? tableComment? createTablePartitionSpec?
 			tableBuckets? tableSkewed? tableRowFormat? tableFileFormat? tableLocation?
 			tablePropertiesPrefixed? (
 			KW_AS selectStatementWithCTE
@@ -1568,6 +1579,7 @@ function_:
 		| dist = all_distinct? (
 			selectExpression (COMMA selectExpression)*
 		)?
+ 
 	) (
 		// SELECT rank(3) WITHIN GROUP (<order by clause>)
 		RPAREN within = KW_WITHIN KW_GROUP LPAREN ordBy = orderByClause RPAREN
@@ -1590,6 +1602,7 @@ castExpression:
 		fmt = KW_FORMAT StringLiteral
 	)? RPAREN;
 
+ 
 caseExpression:
 	KW_CASE expression (KW_WHEN expression KW_THEN expression)+ (
 		KW_ELSE expression
@@ -2496,7 +2509,8 @@ KW_GRANT: G R A N T;
 KW_GROUP: G R O U P;
 KW_GROUPING: G R O U P I N G;
 KW_HAVING: H A V I N G;
-KW_HOLD_DDLTIME: K W UNDERLINE_SIGN H O L D D D L T I M E;
+KW_HDFS: H D F S;
+KW_HOLD_DDLTIME: UNDERLINE_SIGN H O L D D D L T I M E;
 KW_HOUR: H O U R S?;
 KW_IDXPROPERTIES: I D X P R O P E R T I E S;
 KW_IF: I F;
@@ -2832,6 +2846,7 @@ Number: Digit+ (DOT Digit* Exponent? | Exponent)?;
 Identifier: (Letter | Digit) (Letter | Digit | '_')*
 	| QuotedIdentifier
 	| '`' RegexComponent+ '`';
+
 
 fragment QuotedIdentifier: '`' ('``' | ~'`')* '`';
 
