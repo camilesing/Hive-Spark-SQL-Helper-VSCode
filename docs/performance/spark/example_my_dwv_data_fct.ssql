@@ -1,0 +1,46 @@
+USE dwv;
+
+-- set hive.exec.dynamic.partition=true;
+-- set hive.exec.dynamic.partition.mode=nonstrict;
+
+-- set spark.driver.memory=6g;
+-- set spark.executor.memory=5g;
+-- set spark.sql.files.maxPartitionBytes=33554400;
+
+-- ADD JAR hdfs://my_cluster/super-user-define-function-1.0.jar;
+CREATE TEMPORARY FUNCTION nvl_blank AS 'com.camilesing.nvlcheck';
+
+ 
+CREATE TABLE if not exists dwv.my_dwv_data_fct (
+  `id` bigint ,
+  `spu_id` string,
+  `sku_id` string,
+  `valid` int COMMENT '是否有效，1-有效，0-删除',
+  `create_time` timestamp COMMENT '创建时间',
+  `etl_time` timestamp
+) -- USING orc
+COMMENT 'my_dwv_data_fct'
+PARTITIONED BY (dt STRING)
+TBLPROPERTIES (
+'transient_lastDdlTime' = '1678199249')
+;
+
+INSERT overwrite TABLE dwv.my_dwv_data_fct partition(dt='${hour:ymdh}')
+SELECT 
+  id,
+  spu_id,
+  sku_id,
+  valid,
+  from_unixtime( cast(c_time AS BIGINT) , 'yyyy-MM-dd HH:mm:ss') as create_time,
+  cast(current_timestamp() AS String) as etl_time
+FROM (
+  SELECT 
+    id,
+    spu_id,
+    sku_id,
+    valid,
+    c_time,
+    row_number() over (partition by id,spu_id order by c_time desc) rn
+  FROM ods.my_ods_data
+  ) t
+where rn = 1;
