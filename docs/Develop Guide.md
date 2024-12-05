@@ -9,7 +9,6 @@
 - Run ```vsce package``` to build extension.
 
 # 3 If you want add or update grammar rule
-
-- Edit `HiveSQL.g4`
-- Run `npm run antlr4ts` generate for ts code then move to src directory.
+- Edit `*SQL.g4`
+- Run `npm run antlr4ts_spark && npm run antlr4ts_hive` generate for ts code then move to src directory. 
 - Copy ./gen ts file to src directory

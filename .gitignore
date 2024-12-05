@@ -4,3 +4,4 @@ node_modules/
 .vscode/
 *.code-workspace
 /gen
+SparkSQL-Example/
