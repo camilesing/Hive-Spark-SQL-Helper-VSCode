@@ -1,0 +1,186 @@
+{
+    "name": "Hive",
+    "scopeName": "source.spark",
+    "fileTypes": ["hql"],
+    "patterns":[
+      {
+        "begin": "(?i)^\\s*(((?:CREATE(?:\\s+TEMPORARY)?(?:\\s+OR\\s+REPLACE)?|DROP|ALTER|TRUNCATE)\\s+(?:EXTERNAL\\s+TABLE|TABLE|INDEX|VIEW|DATABASE|SCHEMA|FUNCTION|MACRO|ROLE)(?:\\s+IF(?:\\s+NOT)?\\s+EXISTS)?)\\s+(?:[a-z_][a-z0-9_\\.]*))\\b",
+        "end": "$",
+        "beginCaptures": {
+            "2" : { "name" : "keyword.parameter.spark"},
+            "1" : { "name" : "storage.type.definition.spark"}
+        },
+        "patterns": [
+            { "include": "$self" }
+        ]
+      },
+      {
+        "begin": "(?i)^\\s*((UPDATE)\\s+([^\\=]+))\\s+(SET)\\b",
+        "end": "$",
+        "beginCaptures": {
+          "2" : { "name" : "keyword.parameter.spark"},
+          "1" : { "name" : "storage.type.definition.spark"},
+          "4" : { "name" : "keyword.parameter.spark"}
+        },
+        "patterns": [
+          { "include": "$self" }
+        ]
+      },
+      {
+        "begin": "(?i)^\\s*((ADD|LIST|DELETE)\\s+(?:FILE|JAR|ARCHIVE))\\s+(.*);",
+        "end": "$",
+        "beginCaptures": {
+            "1" : { "name" : "keyword.parameter.spark"},
+            "2" : { "name" : "storage.type.value.spark"}
+        },
+        "patterns": [
+            { "include": "$self" }
+        ]
+      },
+      {
+          "match" : "\\b(?i:add|admin|after|analyze|asc|before|byte|bytes|cache|cascade|catalog|catalogs|clear|century|chain|changelog_mode|characters|comment|compact|columns|constraints|constructor|compute|cumulate|data|database|databases|days|dbproperties|decade|defined|desc|descriptor|div|encoding|enforced|engine|epoch|error|estimated_cost|exception|exclude|excluding|extended|filter|file|files|final|first|following|format|fortran|found|frac_second|functions|general|generated|go|goto|granted|hop|hours|if|ignore|include|increment|input|invoker|jar|jars|java|json|json_execution_plan|key|keys|key_member|key_type|label|last|length|level|list|load|location|long|map|microsecond|millennium|millisecond|minutes|minvalue|modify|modules|months|nanosecond|noscan|nulls|number|option|options|ordering|output|overwrite|overwriting|partitioned|partitions|passing|past|path|placing|plan|preceding|preserve|prior|privileges|public|python|python_files|python_requirements|python_dependencies|python_jar|python_archives|python_parameter|quarter|query|raw|read|real|relative|remove|rename|replace|respect|restart|restrict|role|row_count|scala|scalar|scale|schema|schemas|seconds|section|security|self|server|server_name|session|sets|short|simple|size|slide|source|space|serdeproperties|state|statistics|statement|step|string|structure|style|tables|temporary|timecol|floor|timestamp_ltz|timestamp_ntz|timestampadd|timestampdiff|totimestamp|transform|tumble|type|uncache|under|unbounded|unload|usage|use|utf16|utf32|utf8|version|view|views|virtual|watermark|watermarks|week|weeks|work|wrapper|years|zone|abs|all|allow|alter|and|any|are|array|as|asymmetric|at|avg|begin|between|bigint|binary|bit|blob|boolean|both|bucket|by|call|called|cascaded|case|cast|ceil|char|character|check|clob|close|cluster|clustered|coalesce|collate|collect|column|commit|connect|constraint|contains|convert|count|create|cross|cube|cume_dist|current|cursor|cycle|collection|date|datetime|day|dec|decimal|declare|default|define|delete|delimited|describe|dense_rank|distinct|directory|distributed|distribute|double|drop|each|else|end|equals|escape|escaped|except|execute|exists|explain|explode|explode_outer|external|extract|first_value|false|float|fields|for|from|from_unixtime|full|function|global|grant|group|grouping|groups|having|hour|import|in|including|inputformat|inner|inout|insert|int|integer|intersect|interval|into|inpath|inline|inline_outer|items|is|join|json_tuple|lag|language|lateral|last_value|lead|leading|left|like|lines|limit|local|localtimestamp|match|match_recognize|measures|merge|metadata|minus|minute|modifies|module|month|multiset|natural|next|no|none|not|ntile|nth_value|null|numeric|of|offset|on|one|or|order|out|outer|outputformat|over|overlay|parse_url|partition|pattern|per|percent|percent_rank|percentile_cont|percentile_disc|period|pivot|position|power|posexplode|posexplode_outer|primary|purge|range|recordwriter|row_number|rank|regexp|reset|revoke|repair|right|rlike|rollback|rollup|row|rows|second|select|set|serde|show|similar|skip|stored|sorted|smallint|stack|start|static|struct|sort|substring|sum|symmetric|system|system_time|system_user|table|tblproperties|tablesample|terminated|then|time|timestamp|timestamp_3|timestamp_6|timestamp_9|tinyint|to|trailing|true|truncate|union|unique|unknown|unset|unpivot|upper|upsert|user|using|value|values|varbinary|varchar|when|where|window|with|within|without|year|materialized|freshness|refresh_mode|recover|continuous|suspend|resume|refresh|hash|buckets)\\b",
+          "name" : "keyword.control.spark"
+      },
+      {
+        "match" : "(--).*$\\n?",
+        "name" : "comment.line.double-slash.asciidoc"
+      },
+      {
+          "begin": "/\\*",
+          "end": "\\*/",
+          "name": "comment.block.spark"
+      },
+      {
+        "match" : "\\b(?i:tinyint|smallint|int|bigint|float|double|decimal|timestamp|date|boolean|string|varchar|char|binary)\\b",
+        "name" : "storage.type.spark"
+      },
+      {
+        "match" : "\\b(?i:struct|map|array|uniontype)\\b",
+        "name" : "support.type.spark"
+      },
+      {
+        "match" : "\\b(?i:null|true|false|INPUT__FILE__NAME|BLOCK__OFFSET__INSIDE__FILE)\\b",
+        "name" : "constant.language.spark"
+      },
+      {
+        "match" : "\\b\\d+\\b",
+        "name" : "constant.numeric.spark"
+      },
+      {
+        "match" : "'\\\\\\d+'",
+        "name" : "constant.numeric.spark"
+      },
+      {
+        "begin": "\"",
+        "end": "\"",
+        "name": "string.quoted.double.spark",
+        "patterns": [
+          {
+            "match": "\\\\.",
+            "name": "constant.character.escape.spark"
+          }
+        ]
+      },
+      {
+        "begin": "'",
+        "end": "'",
+        "name": "string.quoted.single.spark",
+        "patterns": [
+          {
+            "match": "\\\\.",
+            "name": "constant.character.escape.spark"
+          }
+        ]
+      },
+      {
+        "name": "keyword.operator.arithmetic.spark",
+        "match": "\\b(\\+|\\-|\\*|\\/|\\%|&|\\|\\^|~)\\b"
+      },
+      {
+        "name" : "keyword.operator.relational.spark",
+        "match" : "(?i:=|<=>|==|<>|<|<=|>|>=|!=|(\\b(between|is|like|rlike|regexp)\\b))"
+      },
+      {
+        "name" : "keyword.operator.logical.spark",
+        "match" : "(?i)\\b(and|&&|or|not|\\|\\||!|(not\\s+)?in|(not\\s+)?exists)\\b"
+      },
+      {
+        "name" : "support.function.udf.complex.spark",
+        "match" : "(?i)\\b(map|struct|named_struct|array|create_union)\\b"
+      },
+      {
+        "name" : "support.function.udf.mathematic.spark",
+        "match" : "\\b(?i:round|bround|floor|ceil|ceiling|rand|exp|ln|log|log10|log2|pow|power|sqrt|bin|hex|unhex|conv|abs|pmod|sin|asin|cos|acos|tan|atan|degrees|radians|positive|negative|sign|e|pi|factorial|cbrt|shiftleft|shiftright|shiftrightunsigned)\\b"
+      },
+          {
+        "name" : "support.function.udf.collection.spark",
+        "match" : "\\b(?i:size|map_keys|map_values|array_contains|sort_array)\\b"
+      },
+          {
+        "name" : "support.function.udf.type-cast.spark",
+        "match" : "\\b(?i:binary|cast)\\b"
+      },
+      {
+        "name" : "support.function.udf.date.spark",
+        "match" : "\\b(?i:from_unixtime|unix_timestamp|to_date|year|quarter|month|day|dayofmonth|hour|minute|second|weekofyear|datediff|date_add|date_sub|from_utc_timestamp|to_utc_timestamp|current_date|current_timestamp|add_months|last_day|next_day|trunc|months_between|date_format)\\b"
+      },
+      {
+        "name" : "support.function.udf.conditional.spark",
+        "match" : "\\b(?i:if|coalesce|greatest|least|isnull|isnotnull|nvl|nullif)\\b"
+      },
+      {
+        "name" : "support.function.udf.string.spark",
+        "match" : "\\b(?i:ascii|base64|chr|concat|context_ngrams|concat_ws|decode|encode|find_in_set|format_number|get_json_object|in_file|instr|length|locate|lower|lcase|lpad|ltrim|ngrams|parse_url|printf|regexp_extract|regexp_replace|repeat|reverse|rpad|rtrim|sentences|space|split|str_to_map|substr|substring|substring_index|translate|trim|unbase64|upper|ucase|initcap|levenshtein|soundex)\\b"
+      },
+      {
+        "name" : "support.function.udf.masking.spark",
+        "match" : "\\b(?i:mask|mask_first_n|mask_last_n|mask_show_first_n|mask_show_last_n|mask_hash)\\b"
+      },
+      {
+        "name" : "support.function.udf.misc.spark",
+        "match" : "\\b(?i:java_method|reflect|hash|xpath|xpath_short|xpath_int|xpath_long|xpath_float|xpath_double|xpath_number|xpath_string|get_json_object|md5|sha1|sha|crc32|sha2|current_user|current_database|aes_encrypt|aes_decrypt|version)\\b"
+      },
+      {
+        "match" : "\\b(?i:count|sum|avg|min|max|variance|var_pop|var_samp|stddev_pop|stddev_samp|covar_pop|covar_samp|corr|percentile|percentile_approx|histogram_numeric|collect_set|collect_list|ntile|lead|lag|first_value|last_value|rank|row_number|dense_rank|cume_dist|percent_rank)\\b",
+        "name" : "support.function.udaf.spark"
+      },
+      {
+        "name" : "support.function.udtf.spark",
+        "match" : "\\b(?i:inline|explode|json_tuple|parse_url_tuple|stack|posexplode)\\b"
+      },
+      {
+        "begin": "(?i)^\\s*((?:set)\\s+(?:[^\\=]+))\\s*=\\s*",
+        "end": ";?$",
+        "beginCaptures": {
+          "2" : { "name" : "keyword.parameter.spark"},
+          "1" : { "name" : "storage.type.parameter.spark"}
+        },
+        "patterns": [
+          { "include": "$self" }
+        ]
+      },
+      {
+        "begin": "(?i)(!|dfs)(.*)",
+        "end": "$",
+        "beginCaptures": {
+            "1" : { "name" : "storage.type.definition.spark"},
+            "2" : { "name" : "string.quoted.other.spark"}
+        },
+        "patterns": [
+            { "include": "$self" }
+        ]
+      },
+      {
+        "begin": "(?i)(CRYPTO\\s+(?:CREATE_KEY|CREATE_ZONE|DELETE_KEY))(.*)\\b",
+        "end": "$",
+        "beginCaptures": {
+            "2" : { "name" : "string.quoted.other.spark"},
+            "1" : { "name" : "keyword.control.spark"}
+        },
+        "patterns": [
+            { "include": "$self" }
+        ]
+      }
+    ],
+    "uuid": "ed2beb11-48cc-49ce-9446-ad0377801dbd"
+  }

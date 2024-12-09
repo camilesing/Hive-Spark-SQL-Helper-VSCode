@@ -87,8 +87,8 @@
             },
             {
                 "language": "spark-sql",
-                "scopeName": "source.hive",
-                "path": "./syntaxes/hive.tmLanguage.json"
+                "scopeName": "source.spark",
+                "path": "./syntaxes/spark.tmLanguage.json"
             }
         ],
         "snippets": [
