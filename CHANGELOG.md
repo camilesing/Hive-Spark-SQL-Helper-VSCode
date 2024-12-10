@@ -1,3 +1,6 @@
+### v1.5.5
+- Fix some bugs: row_number query, sub query...
+
 ### v1.5.0
 - Support SparkSQL v3.5.2.
 - Fix some bug.

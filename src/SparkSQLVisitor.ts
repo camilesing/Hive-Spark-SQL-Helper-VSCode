@@ -9,19 +9,15 @@ import { SqlStatementContext } from "./SparkSQLParser.js";
 import { EmptyStatementContext } from "./SparkSQLParser.js";
 import { CreateStatementContext } from "./SparkSQLParser.js";
 import { DmlStatementContext } from "./SparkSQLParser.js";
-import { ShowTableStatementBodyContext } from "./SparkSQLParser.js";
-import { ShowFunctionStatementBodyContext } from "./SparkSQLParser.js";
-import { TableCanHasKeyPropertyListContext } from "./SparkSQLParser.js";
 import { SimpleContext } from "./SparkSQLParser.js";
 import { AsSelectContext } from "./SparkSQLParser.js";
 import { MaterializedContext } from "./SparkSQLParser.js";
 import { CustomSerdeContext } from "./SparkSQLParser.js";
 import { CustomSerdeExternalContext } from "./SparkSQLParser.js";
 import { Using_createContext } from "./SparkSQLParser.js";
-import { HiveCreateContext } from "./SparkSQLParser.js";
-import { CreateExTableContext } from "./SparkSQLParser.js";
 import { SimpleCreateTableContext } from "./SparkSQLParser.js";
 import { SimpleCreateTableNoSortElementContext } from "./SparkSQLParser.js";
+import { LocationContext } from "./SparkSQLParser.js";
 import { SortedByContext } from "./SparkSQLParser.js";
 import { UsingCreateContext } from "./SparkSQLParser.js";
 import { TblPropertiesContext } from "./SparkSQLParser.js";
@@ -32,17 +28,12 @@ import { ColumnUsingNoSortElementContext } from "./SparkSQLParser.js";
 import { UsingByQueryContext } from "./SparkSQLParser.js";
 import { UsingByQueryNoSortElementContext } from "./SparkSQLParser.js";
 import { IntoBucketsContext } from "./SparkSQLParser.js";
-import { HiveFormatCreateContext } from "./SparkSQLParser.js";
 import { HiveFormatpartitionDefinitionContext } from "./SparkSQLParser.js";
-import { HiveFormatCreateNoSortElementContext } from "./SparkSQLParser.js";
 import { RowFormatSerdeContext } from "./SparkSQLParser.js";
 import { FieldsTerminatedByContext } from "./SparkSQLParser.js";
 import { StoredAsContext } from "./SparkSQLParser.js";
 import { StoredAsInputformatContext } from "./SparkSQLParser.js";
 import { OutputformatContext } from "./SparkSQLParser.js";
-import { CreateExternalTableContext } from "./SparkSQLParser.js";
-import { CreateExternalTableNoSortElementContext } from "./SparkSQLParser.js";
-import { LocationContext } from "./SparkSQLParser.js";
 import { RowFormatDelimtedContext } from "./SparkSQLParser.js";
 import { ColumnsBodyContext } from "./SparkSQLParser.js";
 import { CreateCustomSerdeContext } from "./SparkSQLParser.js";
@@ -52,13 +43,10 @@ import { CreateCustomSerdeExternalNoSortElementContext } from "./SparkSQLParser.
 import { CreateTableAsSelectContext } from "./SparkSQLParser.js";
 import { CreateMaterializedTableAsSelectContext } from "./SparkSQLParser.js";
 import { CreateMaterializedTableAsSelectNoSortElementContext } from "./SparkSQLParser.js";
-import { CreateCatalogContext } from "./SparkSQLParser.js";
-import { CreateDatabaseContext } from "./SparkSQLParser.js";
-import { CreateViewContext } from "./SparkSQLParser.js";
-import { CreateFunctionContext } from "./SparkSQLParser.js";
 import { UsingClauseContext } from "./SparkSQLParser.js";
 import { JarFileNameContext } from "./SparkSQLParser.js";
 import { FilePathContext } from "./SparkSQLParser.js";
+import { IfExistsPartContext } from "./SparkSQLParser.js";
 import { ColumnPositionContext } from "./SparkSQLParser.js";
 import { RenameDefinitionContext } from "./SparkSQLParser.js";
 import { SetKeyValueDefinitionContext } from "./SparkSQLParser.js";
@@ -68,36 +56,24 @@ import { AddUniqueContext } from "./SparkSQLParser.js";
 import { NotForcedContext } from "./SparkSQLParser.js";
 import { InsertStatementContext } from "./SparkSQLParser.js";
 import { InsertSimpleStatementContext } from "./SparkSQLParser.js";
-import { InsertFromTableContext } from "./SparkSQLParser.js";
-import { InsertSparkDirectoryStatementContext } from "./SparkSQLParser.js";
-import { InsertSparkDirectoryBodyContext } from "./SparkSQLParser.js";
-import { InsertHiveDirectoryStatementContext } from "./SparkSQLParser.js";
-import { HiveRowFormatPartContext } from "./SparkSQLParser.js";
 import { InsertPartitionDefinitionContext } from "./SparkSQLParser.js";
-import { InsertMulStatementCompatibilityContext } from "./SparkSQLParser.js";
-import { InsertMulStatementContext } from "./SparkSQLParser.js";
 import { QueryStatementContext } from "./SparkSQLParser.js";
+import { WithClauseContext } from "./SparkSQLParser.js";
 import { ValuesCaluseContext } from "./SparkSQLParser.js";
 import { InlineBodyContext } from "./SparkSQLParser.js";
-import { WithClauseContext } from "./SparkSQLParser.js";
 import { WithItemContext } from "./SparkSQLParser.js";
 import { WithItemNameContext } from "./SparkSQLParser.js";
 import { CommonSelectContext } from "./SparkSQLParser.js";
 import { SparkStyleSelectContext } from "./SparkSQLParser.js";
 import { MatchRecognizeSelectContext } from "./SparkSQLParser.js";
 import { TableSampleContext } from "./SparkSQLParser.js";
-import { TvfQueryContext } from "./SparkSQLParser.js";
-import { InlineTableContext } from "./SparkSQLParser.js";
-import { TransformQueryContext } from "./SparkSQLParser.js";
+import { SelectPlusContext } from "./SparkSQLParser.js";
 import { SelectClauseContext } from "./SparkSQLParser.js";
 import { WindowsProrjectItemContext } from "./SparkSQLParser.js";
 import { ExpressionProjectItemContext } from "./SparkSQLParser.js";
-import { AggregateFunctionsContext } from "./SparkSQLParser.js";
-import { OrderSetAggregateFunctionsContext } from "./SparkSQLParser.js";
 import { FilterPartContext } from "./SparkSQLParser.js";
 import { OverWindowItemContext } from "./SparkSQLParser.js";
 import { OverClauseContext } from "./SparkSQLParser.js";
-import { ByClauseContext } from "./SparkSQLParser.js";
 import { WindowFunctioPartContext } from "./SparkSQLParser.js";
 import { WindowFunctionNameContext } from "./SparkSQLParser.js";
 import { AnalyticFunctionContext } from "./SparkSQLParser.js";
@@ -106,6 +82,10 @@ import { FromClauseContext } from "./SparkSQLParser.js";
 import { WindowFrameForWindowsQueryContext } from "./SparkSQLParser.js";
 import { FrameExpessionContext } from "./SparkSQLParser.js";
 import { TableExpressionContext } from "./SparkSQLParser.js";
+import { TvfClauseContext } from "./SparkSQLParser.js";
+import { RangeClauseContext } from "./SparkSQLParser.js";
+import { ViewReferenceContext } from "./SparkSQLParser.js";
+import { PivotReferenceContext } from "./SparkSQLParser.js";
 import { TableReferenceContext } from "./SparkSQLParser.js";
 import { TablePrimaryContext } from "./SparkSQLParser.js";
 import { FuntionBodyContext } from "./SparkSQLParser.js";
@@ -117,19 +97,13 @@ import { SystemTimePeriodContext } from "./SparkSQLParser.js";
 import { DateTimeExpressionContext } from "./SparkSQLParser.js";
 import { InlineDataValueClauseContext } from "./SparkSQLParser.js";
 import { WindowTVFClauseContext } from "./SparkSQLParser.js";
-import { RangeContext } from "./SparkSQLParser.js";
-import { OneExpresionContext } from "./SparkSQLParser.js";
-import { StackContext } from "./SparkSQLParser.js";
-import { Json_tupleContext } from "./SparkSQLParser.js";
-import { Parse_urlContext } from "./SparkSQLParser.js";
-import { RangeClauseContext } from "./SparkSQLParser.js";
 import { WindowTVFExpressionContext } from "./SparkSQLParser.js";
 import { WindowTVFNameContext } from "./SparkSQLParser.js";
-import { TransformClauseContext } from "./SparkSQLParser.js";
 import { RowFormatDelimitedContext } from "./SparkSQLParser.js";
 import { HiveSerdeContext } from "./SparkSQLParser.js";
 import { UsingAsColumnPartContext } from "./SparkSQLParser.js";
 import { HiveSerdePartContext } from "./SparkSQLParser.js";
+import { TableCanHasKeyPropertyListContext } from "./SparkSQLParser.js";
 import { SparkRecordWriterPartContext } from "./SparkSQLParser.js";
 import { WindowTVFParamContext } from "./SparkSQLParser.js";
 import { TimeIntervalParamNameContext } from "./SparkSQLParser.js";
@@ -216,20 +190,22 @@ import { OrContext } from "./SparkSQLParser.js";
 import { ComparisonContext } from "./SparkSQLParser.js";
 import { ArithmeticBinaryContext } from "./SparkSQLParser.js";
 import { ArithmeticUnaryContext } from "./SparkSQLParser.js";
-import { DereferenceContext } from "./SparkSQLParser.js";
 import { SimpleCaseContext } from "./SparkSQLParser.js";
 import { ColumnReferenceContext } from "./SparkSQLParser.js";
 import { LastContext } from "./SparkSQLParser.js";
 import { StarContext } from "./SparkSQLParser.js";
+import { AggregateFunctionsContext } from "./SparkSQLParser.js";
 import { SubscriptContext } from "./SparkSQLParser.js";
 import { ValuesContext } from "./SparkSQLParser.js";
 import { FunctionCallFilterContext } from "./SparkSQLParser.js";
+import { OrderSetAggregateFunctionsContext } from "./SparkSQLParser.js";
 import { SubqueryExpressionContext } from "./SparkSQLParser.js";
 import { CastContext } from "./SparkSQLParser.js";
 import { ConstantDefaultContext } from "./SparkSQLParser.js";
 import { ParenthesizedExpressionContext } from "./SparkSQLParser.js";
 import { ComplexDataTypeFieldExpressionContext } from "./SparkSQLParser.js";
 import { FunctionCallContext } from "./SparkSQLParser.js";
+import { UidForColumnNameContext } from "./SparkSQLParser.js";
 import { SearchedCaseContext } from "./SparkSQLParser.js";
 import { PositionContext } from "./SparkSQLParser.js";
 import { FirstContext } from "./SparkSQLParser.js";
@@ -243,7 +219,6 @@ import { SqlSimpleTypeContext } from "./SparkSQLParser.js";
 import { FunctionNameContext } from "./SparkSQLParser.js";
 import { FunctionParamContext } from "./SparkSQLParser.js";
 import { FilterClauseContext } from "./SparkSQLParser.js";
-import { DereferenceDefinitionContext } from "./SparkSQLParser.js";
 import { CorrelationNameContext } from "./SparkSQLParser.js";
 import { QualifiedNameContext } from "./SparkSQLParser.js";
 import { TimeIntervalExpressionContext } from "./SparkSQLParser.js";
@@ -254,9 +229,9 @@ import { UnitToUnitIntervalContext } from "./SparkSQLParser.js";
 import { IntervalValueContext } from "./SparkSQLParser.js";
 import { ColumnAliasContext } from "./SparkSQLParser.js";
 import { TableAliasContext } from "./SparkSQLParser.js";
+import { AnyAliasContext } from "./SparkSQLParser.js";
 import { ErrorCapturingIdentifierContext } from "./SparkSQLParser.js";
 import { ErrorIdentContext } from "./SparkSQLParser.js";
-import { RealIdentContext } from "./SparkSQLParser.js";
 import { IdentifierListContext } from "./SparkSQLParser.js";
 import { IdentifierSeqContext } from "./SparkSQLParser.js";
 import { UnquotedIdentifierAlternativeContext } from "./SparkSQLParser.js";
@@ -266,7 +241,6 @@ import { UrefVarAlternativeContext } from "./SparkSQLParser.js";
 import { UnquotedAnyStringContext } from "./SparkSQLParser.js";
 import { RefVarContext } from "./SparkSQLParser.js";
 import { UnquotedIdentifierContext } from "./SparkSQLParser.js";
-import { QuotedIdentifierContext } from "./SparkSQLParser.js";
 import { WhenClauseContext } from "./SparkSQLParser.js";
 import { CatalogPathContext } from "./SparkSQLParser.js";
 import { DatabasePathContext } from "./SparkSQLParser.js";
@@ -286,7 +260,6 @@ import { TablePropertyValueContext } from "./SparkSQLParser.js";
 import { ComparisonOperatorContext } from "./SparkSQLParser.js";
 import { ConstantContext } from "./SparkSQLParser.js";
 import { TimePointLiteralContext } from "./SparkSQLParser.js";
-import { AnyStringLiteralContext } from "./SparkSQLParser.js";
 import { StringLiteralContext } from "./SparkSQLParser.js";
 import { DecimalLiteralContext } from "./SparkSQLParser.js";
 import { BooleanLiteralContext } from "./SparkSQLParser.js";
@@ -296,6 +269,7 @@ import { TimeIntervalUnitContext } from "./SparkSQLParser.js";
 import { ReservedKeywordsUsedAsFuncParamContext } from "./SparkSQLParser.js";
 import { ReservedKeywordsUsedAsFuncNameContext } from "./SparkSQLParser.js";
 import { NonReservedKeywordsContext } from "./SparkSQLParser.js";
+import { SelectStatementPlusContext } from "./SparkSQLParser.js";
 
 
 /**
@@ -343,24 +317,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitDmlStatement?: (ctx: DmlStatementContext) => Result;
     /**
-     * Visit a parse tree produced by `SparkSQLParser.showTableStatementBody`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitShowTableStatementBody?: (ctx: ShowTableStatementBodyContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.showFunctionStatementBody`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitShowFunctionStatementBody?: (ctx: ShowFunctionStatementBodyContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.tableCanHasKeyPropertyList`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitTableCanHasKeyPropertyList?: (ctx: TableCanHasKeyPropertyListContext) => Result;
-    /**
      * Visit a parse tree produced by the `simple`
      * labeled alternative in `SparkSQLParser.createTable`.
      * @param ctx the parse tree
@@ -403,20 +359,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitUsing_create?: (ctx: Using_createContext) => Result;
     /**
-     * Visit a parse tree produced by the `hiveCreate`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitHiveCreate?: (ctx: HiveCreateContext) => Result;
-    /**
-     * Visit a parse tree produced by the `createExTable`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateExTable?: (ctx: CreateExTableContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.simpleCreateTable`.
      * @param ctx the parse tree
      * @return the visitor result
@@ -428,6 +370,12 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitSimpleCreateTableNoSortElement?: (ctx: SimpleCreateTableNoSortElementContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.location`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitLocation?: (ctx: LocationContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.sortedBy`.
      * @param ctx the parse tree
@@ -489,23 +437,11 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitIntoBuckets?: (ctx: IntoBucketsContext) => Result;
     /**
-     * Visit a parse tree produced by `SparkSQLParser.hiveFormatCreate`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitHiveFormatCreate?: (ctx: HiveFormatCreateContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.hiveFormatpartitionDefinition`.
      * @param ctx the parse tree
      * @return the visitor result
      */
     visitHiveFormatpartitionDefinition?: (ctx: HiveFormatpartitionDefinitionContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.hiveFormatCreateNoSortElement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitHiveFormatCreateNoSortElement?: (ctx: HiveFormatCreateNoSortElementContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.rowFormatSerde`.
      * @param ctx the parse tree
@@ -536,24 +472,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitOutputformat?: (ctx: OutputformatContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.createExternalTable`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateExternalTable?: (ctx: CreateExternalTableContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.createExternalTableNoSortElement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateExternalTableNoSortElement?: (ctx: CreateExternalTableNoSortElementContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.location`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitLocation?: (ctx: LocationContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.rowFormatDelimted`.
      * @param ctx the parse tree
@@ -609,30 +527,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitCreateMaterializedTableAsSelectNoSortElement?: (ctx: CreateMaterializedTableAsSelectNoSortElementContext) => Result;
     /**
-     * Visit a parse tree produced by `SparkSQLParser.createCatalog`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateCatalog?: (ctx: CreateCatalogContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.createDatabase`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateDatabase?: (ctx: CreateDatabaseContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.createView`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateView?: (ctx: CreateViewContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.createFunction`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateFunction?: (ctx: CreateFunctionContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.usingClause`.
      * @param ctx the parse tree
      * @return the visitor result
@@ -650,6 +544,12 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitFilePath?: (ctx: FilePathContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.ifExistsPart`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitIfExistsPart?: (ctx: IfExistsPartContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.columnPosition`.
      * @param ctx the parse tree
@@ -705,59 +605,23 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitInsertSimpleStatement?: (ctx: InsertSimpleStatementContext) => Result;
     /**
-     * Visit a parse tree produced by `SparkSQLParser.insertFromTable`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitInsertFromTable?: (ctx: InsertFromTableContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.insertSparkDirectoryStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitInsertSparkDirectoryStatement?: (ctx: InsertSparkDirectoryStatementContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.insertSparkDirectoryBody`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitInsertSparkDirectoryBody?: (ctx: InsertSparkDirectoryBodyContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.insertHiveDirectoryStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitInsertHiveDirectoryStatement?: (ctx: InsertHiveDirectoryStatementContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.hiveRowFormatPart`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitHiveRowFormatPart?: (ctx: HiveRowFormatPartContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.insertPartitionDefinition`.
      * @param ctx the parse tree
      * @return the visitor result
      */
     visitInsertPartitionDefinition?: (ctx: InsertPartitionDefinitionContext) => Result;
     /**
-     * Visit a parse tree produced by `SparkSQLParser.insertMulStatementCompatibility`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitInsertMulStatementCompatibility?: (ctx: InsertMulStatementCompatibilityContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.insertMulStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitInsertMulStatement?: (ctx: InsertMulStatementContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.queryStatement`.
      * @param ctx the parse tree
      * @return the visitor result
      */
     visitQueryStatement?: (ctx: QueryStatementContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.withClause`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitWithClause?: (ctx: WithClauseContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.valuesCaluse`.
      * @param ctx the parse tree
@@ -770,12 +634,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitInlineBody?: (ctx: InlineBodyContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.withClause`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitWithClause?: (ctx: WithClauseContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.withItem`.
      * @param ctx the parse tree
@@ -817,26 +675,12 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitTableSample?: (ctx: TableSampleContext) => Result;
     /**
-     * Visit a parse tree produced by the `tvfQuery`
+     * Visit a parse tree produced by the `selectPlus`
      * labeled alternative in `SparkSQLParser.selectStatement`.
      * @param ctx the parse tree
      * @return the visitor result
      */
-    visitTvfQuery?: (ctx: TvfQueryContext) => Result;
-    /**
-     * Visit a parse tree produced by the `inlineTable`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitInlineTable?: (ctx: InlineTableContext) => Result;
-    /**
-     * Visit a parse tree produced by the `transformQuery`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitTransformQuery?: (ctx: TransformQueryContext) => Result;
+    visitSelectPlus?: (ctx: SelectPlusContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.selectClause`.
      * @param ctx the parse tree
@@ -858,20 +702,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitExpressionProjectItem?: (ctx: ExpressionProjectItemContext) => Result;
     /**
-     * Visit a parse tree produced by the `aggregateFunctions`
-     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitAggregateFunctions?: (ctx: AggregateFunctionsContext) => Result;
-    /**
-     * Visit a parse tree produced by the `orderSetAggregateFunctions`
-     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitOrderSetAggregateFunctions?: (ctx: OrderSetAggregateFunctionsContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.filterPart`.
      * @param ctx the parse tree
      * @return the visitor result
@@ -889,12 +719,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitOverClause?: (ctx: OverClauseContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.byClause`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitByClause?: (ctx: ByClauseContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.windowFunctioPart`.
      * @param ctx the parse tree
@@ -943,6 +767,30 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitTableExpression?: (ctx: TableExpressionContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.tvfClause`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitTvfClause?: (ctx: TvfClauseContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.rangeClause`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitRangeClause?: (ctx: RangeClauseContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.viewReference`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitViewReference?: (ctx: ViewReferenceContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.pivotReference`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitPivotReference?: (ctx: PivotReferenceContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.tableReference`.
      * @param ctx the parse tree
@@ -1010,47 +858,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitWindowTVFClause?: (ctx: WindowTVFClauseContext) => Result;
     /**
-     * Visit a parse tree produced by the `range`
-     * labeled alternative in `SparkSQLParser.tvfClause`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitRange?: (ctx: RangeContext) => Result;
-    /**
-     * Visit a parse tree produced by the `oneExpresion`
-     * labeled alternative in `SparkSQLParser.inlineTableClause`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitOneExpresion?: (ctx: OneExpresionContext) => Result;
-    /**
-     * Visit a parse tree produced by the `stack`
-     * labeled alternative in `SparkSQLParser.inlineTableClause`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitStack?: (ctx: StackContext) => Result;
-    /**
-     * Visit a parse tree produced by the `json_tuple`
-     * labeled alternative in `SparkSQLParser.inlineTableClause`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitJson_tuple?: (ctx: Json_tupleContext) => Result;
-    /**
-     * Visit a parse tree produced by the `parse_url`
-     * labeled alternative in `SparkSQLParser.inlineTableClause`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitParse_url?: (ctx: Parse_urlContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.rangeClause`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitRangeClause?: (ctx: RangeClauseContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.windowTVFExpression`.
      * @param ctx the parse tree
      * @return the visitor result
@@ -1062,12 +869,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitWindowTVFName?: (ctx: WindowTVFNameContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.transformClause`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitTransformClause?: (ctx: TransformClauseContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.rowFormatDelimited`.
      * @param ctx the parse tree
@@ -1092,6 +893,12 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitHiveSerdePart?: (ctx: HiveSerdePartContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.tableCanHasKeyPropertyList`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitTableCanHasKeyPropertyList?: (ctx: TableCanHasKeyPropertyListContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.sparkRecordWriterPart`.
      * @param ctx the parse tree
@@ -1624,13 +1431,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitArithmeticUnary?: (ctx: ArithmeticUnaryContext) => Result;
     /**
-     * Visit a parse tree produced by the `dereference`
-     * labeled alternative in `SparkSQLParser.primaryExpression`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitDereference?: (ctx: DereferenceContext) => Result;
-    /**
      * Visit a parse tree produced by the `simpleCase`
      * labeled alternative in `SparkSQLParser.primaryExpression`.
      * @param ctx the parse tree
@@ -1659,6 +1459,13 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitStar?: (ctx: StarContext) => Result;
     /**
+     * Visit a parse tree produced by the `aggregateFunctions`
+     * labeled alternative in `SparkSQLParser.primaryExpression`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitAggregateFunctions?: (ctx: AggregateFunctionsContext) => Result;
+    /**
      * Visit a parse tree produced by the `subscript`
      * labeled alternative in `SparkSQLParser.primaryExpression`.
      * @param ctx the parse tree
@@ -1679,6 +1486,13 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitFunctionCallFilter?: (ctx: FunctionCallFilterContext) => Result;
+    /**
+     * Visit a parse tree produced by the `orderSetAggregateFunctions`
+     * labeled alternative in `SparkSQLParser.primaryExpression`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitOrderSetAggregateFunctions?: (ctx: OrderSetAggregateFunctionsContext) => Result;
     /**
      * Visit a parse tree produced by the `subqueryExpression`
      * labeled alternative in `SparkSQLParser.primaryExpression`.
@@ -1721,6 +1535,13 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitFunctionCall?: (ctx: FunctionCallContext) => Result;
+    /**
+     * Visit a parse tree produced by the `uidForColumnName`
+     * labeled alternative in `SparkSQLParser.primaryExpression`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitUidForColumnName?: (ctx: UidForColumnNameContext) => Result;
     /**
      * Visit a parse tree produced by the `searchedCase`
      * labeled alternative in `SparkSQLParser.primaryExpression`.
@@ -1803,12 +1624,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitFilterClause?: (ctx: FilterClauseContext) => Result;
     /**
-     * Visit a parse tree produced by `SparkSQLParser.dereferenceDefinition`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitDereferenceDefinition?: (ctx: DereferenceDefinitionContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.correlationName`.
      * @param ctx the parse tree
      * @return the visitor result
@@ -1869,6 +1684,12 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitTableAlias?: (ctx: TableAliasContext) => Result;
     /**
+     * Visit a parse tree produced by `SparkSQLParser.anyAlias`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitAnyAlias?: (ctx: AnyAliasContext) => Result;
+    /**
      * Visit a parse tree produced by `SparkSQLParser.errorCapturingIdentifier`.
      * @param ctx the parse tree
      * @return the visitor result
@@ -1881,13 +1702,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitErrorIdent?: (ctx: ErrorIdentContext) => Result;
-    /**
-     * Visit a parse tree produced by the `realIdent`
-     * labeled alternative in `SparkSQLParser.errorCapturingIdentifierExtra`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitRealIdent?: (ctx: RealIdentContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.identifierList`.
      * @param ctx the parse tree
@@ -1946,12 +1760,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitUnquotedIdentifier?: (ctx: UnquotedIdentifierContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.quotedIdentifier`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitQuotedIdentifier?: (ctx: QuotedIdentifierContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.whenClause`.
      * @param ctx the parse tree
@@ -2067,12 +1875,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitTimePointLiteral?: (ctx: TimePointLiteralContext) => Result;
     /**
-     * Visit a parse tree produced by `SparkSQLParser.anyStringLiteral`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitAnyStringLiteral?: (ctx: AnyStringLiteralContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.stringLiteral`.
      * @param ctx the parse tree
      * @return the visitor result
@@ -2126,5 +1928,11 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitNonReservedKeywords?: (ctx: NonReservedKeywordsContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.selectStatementPlus`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitSelectStatementPlus?: (ctx: SelectStatementPlusContext) => Result;
 }
 
