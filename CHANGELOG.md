@@ -1,3 +1,7 @@
+### v1.5.2
+- Fix row_number over partition parse error.
+
+
 ### v1.5.1
 - Support refVar for property expression.
 
