@@ -94,7 +94,6 @@ import { OrderSetAggregateFunctionsContext } from "./SparkSQLParser.js";
 import { FilterPartContext } from "./SparkSQLParser.js";
 import { OverWindowItemContext } from "./SparkSQLParser.js";
 import { OverClauseContext } from "./SparkSQLParser.js";
-import { ByClauseContext } from "./SparkSQLParser.js";
 import { WindowFunctioPartContext } from "./SparkSQLParser.js";
 import { WindowFunctionNameContext } from "./SparkSQLParser.js";
 import { AnalyticFunctionContext } from "./SparkSQLParser.js";
@@ -868,12 +867,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitOverClause?: (ctx: OverClauseContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.byClause`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitByClause?: (ctx: ByClauseContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.windowFunctioPart`.
      * @param ctx the parse tree

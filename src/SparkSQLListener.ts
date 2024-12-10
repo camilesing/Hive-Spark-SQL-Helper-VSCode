@@ -94,7 +94,6 @@ import { OrderSetAggregateFunctionsContext } from "./SparkSQLParser.js";
 import { FilterPartContext } from "./SparkSQLParser.js";
 import { OverWindowItemContext } from "./SparkSQLParser.js";
 import { OverClauseContext } from "./SparkSQLParser.js";
-import { ByClauseContext } from "./SparkSQLParser.js";
 import { WindowFunctioPartContext } from "./SparkSQLParser.js";
 import { WindowFunctionNameContext } from "./SparkSQLParser.js";
 import { AnalyticFunctionContext } from "./SparkSQLParser.js";
@@ -1248,16 +1247,6 @@ export class SparkSQLListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitOverClause?: (ctx: OverClauseContext) => void;
-    /**
-     * Enter a parse tree produced by `SparkSQLParser.byClause`.
-     * @param ctx the parse tree
-     */
-    enterByClause?: (ctx: ByClauseContext) => void;
-    /**
-     * Exit a parse tree produced by `SparkSQLParser.byClause`.
-     * @param ctx the parse tree
-     */
-    exitByClause?: (ctx: ByClauseContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.windowFunctioPart`.
      * @param ctx the parse tree
