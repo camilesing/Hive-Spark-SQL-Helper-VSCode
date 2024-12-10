@@ -52,13 +52,10 @@ import { CreateCustomSerdeExternalNoSortElementContext } from "./SparkSQLParser.
 import { CreateTableAsSelectContext } from "./SparkSQLParser.js";
 import { CreateMaterializedTableAsSelectContext } from "./SparkSQLParser.js";
 import { CreateMaterializedTableAsSelectNoSortElementContext } from "./SparkSQLParser.js";
-import { CreateCatalogContext } from "./SparkSQLParser.js";
-import { CreateDatabaseContext } from "./SparkSQLParser.js";
-import { CreateViewContext } from "./SparkSQLParser.js";
-import { CreateFunctionContext } from "./SparkSQLParser.js";
 import { UsingClauseContext } from "./SparkSQLParser.js";
 import { JarFileNameContext } from "./SparkSQLParser.js";
 import { FilePathContext } from "./SparkSQLParser.js";
+import { IfExistsPartContext } from "./SparkSQLParser.js";
 import { ColumnPositionContext } from "./SparkSQLParser.js";
 import { RenameDefinitionContext } from "./SparkSQLParser.js";
 import { SetKeyValueDefinitionContext } from "./SparkSQLParser.js";
@@ -810,46 +807,6 @@ export class SparkSQLListener implements ParseTreeListener {
      */
     exitCreateMaterializedTableAsSelectNoSortElement?: (ctx: CreateMaterializedTableAsSelectNoSortElementContext) => void;
     /**
-     * Enter a parse tree produced by `SparkSQLParser.createCatalog`.
-     * @param ctx the parse tree
-     */
-    enterCreateCatalog?: (ctx: CreateCatalogContext) => void;
-    /**
-     * Exit a parse tree produced by `SparkSQLParser.createCatalog`.
-     * @param ctx the parse tree
-     */
-    exitCreateCatalog?: (ctx: CreateCatalogContext) => void;
-    /**
-     * Enter a parse tree produced by `SparkSQLParser.createDatabase`.
-     * @param ctx the parse tree
-     */
-    enterCreateDatabase?: (ctx: CreateDatabaseContext) => void;
-    /**
-     * Exit a parse tree produced by `SparkSQLParser.createDatabase`.
-     * @param ctx the parse tree
-     */
-    exitCreateDatabase?: (ctx: CreateDatabaseContext) => void;
-    /**
-     * Enter a parse tree produced by `SparkSQLParser.createView`.
-     * @param ctx the parse tree
-     */
-    enterCreateView?: (ctx: CreateViewContext) => void;
-    /**
-     * Exit a parse tree produced by `SparkSQLParser.createView`.
-     * @param ctx the parse tree
-     */
-    exitCreateView?: (ctx: CreateViewContext) => void;
-    /**
-     * Enter a parse tree produced by `SparkSQLParser.createFunction`.
-     * @param ctx the parse tree
-     */
-    enterCreateFunction?: (ctx: CreateFunctionContext) => void;
-    /**
-     * Exit a parse tree produced by `SparkSQLParser.createFunction`.
-     * @param ctx the parse tree
-     */
-    exitCreateFunction?: (ctx: CreateFunctionContext) => void;
-    /**
      * Enter a parse tree produced by `SparkSQLParser.usingClause`.
      * @param ctx the parse tree
      */
@@ -879,6 +836,16 @@ export class SparkSQLListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitFilePath?: (ctx: FilePathContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.ifExistsPart`.
+     * @param ctx the parse tree
+     */
+    enterIfExistsPart?: (ctx: IfExistsPartContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.ifExistsPart`.
+     * @param ctx the parse tree
+     */
+    exitIfExistsPart?: (ctx: IfExistsPartContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.columnPosition`.
      * @param ctx the parse tree

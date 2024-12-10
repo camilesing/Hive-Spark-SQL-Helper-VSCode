@@ -1,4 +1,4 @@
-USE dwv;
+--USE dwv;
 
 -- set hive.exec.dynamic.partition=true;
 -- set hive.exec.dynamic.partition.mode=nonstrict;
@@ -8,7 +8,7 @@ USE dwv;
 -- set spark.sql.files.maxPartitionBytes=33554400;
 
 -- ADD JAR hdfs://my_cluster/super-user-define-function-1.0.jar;
-CREATE TEMPORARY FUNCTION nvl_blank AS 'com.camilesing.nvlcheck';
+--CREATE TEMPORARY FUNCTION nvl_blank AS 'com.camilesing.nvlcheck';
 
  
 CREATE TABLE if not exists dwv.my_dwv_data_fct (
@@ -22,7 +22,8 @@ CREATE TABLE if not exists dwv.my_dwv_data_fct (
 COMMENT 'my_dwv_data_fct'
 PARTITIONED BY (dt STRING)
 TBLPROPERTIES (
-'transient_lastDdlTime' = '1678199249')
+'transient_lastDdlTime' = '1678199249'
+)
 ;
 
 INSERT overwrite TABLE dwv.my_dwv_data_fct partition(dt='${hour:ymdh}')

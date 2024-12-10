@@ -5,7 +5,7 @@ Help you efficiently and focus on Spark SQL(v3.5.2) & Hive(v3.x) development. su
 > The IDEA version plugin for SparkSQL that support all statement will be released in the near future, stay tuned.
 
 VsCode plugin support common statement list:
-- create statement.
+- create table statement.
 - query statement.
 - insert statement.
 
@@ -18,7 +18,7 @@ VsCode plugin support common statement list:
 > IDEA版的SparkSQL插件（支持所有的SparkSQL语句）将在近期释出，敬请关注。
 
 VsCode版本的插件支持的语句有：
-- create
+- create table
 - query
 - insert
 

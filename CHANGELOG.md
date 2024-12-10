@@ -1,3 +1,7 @@
+### v1.5.1
+- Support refVar for property expression.
+
+
 ### v1.5.0
 - Support SparkSQL v3.5.2.
 - Fix some bug.

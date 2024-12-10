@@ -52,13 +52,10 @@ import { CreateCustomSerdeExternalNoSortElementContext } from "./SparkSQLParser.
 import { CreateTableAsSelectContext } from "./SparkSQLParser.js";
 import { CreateMaterializedTableAsSelectContext } from "./SparkSQLParser.js";
 import { CreateMaterializedTableAsSelectNoSortElementContext } from "./SparkSQLParser.js";
-import { CreateCatalogContext } from "./SparkSQLParser.js";
-import { CreateDatabaseContext } from "./SparkSQLParser.js";
-import { CreateViewContext } from "./SparkSQLParser.js";
-import { CreateFunctionContext } from "./SparkSQLParser.js";
 import { UsingClauseContext } from "./SparkSQLParser.js";
 import { JarFileNameContext } from "./SparkSQLParser.js";
 import { FilePathContext } from "./SparkSQLParser.js";
+import { IfExistsPartContext } from "./SparkSQLParser.js";
 import { ColumnPositionContext } from "./SparkSQLParser.js";
 import { RenameDefinitionContext } from "./SparkSQLParser.js";
 import { SetKeyValueDefinitionContext } from "./SparkSQLParser.js";
@@ -609,30 +606,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitCreateMaterializedTableAsSelectNoSortElement?: (ctx: CreateMaterializedTableAsSelectNoSortElementContext) => Result;
     /**
-     * Visit a parse tree produced by `SparkSQLParser.createCatalog`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateCatalog?: (ctx: CreateCatalogContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.createDatabase`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateDatabase?: (ctx: CreateDatabaseContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.createView`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateView?: (ctx: CreateViewContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.createFunction`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCreateFunction?: (ctx: CreateFunctionContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.usingClause`.
      * @param ctx the parse tree
      * @return the visitor result
@@ -650,6 +623,12 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitFilePath?: (ctx: FilePathContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.ifExistsPart`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitIfExistsPart?: (ctx: IfExistsPartContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.columnPosition`.
      * @param ctx the parse tree
