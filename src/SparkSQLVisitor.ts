@@ -101,6 +101,7 @@ import { WindowFrameForWindowsQueryContext } from "./SparkSQLParser.js";
 import { FrameExpessionContext } from "./SparkSQLParser.js";
 import { TableExpressionContext } from "./SparkSQLParser.js";
 import { ViewReferenceContext } from "./SparkSQLParser.js";
+import { PivotReferenceContext } from "./SparkSQLParser.js";
 import { TableReferenceContext } from "./SparkSQLParser.js";
 import { TablePrimaryContext } from "./SparkSQLParser.js";
 import { FuntionBodyContext } from "./SparkSQLParser.js";
@@ -908,6 +909,12 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitViewReference?: (ctx: ViewReferenceContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.pivotReference`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitPivotReference?: (ctx: PivotReferenceContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.tableReference`.
      * @param ctx the parse tree

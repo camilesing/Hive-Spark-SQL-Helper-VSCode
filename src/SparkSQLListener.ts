@@ -101,6 +101,7 @@ import { WindowFrameForWindowsQueryContext } from "./SparkSQLParser.js";
 import { FrameExpessionContext } from "./SparkSQLParser.js";
 import { TableExpressionContext } from "./SparkSQLParser.js";
 import { ViewReferenceContext } from "./SparkSQLParser.js";
+import { PivotReferenceContext } from "./SparkSQLParser.js";
 import { TableReferenceContext } from "./SparkSQLParser.js";
 import { TablePrimaryContext } from "./SparkSQLParser.js";
 import { FuntionBodyContext } from "./SparkSQLParser.js";
@@ -1314,6 +1315,16 @@ export class SparkSQLListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitViewReference?: (ctx: ViewReferenceContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.pivotReference`.
+     * @param ctx the parse tree
+     */
+    enterPivotReference?: (ctx: PivotReferenceContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.pivotReference`.
+     * @param ctx the parse tree
+     */
+    exitPivotReference?: (ctx: PivotReferenceContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.tableReference`.
      * @param ctx the parse tree
