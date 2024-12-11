@@ -1,7 +1,8 @@
+### v1.5.4
+- Fix subquery and pivot parse error.
+
 ### v1.5.3
 - Fix sub, lateral query parse error.
-
-
 
 ### v1.5.2
 - Fix row_number over partition parse error.
