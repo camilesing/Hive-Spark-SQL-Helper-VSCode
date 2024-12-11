@@ -89,8 +89,6 @@ import { TransformQueryContext } from "./SparkSQLParser.js";
 import { SelectClauseContext } from "./SparkSQLParser.js";
 import { WindowsProrjectItemContext } from "./SparkSQLParser.js";
 import { ExpressionProjectItemContext } from "./SparkSQLParser.js";
-import { AggregateFunctionsContext } from "./SparkSQLParser.js";
-import { OrderSetAggregateFunctionsContext } from "./SparkSQLParser.js";
 import { FilterPartContext } from "./SparkSQLParser.js";
 import { OverWindowItemContext } from "./SparkSQLParser.js";
 import { OverClauseContext } from "./SparkSQLParser.js";
@@ -102,6 +100,7 @@ import { FromClauseContext } from "./SparkSQLParser.js";
 import { WindowFrameForWindowsQueryContext } from "./SparkSQLParser.js";
 import { FrameExpessionContext } from "./SparkSQLParser.js";
 import { TableExpressionContext } from "./SparkSQLParser.js";
+import { ViewReferenceContext } from "./SparkSQLParser.js";
 import { TableReferenceContext } from "./SparkSQLParser.js";
 import { TablePrimaryContext } from "./SparkSQLParser.js";
 import { FuntionBodyContext } from "./SparkSQLParser.js";
@@ -217,9 +216,11 @@ import { SimpleCaseContext } from "./SparkSQLParser.js";
 import { ColumnReferenceContext } from "./SparkSQLParser.js";
 import { LastContext } from "./SparkSQLParser.js";
 import { StarContext } from "./SparkSQLParser.js";
+import { AggregateFunctionsContext } from "./SparkSQLParser.js";
 import { SubscriptContext } from "./SparkSQLParser.js";
 import { ValuesContext } from "./SparkSQLParser.js";
 import { FunctionCallFilterContext } from "./SparkSQLParser.js";
+import { OrderSetAggregateFunctionsContext } from "./SparkSQLParser.js";
 import { SubqueryExpressionContext } from "./SparkSQLParser.js";
 import { CastContext } from "./SparkSQLParser.js";
 import { ConstantDefaultContext } from "./SparkSQLParser.js";
@@ -836,20 +837,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitExpressionProjectItem?: (ctx: ExpressionProjectItemContext) => Result;
     /**
-     * Visit a parse tree produced by the `aggregateFunctions`
-     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitAggregateFunctions?: (ctx: AggregateFunctionsContext) => Result;
-    /**
-     * Visit a parse tree produced by the `orderSetAggregateFunctions`
-     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitOrderSetAggregateFunctions?: (ctx: OrderSetAggregateFunctionsContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.filterPart`.
      * @param ctx the parse tree
      * @return the visitor result
@@ -915,6 +902,12 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitTableExpression?: (ctx: TableExpressionContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.viewReference`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitViewReference?: (ctx: ViewReferenceContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.tableReference`.
      * @param ctx the parse tree
@@ -1631,6 +1624,13 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitStar?: (ctx: StarContext) => Result;
     /**
+     * Visit a parse tree produced by the `aggregateFunctions`
+     * labeled alternative in `SparkSQLParser.primaryExpression`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitAggregateFunctions?: (ctx: AggregateFunctionsContext) => Result;
+    /**
      * Visit a parse tree produced by the `subscript`
      * labeled alternative in `SparkSQLParser.primaryExpression`.
      * @param ctx the parse tree
@@ -1651,6 +1651,13 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitFunctionCallFilter?: (ctx: FunctionCallFilterContext) => Result;
+    /**
+     * Visit a parse tree produced by the `orderSetAggregateFunctions`
+     * labeled alternative in `SparkSQLParser.primaryExpression`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitOrderSetAggregateFunctions?: (ctx: OrderSetAggregateFunctionsContext) => Result;
     /**
      * Visit a parse tree produced by the `subqueryExpression`
      * labeled alternative in `SparkSQLParser.primaryExpression`.
