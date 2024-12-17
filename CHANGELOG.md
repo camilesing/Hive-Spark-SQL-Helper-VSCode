@@ -1,3 +1,6 @@
+### v1.5.6
+- Update docs.
+
 ### v1.5.5
 - Fix some bugs: row_number query, sub query...
 
