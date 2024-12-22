@@ -1,3 +1,7 @@
+### v1.5.7
+- Add hilight for hive sql.
+
+
 ### v1.5.6
 - Update docs.
 
