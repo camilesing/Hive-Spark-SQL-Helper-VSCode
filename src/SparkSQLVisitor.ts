@@ -5,7 +5,6 @@ import { AbstractParseTreeVisitor } from "antlr4ng";
 
 import { StatementContext } from "./SparkSQLParser.js";
 import { SqlStatementsContext } from "./SparkSQLParser.js";
-import { SqlStatementContext } from "./SparkSQLParser.js";
 import { EmptyStatementContext } from "./SparkSQLParser.js";
 import { CreateStatementContext } from "./SparkSQLParser.js";
 import { DmlStatementContext } from "./SparkSQLParser.js";
@@ -63,14 +62,7 @@ import { ValuesCaluseContext } from "./SparkSQLParser.js";
 import { InlineBodyContext } from "./SparkSQLParser.js";
 import { WithItemContext } from "./SparkSQLParser.js";
 import { WithItemNameContext } from "./SparkSQLParser.js";
-import { CommonSelectContext } from "./SparkSQLParser.js";
-import { SparkStyleSelectContext } from "./SparkSQLParser.js";
-import { MatchRecognizeSelectContext } from "./SparkSQLParser.js";
-import { TableSampleContext } from "./SparkSQLParser.js";
-import { SelectPlusContext } from "./SparkSQLParser.js";
 import { SelectClauseContext } from "./SparkSQLParser.js";
-import { WindowsProrjectItemContext } from "./SparkSQLParser.js";
-import { ExpressionProjectItemContext } from "./SparkSQLParser.js";
 import { FilterPartContext } from "./SparkSQLParser.js";
 import { OverWindowItemContext } from "./SparkSQLParser.js";
 import { OverClauseContext } from "./SparkSQLParser.js";
@@ -117,6 +109,7 @@ import { ClusteredByClauseContext } from "./SparkSQLParser.js";
 import { DistributeByClauseContext } from "./SparkSQLParser.js";
 import { GroupByClauseContext } from "./SparkSQLParser.js";
 import { GroupItemDefinitionContext } from "./SparkSQLParser.js";
+import { GroupingSetContext } from "./SparkSQLParser.js";
 import { GroupingSetsContext } from "./SparkSQLParser.js";
 import { GroupingSetsNotionNameContext } from "./SparkSQLParser.js";
 import { GroupWindowFunctionContext } from "./SparkSQLParser.js";
@@ -269,7 +262,13 @@ import { TimeIntervalUnitContext } from "./SparkSQLParser.js";
 import { ReservedKeywordsUsedAsFuncParamContext } from "./SparkSQLParser.js";
 import { ReservedKeywordsUsedAsFuncNameContext } from "./SparkSQLParser.js";
 import { NonReservedKeywordsContext } from "./SparkSQLParser.js";
-import { SelectStatementPlusContext } from "./SparkSQLParser.js";
+import { SqlStatementContext } from "./SparkSQLParser.js";
+import { CommonSelectContext } from "./SparkSQLParser.js";
+import { SparkStyleSelectContext } from "./SparkSQLParser.js";
+import { MatchRecognizeSelectContext } from "./SparkSQLParser.js";
+import { TableSampleContext } from "./SparkSQLParser.js";
+import { WindowsProrjectItemContext } from "./SparkSQLParser.js";
+import { ExpressionProjectItemContext } from "./SparkSQLParser.js";
 
 
 /**
@@ -292,12 +291,6 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitSqlStatements?: (ctx: SqlStatementsContext) => Result;
-    /**
-     * Visit a parse tree produced by `SparkSQLParser.sqlStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitSqlStatement?: (ctx: SqlStatementContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.emptyStatement`.
      * @param ctx the parse tree
@@ -647,60 +640,11 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitWithItemName?: (ctx: WithItemNameContext) => Result;
     /**
-     * Visit a parse tree produced by the `commonSelect`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCommonSelect?: (ctx: CommonSelectContext) => Result;
-    /**
-     * Visit a parse tree produced by the `sparkStyleSelect`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitSparkStyleSelect?: (ctx: SparkStyleSelectContext) => Result;
-    /**
-     * Visit a parse tree produced by the `matchRecognizeSelect`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitMatchRecognizeSelect?: (ctx: MatchRecognizeSelectContext) => Result;
-    /**
-     * Visit a parse tree produced by the `tableSample`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitTableSample?: (ctx: TableSampleContext) => Result;
-    /**
-     * Visit a parse tree produced by the `selectPlus`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitSelectPlus?: (ctx: SelectPlusContext) => Result;
-    /**
      * Visit a parse tree produced by `SparkSQLParser.selectClause`.
      * @param ctx the parse tree
      * @return the visitor result
      */
     visitSelectClause?: (ctx: SelectClauseContext) => Result;
-    /**
-     * Visit a parse tree produced by the `windowsProrjectItem`
-     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitWindowsProrjectItem?: (ctx: WindowsProrjectItemContext) => Result;
-    /**
-     * Visit a parse tree produced by the `expressionProjectItem`
-     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitExpressionProjectItem?: (ctx: ExpressionProjectItemContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.filterPart`.
      * @param ctx the parse tree
@@ -977,6 +921,12 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitGroupItemDefinition?: (ctx: GroupItemDefinitionContext) => Result;
+    /**
+     * Visit a parse tree produced by `SparkSQLParser.groupingSet`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitGroupingSet?: (ctx: GroupingSetContext) => Result;
     /**
      * Visit a parse tree produced by `SparkSQLParser.groupingSets`.
      * @param ctx the parse tree
@@ -1929,10 +1879,52 @@ export class SparkSQLVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      */
     visitNonReservedKeywords?: (ctx: NonReservedKeywordsContext) => Result;
     /**
-     * Visit a parse tree produced by `SparkSQLParser.selectStatementPlus`.
+     * Visit a parse tree produced by `SparkSQLParser.sqlStatement`.
      * @param ctx the parse tree
      * @return the visitor result
      */
-    visitSelectStatementPlus?: (ctx: SelectStatementPlusContext) => Result;
+    visitSqlStatement?: (ctx: SqlStatementContext) => Result;
+    /**
+     * Visit a parse tree produced by the `commonSelect`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitCommonSelect?: (ctx: CommonSelectContext) => Result;
+    /**
+     * Visit a parse tree produced by the `sparkStyleSelect`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitSparkStyleSelect?: (ctx: SparkStyleSelectContext) => Result;
+    /**
+     * Visit a parse tree produced by the `matchRecognizeSelect`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitMatchRecognizeSelect?: (ctx: MatchRecognizeSelectContext) => Result;
+    /**
+     * Visit a parse tree produced by the `tableSample`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitTableSample?: (ctx: TableSampleContext) => Result;
+    /**
+     * Visit a parse tree produced by the `windowsProrjectItem`
+     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitWindowsProrjectItem?: (ctx: WindowsProrjectItemContext) => Result;
+    /**
+     * Visit a parse tree produced by the `expressionProjectItem`
+     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitExpressionProjectItem?: (ctx: ExpressionProjectItemContext) => Result;
 }
 

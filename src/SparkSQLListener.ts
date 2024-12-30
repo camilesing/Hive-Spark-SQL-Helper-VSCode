@@ -5,7 +5,6 @@ import { ErrorNode, ParseTreeListener, ParserRuleContext, TerminalNode } from "a
 
 import { StatementContext } from "./SparkSQLParser.js";
 import { SqlStatementsContext } from "./SparkSQLParser.js";
-import { SqlStatementContext } from "./SparkSQLParser.js";
 import { EmptyStatementContext } from "./SparkSQLParser.js";
 import { CreateStatementContext } from "./SparkSQLParser.js";
 import { DmlStatementContext } from "./SparkSQLParser.js";
@@ -63,14 +62,7 @@ import { ValuesCaluseContext } from "./SparkSQLParser.js";
 import { InlineBodyContext } from "./SparkSQLParser.js";
 import { WithItemContext } from "./SparkSQLParser.js";
 import { WithItemNameContext } from "./SparkSQLParser.js";
-import { CommonSelectContext } from "./SparkSQLParser.js";
-import { SparkStyleSelectContext } from "./SparkSQLParser.js";
-import { MatchRecognizeSelectContext } from "./SparkSQLParser.js";
-import { TableSampleContext } from "./SparkSQLParser.js";
-import { SelectPlusContext } from "./SparkSQLParser.js";
 import { SelectClauseContext } from "./SparkSQLParser.js";
-import { WindowsProrjectItemContext } from "./SparkSQLParser.js";
-import { ExpressionProjectItemContext } from "./SparkSQLParser.js";
 import { FilterPartContext } from "./SparkSQLParser.js";
 import { OverWindowItemContext } from "./SparkSQLParser.js";
 import { OverClauseContext } from "./SparkSQLParser.js";
@@ -117,6 +109,7 @@ import { ClusteredByClauseContext } from "./SparkSQLParser.js";
 import { DistributeByClauseContext } from "./SparkSQLParser.js";
 import { GroupByClauseContext } from "./SparkSQLParser.js";
 import { GroupItemDefinitionContext } from "./SparkSQLParser.js";
+import { GroupingSetContext } from "./SparkSQLParser.js";
 import { GroupingSetsContext } from "./SparkSQLParser.js";
 import { GroupingSetsNotionNameContext } from "./SparkSQLParser.js";
 import { GroupWindowFunctionContext } from "./SparkSQLParser.js";
@@ -269,7 +262,13 @@ import { TimeIntervalUnitContext } from "./SparkSQLParser.js";
 import { ReservedKeywordsUsedAsFuncParamContext } from "./SparkSQLParser.js";
 import { ReservedKeywordsUsedAsFuncNameContext } from "./SparkSQLParser.js";
 import { NonReservedKeywordsContext } from "./SparkSQLParser.js";
-import { SelectStatementPlusContext } from "./SparkSQLParser.js";
+import { SqlStatementContext } from "./SparkSQLParser.js";
+import { CommonSelectContext } from "./SparkSQLParser.js";
+import { SparkStyleSelectContext } from "./SparkSQLParser.js";
+import { MatchRecognizeSelectContext } from "./SparkSQLParser.js";
+import { TableSampleContext } from "./SparkSQLParser.js";
+import { WindowsProrjectItemContext } from "./SparkSQLParser.js";
+import { ExpressionProjectItemContext } from "./SparkSQLParser.js";
 
 
 /**
@@ -297,16 +296,6 @@ export class SparkSQLListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitSqlStatements?: (ctx: SqlStatementsContext) => void;
-    /**
-     * Enter a parse tree produced by `SparkSQLParser.sqlStatement`.
-     * @param ctx the parse tree
-     */
-    enterSqlStatement?: (ctx: SqlStatementContext) => void;
-    /**
-     * Exit a parse tree produced by `SparkSQLParser.sqlStatement`.
-     * @param ctx the parse tree
-     */
-    exitSqlStatement?: (ctx: SqlStatementContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.emptyStatement`.
      * @param ctx the parse tree
@@ -890,66 +879,6 @@ export class SparkSQLListener implements ParseTreeListener {
      */
     exitWithItemName?: (ctx: WithItemNameContext) => void;
     /**
-     * Enter a parse tree produced by the `commonSelect`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     */
-    enterCommonSelect?: (ctx: CommonSelectContext) => void;
-    /**
-     * Exit a parse tree produced by the `commonSelect`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     */
-    exitCommonSelect?: (ctx: CommonSelectContext) => void;
-    /**
-     * Enter a parse tree produced by the `sparkStyleSelect`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     */
-    enterSparkStyleSelect?: (ctx: SparkStyleSelectContext) => void;
-    /**
-     * Exit a parse tree produced by the `sparkStyleSelect`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     */
-    exitSparkStyleSelect?: (ctx: SparkStyleSelectContext) => void;
-    /**
-     * Enter a parse tree produced by the `matchRecognizeSelect`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     */
-    enterMatchRecognizeSelect?: (ctx: MatchRecognizeSelectContext) => void;
-    /**
-     * Exit a parse tree produced by the `matchRecognizeSelect`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     */
-    exitMatchRecognizeSelect?: (ctx: MatchRecognizeSelectContext) => void;
-    /**
-     * Enter a parse tree produced by the `tableSample`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     */
-    enterTableSample?: (ctx: TableSampleContext) => void;
-    /**
-     * Exit a parse tree produced by the `tableSample`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     */
-    exitTableSample?: (ctx: TableSampleContext) => void;
-    /**
-     * Enter a parse tree produced by the `selectPlus`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     */
-    enterSelectPlus?: (ctx: SelectPlusContext) => void;
-    /**
-     * Exit a parse tree produced by the `selectPlus`
-     * labeled alternative in `SparkSQLParser.selectStatement`.
-     * @param ctx the parse tree
-     */
-    exitSelectPlus?: (ctx: SelectPlusContext) => void;
-    /**
      * Enter a parse tree produced by `SparkSQLParser.selectClause`.
      * @param ctx the parse tree
      */
@@ -959,30 +888,6 @@ export class SparkSQLListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitSelectClause?: (ctx: SelectClauseContext) => void;
-    /**
-     * Enter a parse tree produced by the `windowsProrjectItem`
-     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
-     * @param ctx the parse tree
-     */
-    enterWindowsProrjectItem?: (ctx: WindowsProrjectItemContext) => void;
-    /**
-     * Exit a parse tree produced by the `windowsProrjectItem`
-     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
-     * @param ctx the parse tree
-     */
-    exitWindowsProrjectItem?: (ctx: WindowsProrjectItemContext) => void;
-    /**
-     * Enter a parse tree produced by the `expressionProjectItem`
-     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
-     * @param ctx the parse tree
-     */
-    enterExpressionProjectItem?: (ctx: ExpressionProjectItemContext) => void;
-    /**
-     * Exit a parse tree produced by the `expressionProjectItem`
-     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
-     * @param ctx the parse tree
-     */
-    exitExpressionProjectItem?: (ctx: ExpressionProjectItemContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.filterPart`.
      * @param ctx the parse tree
@@ -1443,6 +1348,16 @@ export class SparkSQLListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitGroupItemDefinition?: (ctx: GroupItemDefinitionContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.groupingSet`.
+     * @param ctx the parse tree
+     */
+    enterGroupingSet?: (ctx: GroupingSetContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.groupingSet`.
+     * @param ctx the parse tree
+     */
+    exitGroupingSet?: (ctx: GroupingSetContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.groupingSets`.
      * @param ctx the parse tree
@@ -3042,15 +2957,87 @@ export class SparkSQLListener implements ParseTreeListener {
      */
     exitNonReservedKeywords?: (ctx: NonReservedKeywordsContext) => void;
     /**
-     * Enter a parse tree produced by `SparkSQLParser.selectStatementPlus`.
+     * Enter a parse tree produced by `SparkSQLParser.sqlStatement`.
      * @param ctx the parse tree
      */
-    enterSelectStatementPlus?: (ctx: SelectStatementPlusContext) => void;
+    enterSqlStatement?: (ctx: SqlStatementContext) => void;
     /**
-     * Exit a parse tree produced by `SparkSQLParser.selectStatementPlus`.
+     * Exit a parse tree produced by `SparkSQLParser.sqlStatement`.
      * @param ctx the parse tree
      */
-    exitSelectStatementPlus?: (ctx: SelectStatementPlusContext) => void;
+    exitSqlStatement?: (ctx: SqlStatementContext) => void;
+    /**
+     * Enter a parse tree produced by the `commonSelect`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     */
+    enterCommonSelect?: (ctx: CommonSelectContext) => void;
+    /**
+     * Exit a parse tree produced by the `commonSelect`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     */
+    exitCommonSelect?: (ctx: CommonSelectContext) => void;
+    /**
+     * Enter a parse tree produced by the `sparkStyleSelect`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     */
+    enterSparkStyleSelect?: (ctx: SparkStyleSelectContext) => void;
+    /**
+     * Exit a parse tree produced by the `sparkStyleSelect`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     */
+    exitSparkStyleSelect?: (ctx: SparkStyleSelectContext) => void;
+    /**
+     * Enter a parse tree produced by the `matchRecognizeSelect`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     */
+    enterMatchRecognizeSelect?: (ctx: MatchRecognizeSelectContext) => void;
+    /**
+     * Exit a parse tree produced by the `matchRecognizeSelect`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     */
+    exitMatchRecognizeSelect?: (ctx: MatchRecognizeSelectContext) => void;
+    /**
+     * Enter a parse tree produced by the `tableSample`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     */
+    enterTableSample?: (ctx: TableSampleContext) => void;
+    /**
+     * Exit a parse tree produced by the `tableSample`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     */
+    exitTableSample?: (ctx: TableSampleContext) => void;
+    /**
+     * Enter a parse tree produced by the `windowsProrjectItem`
+     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
+     * @param ctx the parse tree
+     */
+    enterWindowsProrjectItem?: (ctx: WindowsProrjectItemContext) => void;
+    /**
+     * Exit a parse tree produced by the `windowsProrjectItem`
+     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
+     * @param ctx the parse tree
+     */
+    exitWindowsProrjectItem?: (ctx: WindowsProrjectItemContext) => void;
+    /**
+     * Enter a parse tree produced by the `expressionProjectItem`
+     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
+     * @param ctx the parse tree
+     */
+    enterExpressionProjectItem?: (ctx: ExpressionProjectItemContext) => void;
+    /**
+     * Exit a parse tree produced by the `expressionProjectItem`
+     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
+     * @param ctx the parse tree
+     */
+    exitExpressionProjectItem?: (ctx: ExpressionProjectItemContext) => void;
 
     visitTerminal(node: TerminalNode): void {}
     visitErrorNode(node: ErrorNode): void {}
