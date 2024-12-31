@@ -1,3 +1,6 @@
+### v1.5.8
+- Fix bug `group by` statement parse error for SparkSQL.
+
 ### v1.5.7
 - Add hilight for hive sql.
 
