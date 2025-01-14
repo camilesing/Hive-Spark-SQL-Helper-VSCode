@@ -91,9 +91,9 @@ You can use the right-click menu to format:
 
 ## 2. User Guide(用户手册)
 
-如果你想让插件在你的HiveSQL文件中生效，你的扩展名需要是`.hql` Language Mode，然后选择HiveSQL。
+如果你想让插件在你的HiveSQL文件中生效，你的扩展名需要是`.hql` 。如果不想的话，按F1，输入Language Mode，然后选择HiveSQL。
 
-如果你想让插件在你的SparkSQL文件中生效，你的扩展名需要是`.ssql`或`spark_sql`。或者通过按F1，输入Change Language Mode，然后选择SparkSQL。
+如果你想让插件在你的SparkSQL文件中生效，你的扩展名需要是`.ssql`或`spark_sql`。如果不想的话，按F1，输入Change Language Mode，然后选择SparkSQL。
 
 ---
 
