@@ -1,6 +1,6 @@
 # Hive-SQL-Helper
 
-Help you efficiently and focus on Spark SQL(v3.5.2) & Hive(v3.x) development. support Spark & Hive SQL error grammar check, syntax highlighting, complete keywords, rename, find all references and code format.
+Help you efficiently and focus on Spark SQL(v3.5.5) & Hive(v3.x) development. support Spark & Hive SQL error grammar check, syntax highlighting, complete keywords, rename, find all references and code format.
 
 > If you like develop Spark SQL in IDEA, you can use IDEA version of the plugin——[Spark SQL Helper](https://plugins.jetbrains.com/plugin/26079-spark-sql-helper), Its grammar error message is more powerful and supports all statement.
 > Or you like develop Spark SQL in VsCode. i suggest that you develop and debug on vscode based on [the information](https://code.visualstudio.com/docs/java/java-debugging) to obtain a better experience.
