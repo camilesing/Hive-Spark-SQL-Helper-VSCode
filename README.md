@@ -5,8 +5,6 @@ Help you efficiently and focus on Spark SQL(v4.0.0) & Hive(v3.x) development. su
 > If you like develop Spark SQL in IDEA, you can use IDEA version of the plugin——[Spark SQL Helper](https://plugins.jetbrains.com/plugin/26079-spark-sql-helper), Its grammar error message is more powerful and supports all statement.
 > Or you like develop Spark SQL in VsCode. i suggest that you develop and debug on vscode based on [the information](https://code.visualstudio.com/docs/java/java-debugging) to obtain a better experience.
 
-VSCode plugin VS IDEA plugin:
- ![](docs/images/feature_diff.jpg)
 
 ---
 
@@ -19,8 +17,6 @@ VSCode plugin VS IDEA plugin:
 > 如果你喜欢在IDEA中进行SparkkSQL的开发。我建议你使用[IDEA版的Spark SQL Helper](https://plugins.jetbrains.com/plugin/26079-spark-sql-helper)，它支持了所有语句，在VsCode插件的基础上，它的报错信息也更加清晰。
 > 如果你喜欢在VsCode上开发，那么配合[VS Code官网里的Java环境配置](https://code.visualstudio.com/docs/java/java-debugging)也会很棒。
 
-
-版本之间的差异见上面的介绍`VSCode plugin VS IDEA plugin`。
 
 
 ## 1.Features(功能介绍)

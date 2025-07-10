@@ -267,8 +267,86 @@ import { CommonSelectContext } from "./SparkSQLParser.js";
 import { SparkStyleSelectContext } from "./SparkSQLParser.js";
 import { MatchRecognizeSelectContext } from "./SparkSQLParser.js";
 import { TableSampleContext } from "./SparkSQLParser.js";
+import { SelectPlusContext } from "./SparkSQLParser.js";
 import { WindowsProrjectItemContext } from "./SparkSQLParser.js";
 import { ExpressionProjectItemContext } from "./SparkSQLParser.js";
+import { HiveStyleProjectItemContext } from "./SparkSQLParser.js";
+import { HiveOverWindowItemContext } from "./SparkSQLParser.js";
+import { SelectStatementPlusContext } from "./SparkSQLParser.js";
+import { PlusStatementContext } from "./SparkSQLParser.js";
+import { DescribeStatementContext } from "./SparkSQLParser.js";
+import { ExplainStatementContext } from "./SparkSQLParser.js";
+import { ExplainDetailsContext } from "./SparkSQLParser.js";
+import { ExplainDetailContext } from "./SparkSQLParser.js";
+import { UseStatementContext } from "./SparkSQLParser.js";
+import { UseModuleStatementContext } from "./SparkSQLParser.js";
+import { ShowStatementContext } from "./SparkSQLParser.js";
+import { LoadStatementContext } from "./SparkSQLParser.js";
+import { UnloadStatementContext } from "./SparkSQLParser.js";
+import { SetStatementContext } from "./SparkSQLParser.js";
+import { ResetStatementContext } from "./SparkSQLParser.js";
+import { FileStatementContext } from "./SparkSQLParser.js";
+import { RefreshStatementContext } from "./SparkSQLParser.js";
+import { AnalyzeStatementContext } from "./SparkSQLParser.js";
+import { AnalyzePartitionDefinitionContext } from "./SparkSQLParser.js";
+import { CreateCatalogContext } from "./SparkSQLParser.js";
+import { CreateDatabaseContext } from "./SparkSQLParser.js";
+import { CreateViewContext } from "./SparkSQLParser.js";
+import { CreateFunctionContext } from "./SparkSQLParser.js";
+import { ReplaceTableContext } from "./SparkSQLParser.js";
+import { CacheStatementContext } from "./SparkSQLParser.js";
+import { AlterMaterializedTableContext } from "./SparkSQLParser.js";
+import { AlterTableContext } from "./SparkSQLParser.js";
+import { AlterContext } from "./SparkSQLParser.js";
+import { AddOrModifyNewColumnContext } from "./SparkSQLParser.js";
+import { AddOrModifyNewColumnsContext } from "./SparkSQLParser.js";
+import { AddNewPartitionsContext } from "./SparkSQLParser.js";
+import { DropcolumnContext } from "./SparkSQLParser.js";
+import { ReplaceColumnsContext } from "./SparkSQLParser.js";
+import { AlterColumnCommentContext } from "./SparkSQLParser.js";
+import { DropColumnListContext } from "./SparkSQLParser.js";
+import { DropPrimaryKeyContext } from "./SparkSQLParser.js";
+import { RenamePartitionColumnContext } from "./SparkSQLParser.js";
+import { DropPartitionsContext } from "./SparkSQLParser.js";
+import { DropWatermarkContext } from "./SparkSQLParser.js";
+import { RenameColumnContext } from "./SparkSQLParser.js";
+import { RenameTableContext } from "./SparkSQLParser.js";
+import { SetPropertiyContext } from "./SparkSQLParser.js";
+import { SetPartitionPropertyContext } from "./SparkSQLParser.js";
+import { ResetPropertiyContext } from "./SparkSQLParser.js";
+import { UnsetContext } from "./SparkSQLParser.js";
+import { CommonSetContext } from "./SparkSQLParser.js";
+import { SetLocationContext } from "./SparkSQLParser.js";
+import { SetSerdeContext } from "./SparkSQLParser.js";
+import { SetTblProContext } from "./SparkSQLParser.js";
+import { DropCatalogContext } from "./SparkSQLParser.js";
+import { DropTableContext } from "./SparkSQLParser.js";
+import { DropDatabaseContext } from "./SparkSQLParser.js";
+import { DropViewContext } from "./SparkSQLParser.js";
+import { DropFunctionContext } from "./SparkSQLParser.js";
+import { TruncateTableContext } from "./SparkSQLParser.js";
+import { RepairTableContext } from "./SparkSQLParser.js";
+import { AlertViewContext } from "./SparkSQLParser.js";
+import { AlterDatabaseContext } from "./SparkSQLParser.js";
+import { AlterFunctionContext } from "./SparkSQLParser.js";
+import { OneExpresionContext } from "./SparkSQLParser.js";
+import { StackContext } from "./SparkSQLParser.js";
+import { Json_tupleContext } from "./SparkSQLParser.js";
+import { Parse_urlContext } from "./SparkSQLParser.js";
+import { ShowTableStatementBodyContext } from "./SparkSQLParser.js";
+import { ShowFunctionStatementBodyContext } from "./SparkSQLParser.js";
+import { TransformClauseContext } from "./SparkSQLParser.js";
+import { InsertSparkDirectoryStatementContext } from "./SparkSQLParser.js";
+import { InsertSparkDirectoryBodyContext } from "./SparkSQLParser.js";
+import { InsertHiveDirectoryStatementContext } from "./SparkSQLParser.js";
+import { HiveRowFormatPartContext } from "./SparkSQLParser.js";
+import { InsertMulStatementCompatibilityContext } from "./SparkSQLParser.js";
+import { InsertMulStatementContext } from "./SparkSQLParser.js";
+import { InsertFromTableContext } from "./SparkSQLParser.js";
+import { CreateExternalTableContext } from "./SparkSQLParser.js";
+import { CreateExternalTableNoSortElementContext } from "./SparkSQLParser.js";
+import { HiveFormatCreateContext } from "./SparkSQLParser.js";
+import { HiveFormatCreateNoSortElementContext } from "./SparkSQLParser.js";
 
 
 /**
@@ -3015,6 +3093,18 @@ export class SparkSQLListener implements ParseTreeListener {
      */
     exitTableSample?: (ctx: TableSampleContext) => void;
     /**
+     * Enter a parse tree produced by the `selectPlus`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     */
+    enterSelectPlus?: (ctx: SelectPlusContext) => void;
+    /**
+     * Exit a parse tree produced by the `selectPlus`
+     * labeled alternative in `SparkSQLParser.selectStatement`.
+     * @param ctx the parse tree
+     */
+    exitSelectPlus?: (ctx: SelectPlusContext) => void;
+    /**
      * Enter a parse tree produced by the `windowsProrjectItem`
      * labeled alternative in `SparkSQLParser.projectItemDefinition`.
      * @param ctx the parse tree
@@ -3038,6 +3128,830 @@ export class SparkSQLListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitExpressionProjectItem?: (ctx: ExpressionProjectItemContext) => void;
+    /**
+     * Enter a parse tree produced by the `hiveStyleProjectItem`
+     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
+     * @param ctx the parse tree
+     */
+    enterHiveStyleProjectItem?: (ctx: HiveStyleProjectItemContext) => void;
+    /**
+     * Exit a parse tree produced by the `hiveStyleProjectItem`
+     * labeled alternative in `SparkSQLParser.projectItemDefinition`.
+     * @param ctx the parse tree
+     */
+    exitHiveStyleProjectItem?: (ctx: HiveStyleProjectItemContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.hiveOverWindowItem`.
+     * @param ctx the parse tree
+     */
+    enterHiveOverWindowItem?: (ctx: HiveOverWindowItemContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.hiveOverWindowItem`.
+     * @param ctx the parse tree
+     */
+    exitHiveOverWindowItem?: (ctx: HiveOverWindowItemContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.selectStatementPlus`.
+     * @param ctx the parse tree
+     */
+    enterSelectStatementPlus?: (ctx: SelectStatementPlusContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.selectStatementPlus`.
+     * @param ctx the parse tree
+     */
+    exitSelectStatementPlus?: (ctx: SelectStatementPlusContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.plusStatement`.
+     * @param ctx the parse tree
+     */
+    enterPlusStatement?: (ctx: PlusStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.plusStatement`.
+     * @param ctx the parse tree
+     */
+    exitPlusStatement?: (ctx: PlusStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.describeStatement`.
+     * @param ctx the parse tree
+     */
+    enterDescribeStatement?: (ctx: DescribeStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.describeStatement`.
+     * @param ctx the parse tree
+     */
+    exitDescribeStatement?: (ctx: DescribeStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.explainStatement`.
+     * @param ctx the parse tree
+     */
+    enterExplainStatement?: (ctx: ExplainStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.explainStatement`.
+     * @param ctx the parse tree
+     */
+    exitExplainStatement?: (ctx: ExplainStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.explainDetails`.
+     * @param ctx the parse tree
+     */
+    enterExplainDetails?: (ctx: ExplainDetailsContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.explainDetails`.
+     * @param ctx the parse tree
+     */
+    exitExplainDetails?: (ctx: ExplainDetailsContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.explainDetail`.
+     * @param ctx the parse tree
+     */
+    enterExplainDetail?: (ctx: ExplainDetailContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.explainDetail`.
+     * @param ctx the parse tree
+     */
+    exitExplainDetail?: (ctx: ExplainDetailContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.useStatement`.
+     * @param ctx the parse tree
+     */
+    enterUseStatement?: (ctx: UseStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.useStatement`.
+     * @param ctx the parse tree
+     */
+    exitUseStatement?: (ctx: UseStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.useModuleStatement`.
+     * @param ctx the parse tree
+     */
+    enterUseModuleStatement?: (ctx: UseModuleStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.useModuleStatement`.
+     * @param ctx the parse tree
+     */
+    exitUseModuleStatement?: (ctx: UseModuleStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.showStatement`.
+     * @param ctx the parse tree
+     */
+    enterShowStatement?: (ctx: ShowStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.showStatement`.
+     * @param ctx the parse tree
+     */
+    exitShowStatement?: (ctx: ShowStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.loadStatement`.
+     * @param ctx the parse tree
+     */
+    enterLoadStatement?: (ctx: LoadStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.loadStatement`.
+     * @param ctx the parse tree
+     */
+    exitLoadStatement?: (ctx: LoadStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.unloadStatement`.
+     * @param ctx the parse tree
+     */
+    enterUnloadStatement?: (ctx: UnloadStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.unloadStatement`.
+     * @param ctx the parse tree
+     */
+    exitUnloadStatement?: (ctx: UnloadStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.setStatement`.
+     * @param ctx the parse tree
+     */
+    enterSetStatement?: (ctx: SetStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.setStatement`.
+     * @param ctx the parse tree
+     */
+    exitSetStatement?: (ctx: SetStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.resetStatement`.
+     * @param ctx the parse tree
+     */
+    enterResetStatement?: (ctx: ResetStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.resetStatement`.
+     * @param ctx the parse tree
+     */
+    exitResetStatement?: (ctx: ResetStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.fileStatement`.
+     * @param ctx the parse tree
+     */
+    enterFileStatement?: (ctx: FileStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.fileStatement`.
+     * @param ctx the parse tree
+     */
+    exitFileStatement?: (ctx: FileStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.refreshStatement`.
+     * @param ctx the parse tree
+     */
+    enterRefreshStatement?: (ctx: RefreshStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.refreshStatement`.
+     * @param ctx the parse tree
+     */
+    exitRefreshStatement?: (ctx: RefreshStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.analyzeStatement`.
+     * @param ctx the parse tree
+     */
+    enterAnalyzeStatement?: (ctx: AnalyzeStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.analyzeStatement`.
+     * @param ctx the parse tree
+     */
+    exitAnalyzeStatement?: (ctx: AnalyzeStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.analyzePartitionDefinition`.
+     * @param ctx the parse tree
+     */
+    enterAnalyzePartitionDefinition?: (ctx: AnalyzePartitionDefinitionContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.analyzePartitionDefinition`.
+     * @param ctx the parse tree
+     */
+    exitAnalyzePartitionDefinition?: (ctx: AnalyzePartitionDefinitionContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.createCatalog`.
+     * @param ctx the parse tree
+     */
+    enterCreateCatalog?: (ctx: CreateCatalogContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.createCatalog`.
+     * @param ctx the parse tree
+     */
+    exitCreateCatalog?: (ctx: CreateCatalogContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.createDatabase`.
+     * @param ctx the parse tree
+     */
+    enterCreateDatabase?: (ctx: CreateDatabaseContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.createDatabase`.
+     * @param ctx the parse tree
+     */
+    exitCreateDatabase?: (ctx: CreateDatabaseContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.createView`.
+     * @param ctx the parse tree
+     */
+    enterCreateView?: (ctx: CreateViewContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.createView`.
+     * @param ctx the parse tree
+     */
+    exitCreateView?: (ctx: CreateViewContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.createFunction`.
+     * @param ctx the parse tree
+     */
+    enterCreateFunction?: (ctx: CreateFunctionContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.createFunction`.
+     * @param ctx the parse tree
+     */
+    exitCreateFunction?: (ctx: CreateFunctionContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.replaceTable`.
+     * @param ctx the parse tree
+     */
+    enterReplaceTable?: (ctx: ReplaceTableContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.replaceTable`.
+     * @param ctx the parse tree
+     */
+    exitReplaceTable?: (ctx: ReplaceTableContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.cacheStatement`.
+     * @param ctx the parse tree
+     */
+    enterCacheStatement?: (ctx: CacheStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.cacheStatement`.
+     * @param ctx the parse tree
+     */
+    exitCacheStatement?: (ctx: CacheStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.alterMaterializedTable`.
+     * @param ctx the parse tree
+     */
+    enterAlterMaterializedTable?: (ctx: AlterMaterializedTableContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.alterMaterializedTable`.
+     * @param ctx the parse tree
+     */
+    exitAlterMaterializedTable?: (ctx: AlterMaterializedTableContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.alterTable`.
+     * @param ctx the parse tree
+     */
+    enterAlterTable?: (ctx: AlterTableContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.alterTable`.
+     * @param ctx the parse tree
+     */
+    exitAlterTable?: (ctx: AlterTableContext) => void;
+    /**
+     * Enter a parse tree produced by the `alter`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterAlter?: (ctx: AlterContext) => void;
+    /**
+     * Exit a parse tree produced by the `alter`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitAlter?: (ctx: AlterContext) => void;
+    /**
+     * Enter a parse tree produced by the `addOrModifyNewColumn`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterAddOrModifyNewColumn?: (ctx: AddOrModifyNewColumnContext) => void;
+    /**
+     * Exit a parse tree produced by the `addOrModifyNewColumn`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitAddOrModifyNewColumn?: (ctx: AddOrModifyNewColumnContext) => void;
+    /**
+     * Enter a parse tree produced by the `addOrModifyNewColumns`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterAddOrModifyNewColumns?: (ctx: AddOrModifyNewColumnsContext) => void;
+    /**
+     * Exit a parse tree produced by the `addOrModifyNewColumns`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitAddOrModifyNewColumns?: (ctx: AddOrModifyNewColumnsContext) => void;
+    /**
+     * Enter a parse tree produced by the `addNewPartitions`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterAddNewPartitions?: (ctx: AddNewPartitionsContext) => void;
+    /**
+     * Exit a parse tree produced by the `addNewPartitions`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitAddNewPartitions?: (ctx: AddNewPartitionsContext) => void;
+    /**
+     * Enter a parse tree produced by the `dropcolumn`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterDropcolumn?: (ctx: DropcolumnContext) => void;
+    /**
+     * Exit a parse tree produced by the `dropcolumn`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitDropcolumn?: (ctx: DropcolumnContext) => void;
+    /**
+     * Enter a parse tree produced by the `replaceColumns`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterReplaceColumns?: (ctx: ReplaceColumnsContext) => void;
+    /**
+     * Exit a parse tree produced by the `replaceColumns`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitReplaceColumns?: (ctx: ReplaceColumnsContext) => void;
+    /**
+     * Enter a parse tree produced by the `alterColumnComment`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterAlterColumnComment?: (ctx: AlterColumnCommentContext) => void;
+    /**
+     * Exit a parse tree produced by the `alterColumnComment`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitAlterColumnComment?: (ctx: AlterColumnCommentContext) => void;
+    /**
+     * Enter a parse tree produced by the `dropColumnList`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterDropColumnList?: (ctx: DropColumnListContext) => void;
+    /**
+     * Exit a parse tree produced by the `dropColumnList`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitDropColumnList?: (ctx: DropColumnListContext) => void;
+    /**
+     * Enter a parse tree produced by the `dropPrimaryKey`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterDropPrimaryKey?: (ctx: DropPrimaryKeyContext) => void;
+    /**
+     * Exit a parse tree produced by the `dropPrimaryKey`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitDropPrimaryKey?: (ctx: DropPrimaryKeyContext) => void;
+    /**
+     * Enter a parse tree produced by the `renamePartitionColumn`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterRenamePartitionColumn?: (ctx: RenamePartitionColumnContext) => void;
+    /**
+     * Exit a parse tree produced by the `renamePartitionColumn`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitRenamePartitionColumn?: (ctx: RenamePartitionColumnContext) => void;
+    /**
+     * Enter a parse tree produced by the `dropPartitions`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterDropPartitions?: (ctx: DropPartitionsContext) => void;
+    /**
+     * Exit a parse tree produced by the `dropPartitions`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitDropPartitions?: (ctx: DropPartitionsContext) => void;
+    /**
+     * Enter a parse tree produced by the `dropWatermark`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterDropWatermark?: (ctx: DropWatermarkContext) => void;
+    /**
+     * Exit a parse tree produced by the `dropWatermark`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitDropWatermark?: (ctx: DropWatermarkContext) => void;
+    /**
+     * Enter a parse tree produced by the `renameColumn`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterRenameColumn?: (ctx: RenameColumnContext) => void;
+    /**
+     * Exit a parse tree produced by the `renameColumn`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitRenameColumn?: (ctx: RenameColumnContext) => void;
+    /**
+     * Enter a parse tree produced by the `renameTable`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterRenameTable?: (ctx: RenameTableContext) => void;
+    /**
+     * Exit a parse tree produced by the `renameTable`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitRenameTable?: (ctx: RenameTableContext) => void;
+    /**
+     * Enter a parse tree produced by the `setPropertiy`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterSetPropertiy?: (ctx: SetPropertiyContext) => void;
+    /**
+     * Exit a parse tree produced by the `setPropertiy`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitSetPropertiy?: (ctx: SetPropertiyContext) => void;
+    /**
+     * Enter a parse tree produced by the `setPartitionProperty`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterSetPartitionProperty?: (ctx: SetPartitionPropertyContext) => void;
+    /**
+     * Exit a parse tree produced by the `setPartitionProperty`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitSetPartitionProperty?: (ctx: SetPartitionPropertyContext) => void;
+    /**
+     * Enter a parse tree produced by the `resetPropertiy`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterResetPropertiy?: (ctx: ResetPropertiyContext) => void;
+    /**
+     * Exit a parse tree produced by the `resetPropertiy`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitResetPropertiy?: (ctx: ResetPropertiyContext) => void;
+    /**
+     * Enter a parse tree produced by the `unset`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    enterUnset?: (ctx: UnsetContext) => void;
+    /**
+     * Exit a parse tree produced by the `unset`
+     * labeled alternative in `SparkSQLParser.alterTableBody`.
+     * @param ctx the parse tree
+     */
+    exitUnset?: (ctx: UnsetContext) => void;
+    /**
+     * Enter a parse tree produced by the `commonSet`
+     * labeled alternative in `SparkSQLParser.setPart`.
+     * @param ctx the parse tree
+     */
+    enterCommonSet?: (ctx: CommonSetContext) => void;
+    /**
+     * Exit a parse tree produced by the `commonSet`
+     * labeled alternative in `SparkSQLParser.setPart`.
+     * @param ctx the parse tree
+     */
+    exitCommonSet?: (ctx: CommonSetContext) => void;
+    /**
+     * Enter a parse tree produced by the `setLocation`
+     * labeled alternative in `SparkSQLParser.setPart`.
+     * @param ctx the parse tree
+     */
+    enterSetLocation?: (ctx: SetLocationContext) => void;
+    /**
+     * Exit a parse tree produced by the `setLocation`
+     * labeled alternative in `SparkSQLParser.setPart`.
+     * @param ctx the parse tree
+     */
+    exitSetLocation?: (ctx: SetLocationContext) => void;
+    /**
+     * Enter a parse tree produced by the `setSerde`
+     * labeled alternative in `SparkSQLParser.setPart`.
+     * @param ctx the parse tree
+     */
+    enterSetSerde?: (ctx: SetSerdeContext) => void;
+    /**
+     * Exit a parse tree produced by the `setSerde`
+     * labeled alternative in `SparkSQLParser.setPart`.
+     * @param ctx the parse tree
+     */
+    exitSetSerde?: (ctx: SetSerdeContext) => void;
+    /**
+     * Enter a parse tree produced by the `setTblPro`
+     * labeled alternative in `SparkSQLParser.setPart`.
+     * @param ctx the parse tree
+     */
+    enterSetTblPro?: (ctx: SetTblProContext) => void;
+    /**
+     * Exit a parse tree produced by the `setTblPro`
+     * labeled alternative in `SparkSQLParser.setPart`.
+     * @param ctx the parse tree
+     */
+    exitSetTblPro?: (ctx: SetTblProContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.dropCatalog`.
+     * @param ctx the parse tree
+     */
+    enterDropCatalog?: (ctx: DropCatalogContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.dropCatalog`.
+     * @param ctx the parse tree
+     */
+    exitDropCatalog?: (ctx: DropCatalogContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.dropTable`.
+     * @param ctx the parse tree
+     */
+    enterDropTable?: (ctx: DropTableContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.dropTable`.
+     * @param ctx the parse tree
+     */
+    exitDropTable?: (ctx: DropTableContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.dropDatabase`.
+     * @param ctx the parse tree
+     */
+    enterDropDatabase?: (ctx: DropDatabaseContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.dropDatabase`.
+     * @param ctx the parse tree
+     */
+    exitDropDatabase?: (ctx: DropDatabaseContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.dropView`.
+     * @param ctx the parse tree
+     */
+    enterDropView?: (ctx: DropViewContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.dropView`.
+     * @param ctx the parse tree
+     */
+    exitDropView?: (ctx: DropViewContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.dropFunction`.
+     * @param ctx the parse tree
+     */
+    enterDropFunction?: (ctx: DropFunctionContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.dropFunction`.
+     * @param ctx the parse tree
+     */
+    exitDropFunction?: (ctx: DropFunctionContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.truncateTable`.
+     * @param ctx the parse tree
+     */
+    enterTruncateTable?: (ctx: TruncateTableContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.truncateTable`.
+     * @param ctx the parse tree
+     */
+    exitTruncateTable?: (ctx: TruncateTableContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.repairTable`.
+     * @param ctx the parse tree
+     */
+    enterRepairTable?: (ctx: RepairTableContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.repairTable`.
+     * @param ctx the parse tree
+     */
+    exitRepairTable?: (ctx: RepairTableContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.alertView`.
+     * @param ctx the parse tree
+     */
+    enterAlertView?: (ctx: AlertViewContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.alertView`.
+     * @param ctx the parse tree
+     */
+    exitAlertView?: (ctx: AlertViewContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.alterDatabase`.
+     * @param ctx the parse tree
+     */
+    enterAlterDatabase?: (ctx: AlterDatabaseContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.alterDatabase`.
+     * @param ctx the parse tree
+     */
+    exitAlterDatabase?: (ctx: AlterDatabaseContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.alterFunction`.
+     * @param ctx the parse tree
+     */
+    enterAlterFunction?: (ctx: AlterFunctionContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.alterFunction`.
+     * @param ctx the parse tree
+     */
+    exitAlterFunction?: (ctx: AlterFunctionContext) => void;
+    /**
+     * Enter a parse tree produced by the `oneExpresion`
+     * labeled alternative in `SparkSQLParser.inlineTableClause`.
+     * @param ctx the parse tree
+     */
+    enterOneExpresion?: (ctx: OneExpresionContext) => void;
+    /**
+     * Exit a parse tree produced by the `oneExpresion`
+     * labeled alternative in `SparkSQLParser.inlineTableClause`.
+     * @param ctx the parse tree
+     */
+    exitOneExpresion?: (ctx: OneExpresionContext) => void;
+    /**
+     * Enter a parse tree produced by the `stack`
+     * labeled alternative in `SparkSQLParser.inlineTableClause`.
+     * @param ctx the parse tree
+     */
+    enterStack?: (ctx: StackContext) => void;
+    /**
+     * Exit a parse tree produced by the `stack`
+     * labeled alternative in `SparkSQLParser.inlineTableClause`.
+     * @param ctx the parse tree
+     */
+    exitStack?: (ctx: StackContext) => void;
+    /**
+     * Enter a parse tree produced by the `json_tuple`
+     * labeled alternative in `SparkSQLParser.inlineTableClause`.
+     * @param ctx the parse tree
+     */
+    enterJson_tuple?: (ctx: Json_tupleContext) => void;
+    /**
+     * Exit a parse tree produced by the `json_tuple`
+     * labeled alternative in `SparkSQLParser.inlineTableClause`.
+     * @param ctx the parse tree
+     */
+    exitJson_tuple?: (ctx: Json_tupleContext) => void;
+    /**
+     * Enter a parse tree produced by the `parse_url`
+     * labeled alternative in `SparkSQLParser.inlineTableClause`.
+     * @param ctx the parse tree
+     */
+    enterParse_url?: (ctx: Parse_urlContext) => void;
+    /**
+     * Exit a parse tree produced by the `parse_url`
+     * labeled alternative in `SparkSQLParser.inlineTableClause`.
+     * @param ctx the parse tree
+     */
+    exitParse_url?: (ctx: Parse_urlContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.showTableStatementBody`.
+     * @param ctx the parse tree
+     */
+    enterShowTableStatementBody?: (ctx: ShowTableStatementBodyContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.showTableStatementBody`.
+     * @param ctx the parse tree
+     */
+    exitShowTableStatementBody?: (ctx: ShowTableStatementBodyContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.showFunctionStatementBody`.
+     * @param ctx the parse tree
+     */
+    enterShowFunctionStatementBody?: (ctx: ShowFunctionStatementBodyContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.showFunctionStatementBody`.
+     * @param ctx the parse tree
+     */
+    exitShowFunctionStatementBody?: (ctx: ShowFunctionStatementBodyContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.transformClause`.
+     * @param ctx the parse tree
+     */
+    enterTransformClause?: (ctx: TransformClauseContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.transformClause`.
+     * @param ctx the parse tree
+     */
+    exitTransformClause?: (ctx: TransformClauseContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.insertSparkDirectoryStatement`.
+     * @param ctx the parse tree
+     */
+    enterInsertSparkDirectoryStatement?: (ctx: InsertSparkDirectoryStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.insertSparkDirectoryStatement`.
+     * @param ctx the parse tree
+     */
+    exitInsertSparkDirectoryStatement?: (ctx: InsertSparkDirectoryStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.insertSparkDirectoryBody`.
+     * @param ctx the parse tree
+     */
+    enterInsertSparkDirectoryBody?: (ctx: InsertSparkDirectoryBodyContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.insertSparkDirectoryBody`.
+     * @param ctx the parse tree
+     */
+    exitInsertSparkDirectoryBody?: (ctx: InsertSparkDirectoryBodyContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.insertHiveDirectoryStatement`.
+     * @param ctx the parse tree
+     */
+    enterInsertHiveDirectoryStatement?: (ctx: InsertHiveDirectoryStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.insertHiveDirectoryStatement`.
+     * @param ctx the parse tree
+     */
+    exitInsertHiveDirectoryStatement?: (ctx: InsertHiveDirectoryStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.hiveRowFormatPart`.
+     * @param ctx the parse tree
+     */
+    enterHiveRowFormatPart?: (ctx: HiveRowFormatPartContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.hiveRowFormatPart`.
+     * @param ctx the parse tree
+     */
+    exitHiveRowFormatPart?: (ctx: HiveRowFormatPartContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.insertMulStatementCompatibility`.
+     * @param ctx the parse tree
+     */
+    enterInsertMulStatementCompatibility?: (ctx: InsertMulStatementCompatibilityContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.insertMulStatementCompatibility`.
+     * @param ctx the parse tree
+     */
+    exitInsertMulStatementCompatibility?: (ctx: InsertMulStatementCompatibilityContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.insertMulStatement`.
+     * @param ctx the parse tree
+     */
+    enterInsertMulStatement?: (ctx: InsertMulStatementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.insertMulStatement`.
+     * @param ctx the parse tree
+     */
+    exitInsertMulStatement?: (ctx: InsertMulStatementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.insertFromTable`.
+     * @param ctx the parse tree
+     */
+    enterInsertFromTable?: (ctx: InsertFromTableContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.insertFromTable`.
+     * @param ctx the parse tree
+     */
+    exitInsertFromTable?: (ctx: InsertFromTableContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.createExternalTable`.
+     * @param ctx the parse tree
+     */
+    enterCreateExternalTable?: (ctx: CreateExternalTableContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.createExternalTable`.
+     * @param ctx the parse tree
+     */
+    exitCreateExternalTable?: (ctx: CreateExternalTableContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.createExternalTableNoSortElement`.
+     * @param ctx the parse tree
+     */
+    enterCreateExternalTableNoSortElement?: (ctx: CreateExternalTableNoSortElementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.createExternalTableNoSortElement`.
+     * @param ctx the parse tree
+     */
+    exitCreateExternalTableNoSortElement?: (ctx: CreateExternalTableNoSortElementContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.hiveFormatCreate`.
+     * @param ctx the parse tree
+     */
+    enterHiveFormatCreate?: (ctx: HiveFormatCreateContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.hiveFormatCreate`.
+     * @param ctx the parse tree
+     */
+    exitHiveFormatCreate?: (ctx: HiveFormatCreateContext) => void;
+    /**
+     * Enter a parse tree produced by `SparkSQLParser.hiveFormatCreateNoSortElement`.
+     * @param ctx the parse tree
+     */
+    enterHiveFormatCreateNoSortElement?: (ctx: HiveFormatCreateNoSortElementContext) => void;
+    /**
+     * Exit a parse tree produced by `SparkSQLParser.hiveFormatCreateNoSortElement`.
+     * @param ctx the parse tree
+     */
+    exitHiveFormatCreateNoSortElement?: (ctx: HiveFormatCreateNoSortElementContext) => void;
 
     visitTerminal(node: TerminalNode): void {}
     visitErrorNode(node: ErrorNode): void {}
