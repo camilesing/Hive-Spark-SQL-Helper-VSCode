@@ -1,3 +1,6 @@
+### 1.6.1
+- Update README.
+
 ### 1.6.0
 - support all Spark SQL until v4.0.0
 

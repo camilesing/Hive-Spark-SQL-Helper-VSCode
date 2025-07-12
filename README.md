@@ -1,4 +1,4 @@
-# Hive-SQL-Helper
+# Hive&Spark SQL-Helper
 
 Help you efficiently and focus on Spark SQL(v4.0.0) & Hive(v3.x) development. support Spark & Hive SQL error grammar check, syntax highlighting, complete keywords, rename, find all references and code format.
 
