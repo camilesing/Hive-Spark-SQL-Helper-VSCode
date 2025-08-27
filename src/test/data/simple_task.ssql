@@ -1,0 +1,41 @@
+-- 1. 创建ODS表 
+CREATE TABLE IF NOT EXISTS ods_user_info (
+    user_id INT,
+    username STRING,
+    email STRING,
+    age INT,
+    register_date DATE
+)
+USING PARQUET
+LOCATION '/data/ods/user_info';
+
+-- 2. 创建DWV表 (目标表)
+CREATE TABLE IF NOT EXISTS dwv_user_profile (
+    user_id INT,
+    username STRING,
+    email STRING,
+    age INT,
+    register_date DATE,
+    is_adult BOOLEAN,
+    full_name STRING
+)
+USING PARQUET
+LOCATION '/data/dwv/user_profile';
+
+-- 3. 从ODS表读取数据并插入到DWV表
+INSERT OVERWRITE TABLE dwv_user_profile
+SELECT 
+    user_id,
+    username,
+    email,
+    age,
+    register_date,
+    CASE 
+        WHEN age >= 18 THEN true 
+        ELSE false 
+    END AS is_adult,
+    username AS full_name  -- 简单处理，实际中可以是first_name和last_name的拼接
+FROM ods_user_info;
+
+-- 4. 验证数据是否成功插入
+SELECT * FROM dwv_user_profile LIMIT 10;

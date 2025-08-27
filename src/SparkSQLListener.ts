@@ -3,350 +3,361 @@
 import { ErrorNode, ParseTreeListener, ParserRuleContext, TerminalNode } from "antlr4ng";
 
 
-import { StatementContext } from "./SparkSQLParser.js";
-import { SqlStatementsContext } from "./SparkSQLParser.js";
-import { EmptyStatementContext } from "./SparkSQLParser.js";
-import { CreateStatementContext } from "./SparkSQLParser.js";
-import { DmlStatementContext } from "./SparkSQLParser.js";
-import { SimpleContext } from "./SparkSQLParser.js";
-import { AsSelectContext } from "./SparkSQLParser.js";
-import { MaterializedContext } from "./SparkSQLParser.js";
-import { CustomSerdeContext } from "./SparkSQLParser.js";
-import { CustomSerdeExternalContext } from "./SparkSQLParser.js";
-import { Using_createContext } from "./SparkSQLParser.js";
-import { SimpleCreateTableContext } from "./SparkSQLParser.js";
-import { SimpleCreateTableNoSortElementContext } from "./SparkSQLParser.js";
-import { LocationContext } from "./SparkSQLParser.js";
-import { SortedByContext } from "./SparkSQLParser.js";
-import { UsingCreateContext } from "./SparkSQLParser.js";
-import { TblPropertiesContext } from "./SparkSQLParser.js";
-import { DefaultColumnUsingContext } from "./SparkSQLParser.js";
-import { DefaultColumnUsingNoSortElementContext } from "./SparkSQLParser.js";
-import { ColumnUsingContext } from "./SparkSQLParser.js";
-import { ColumnUsingNoSortElementContext } from "./SparkSQLParser.js";
-import { UsingByQueryContext } from "./SparkSQLParser.js";
-import { UsingByQueryNoSortElementContext } from "./SparkSQLParser.js";
-import { IntoBucketsContext } from "./SparkSQLParser.js";
-import { HiveFormatpartitionDefinitionContext } from "./SparkSQLParser.js";
-import { RowFormatSerdeContext } from "./SparkSQLParser.js";
-import { FieldsTerminatedByContext } from "./SparkSQLParser.js";
-import { StoredAsContext } from "./SparkSQLParser.js";
-import { StoredAsInputformatContext } from "./SparkSQLParser.js";
-import { OutputformatContext } from "./SparkSQLParser.js";
-import { RowFormatDelimtedContext } from "./SparkSQLParser.js";
-import { ColumnsBodyContext } from "./SparkSQLParser.js";
-import { CreateCustomSerdeContext } from "./SparkSQLParser.js";
-import { CreateCustomSerdeNoSortElementContext } from "./SparkSQLParser.js";
-import { CreateCustomSerdeExternalContext } from "./SparkSQLParser.js";
-import { CreateCustomSerdeExternalNoSortElementContext } from "./SparkSQLParser.js";
-import { CreateTableAsSelectContext } from "./SparkSQLParser.js";
-import { CreateMaterializedTableAsSelectContext } from "./SparkSQLParser.js";
-import { CreateMaterializedTableAsSelectNoSortElementContext } from "./SparkSQLParser.js";
-import { UsingClauseContext } from "./SparkSQLParser.js";
-import { JarFileNameContext } from "./SparkSQLParser.js";
-import { FilePathContext } from "./SparkSQLParser.js";
-import { IfExistsPartContext } from "./SparkSQLParser.js";
-import { ColumnPositionContext } from "./SparkSQLParser.js";
-import { RenameDefinitionContext } from "./SparkSQLParser.js";
-import { SetKeyValueDefinitionContext } from "./SparkSQLParser.js";
-import { AddConstraintContext } from "./SparkSQLParser.js";
-import { DropConstraintContext } from "./SparkSQLParser.js";
-import { AddUniqueContext } from "./SparkSQLParser.js";
-import { NotForcedContext } from "./SparkSQLParser.js";
-import { InsertStatementContext } from "./SparkSQLParser.js";
-import { InsertSimpleStatementContext } from "./SparkSQLParser.js";
-import { InsertPartitionDefinitionContext } from "./SparkSQLParser.js";
-import { QueryStatementContext } from "./SparkSQLParser.js";
-import { WithClauseContext } from "./SparkSQLParser.js";
-import { ValuesCaluseContext } from "./SparkSQLParser.js";
-import { InlineBodyContext } from "./SparkSQLParser.js";
-import { WithItemContext } from "./SparkSQLParser.js";
-import { WithItemNameContext } from "./SparkSQLParser.js";
-import { SelectClauseContext } from "./SparkSQLParser.js";
-import { FilterPartContext } from "./SparkSQLParser.js";
-import { OverWindowItemContext } from "./SparkSQLParser.js";
-import { OverClauseContext } from "./SparkSQLParser.js";
-import { WindowFunctioPartContext } from "./SparkSQLParser.js";
-import { WindowFunctionNameContext } from "./SparkSQLParser.js";
-import { AnalyticFunctionContext } from "./SparkSQLParser.js";
-import { RangkingFunctionContext } from "./SparkSQLParser.js";
-import { FromClauseContext } from "./SparkSQLParser.js";
-import { WindowFrameForWindowsQueryContext } from "./SparkSQLParser.js";
-import { FrameExpessionContext } from "./SparkSQLParser.js";
-import { TableExpressionContext } from "./SparkSQLParser.js";
-import { TvfClauseContext } from "./SparkSQLParser.js";
-import { RangeClauseContext } from "./SparkSQLParser.js";
-import { ViewReferenceContext } from "./SparkSQLParser.js";
-import { PivotReferenceContext } from "./SparkSQLParser.js";
-import { TableReferenceContext } from "./SparkSQLParser.js";
-import { TablePrimaryContext } from "./SparkSQLParser.js";
-import { FuntionBodyContext } from "./SparkSQLParser.js";
-import { UnpivotBodyContext } from "./SparkSQLParser.js";
-import { PivotBodyContext } from "./SparkSQLParser.js";
-import { ExpressionAsAliasContext } from "./SparkSQLParser.js";
-import { ExpressionAsAliasListContext } from "./SparkSQLParser.js";
-import { SystemTimePeriodContext } from "./SparkSQLParser.js";
-import { DateTimeExpressionContext } from "./SparkSQLParser.js";
-import { InlineDataValueClauseContext } from "./SparkSQLParser.js";
-import { WindowTVFClauseContext } from "./SparkSQLParser.js";
-import { WindowTVFExpressionContext } from "./SparkSQLParser.js";
-import { WindowTVFNameContext } from "./SparkSQLParser.js";
-import { RowFormatDelimitedContext } from "./SparkSQLParser.js";
-import { HiveSerdeContext } from "./SparkSQLParser.js";
-import { UsingAsColumnPartContext } from "./SparkSQLParser.js";
-import { HiveSerdePartContext } from "./SparkSQLParser.js";
-import { TableCanHasKeyPropertyListContext } from "./SparkSQLParser.js";
-import { SparkRecordWriterPartContext } from "./SparkSQLParser.js";
-import { WindowTVFParamContext } from "./SparkSQLParser.js";
-import { TimeIntervalParamNameContext } from "./SparkSQLParser.js";
-import { ColumnDescriptorContext } from "./SparkSQLParser.js";
-import { JoinConditionContext } from "./SparkSQLParser.js";
-import { WhereClauseContext } from "./SparkSQLParser.js";
-import { SamplingQueriesContext } from "./SparkSQLParser.js";
-import { SomeByClauseContext } from "./SparkSQLParser.js";
-import { ClusterByClauseContext } from "./SparkSQLParser.js";
-import { ClusteredByClauseContext } from "./SparkSQLParser.js";
-import { DistributeByClauseContext } from "./SparkSQLParser.js";
-import { GroupByClauseContext } from "./SparkSQLParser.js";
-import { GroupItemDefinitionContext } from "./SparkSQLParser.js";
-import { GroupingSetContext } from "./SparkSQLParser.js";
-import { GroupingSetsContext } from "./SparkSQLParser.js";
-import { GroupingSetsNotionNameContext } from "./SparkSQLParser.js";
-import { GroupWindowFunctionContext } from "./SparkSQLParser.js";
-import { GroupWindowFunctionNameContext } from "./SparkSQLParser.js";
-import { TimeAttrColumnContext } from "./SparkSQLParser.js";
-import { HavingClauseContext } from "./SparkSQLParser.js";
-import { WindowClauseContext } from "./SparkSQLParser.js";
-import { NamedWindowContext } from "./SparkSQLParser.js";
-import { WindowSpecContext } from "./SparkSQLParser.js";
-import { MatchRecognizeClauseContext } from "./SparkSQLParser.js";
-import { OrderByCaluseContext } from "./SparkSQLParser.js";
-import { SortByCaluseContext } from "./SparkSQLParser.js";
-import { OrderItemDefinitionContext } from "./SparkSQLParser.js";
-import { LimitClauseContext } from "./SparkSQLParser.js";
-import { OffsetClauseContext } from "./SparkSQLParser.js";
-import { PartitionByClauseContext } from "./SparkSQLParser.js";
-import { QuantifiersContext } from "./SparkSQLParser.js";
-import { MeasuresClauseContext } from "./SparkSQLParser.js";
-import { PatternDefinitionContext } from "./SparkSQLParser.js";
-import { PatternVariableContext } from "./SparkSQLParser.js";
-import { OutputModeContext } from "./SparkSQLParser.js";
-import { AfterMatchStrategyContext } from "./SparkSQLParser.js";
-import { PatternVariablesDefinitionContext } from "./SparkSQLParser.js";
-import { WindowFrameContext } from "./SparkSQLParser.js";
-import { FrameBoundContext } from "./SparkSQLParser.js";
-import { WithinClauseContext } from "./SparkSQLParser.js";
-import { SelfDefinitionClauseContext } from "./SparkSQLParser.js";
-import { PartitionDefinitionContext } from "./SparkSQLParser.js";
-import { TransformListContext } from "./SparkSQLParser.js";
-import { IdentityTransformContext } from "./SparkSQLParser.js";
-import { ApplyTransformContext } from "./SparkSQLParser.js";
-import { TransformArgumentContext } from "./SparkSQLParser.js";
-import { LikeDefinitionContext } from "./SparkSQLParser.js";
-import { DistributionContext } from "./SparkSQLParser.js";
-import { UsingContext } from "./SparkSQLParser.js";
-import { LikeOptionContext } from "./SparkSQLParser.js";
-import { ColumnOptionDefinitionContext } from "./SparkSQLParser.js";
-import { PhysicalColumnDefinitionListContext } from "./SparkSQLParser.js";
-import { PhysicalColumnDefinitionContext } from "./SparkSQLParser.js";
-import { ComputedColumnExpressionContext } from "./SparkSQLParser.js";
-import { WatermarkDefinitionContext } from "./SparkSQLParser.js";
-import { TableConstraintContext } from "./SparkSQLParser.js";
-import { ConstraintNameContext } from "./SparkSQLParser.js";
-import { ValuesDefinitionContext } from "./SparkSQLParser.js";
-import { ValuesRowDefinitionContext } from "./SparkSQLParser.js";
-import { LengthOneDimensionContext } from "./SparkSQLParser.js";
-import { LengthTwoOptionalDimensionContext } from "./SparkSQLParser.js";
-import { LengthTwoStringDimensionContext } from "./SparkSQLParser.js";
-import { LengthSymbolsTypeDimensionContext } from "./SparkSQLParser.js";
-import { MapTypeDimensionContext } from "./SparkSQLParser.js";
-import { RowSymbolsTypeDimensionContext } from "./SparkSQLParser.js";
-import { StructSymbolsTypeDimensionContext } from "./SparkSQLParser.js";
-import { ColumnConstraintContext } from "./SparkSQLParser.js";
-import { CommentSpecContext } from "./SparkSQLParser.js";
-import { MetadataColumnDefinitionContext } from "./SparkSQLParser.js";
-import { MetadataKeyContext } from "./SparkSQLParser.js";
-import { ComputedColumnDefinitionContext } from "./SparkSQLParser.js";
-import { ColumnNameContext } from "./SparkSQLParser.js";
-import { ColumnNameListContext } from "./SparkSQLParser.js";
-import { ColumnTypeContext } from "./SparkSQLParser.js";
-import { ExpressionContext } from "./SparkSQLParser.js";
-import { LogicalNotContext } from "./SparkSQLParser.js";
-import { PredicatedContext } from "./SparkSQLParser.js";
-import { ExistsContext } from "./SparkSQLParser.js";
-import { LogicalNestedContext } from "./SparkSQLParser.js";
-import { LogicalBinaryContext } from "./SparkSQLParser.js";
-import { PredicateContext } from "./SparkSQLParser.js";
-import { LikePredicateContext } from "./SparkSQLParser.js";
-import { ValueExpressionDefaultContext } from "./SparkSQLParser.js";
-import { OrContext } from "./SparkSQLParser.js";
-import { ComparisonContext } from "./SparkSQLParser.js";
-import { ArithmeticBinaryContext } from "./SparkSQLParser.js";
-import { ArithmeticUnaryContext } from "./SparkSQLParser.js";
-import { SimpleCaseContext } from "./SparkSQLParser.js";
-import { ColumnReferenceContext } from "./SparkSQLParser.js";
-import { LastContext } from "./SparkSQLParser.js";
-import { StarContext } from "./SparkSQLParser.js";
-import { AggregateFunctionsContext } from "./SparkSQLParser.js";
-import { SubscriptContext } from "./SparkSQLParser.js";
-import { ValuesContext } from "./SparkSQLParser.js";
-import { FunctionCallFilterContext } from "./SparkSQLParser.js";
-import { OrderSetAggregateFunctionsContext } from "./SparkSQLParser.js";
-import { SubqueryExpressionContext } from "./SparkSQLParser.js";
-import { CastContext } from "./SparkSQLParser.js";
-import { ConstantDefaultContext } from "./SparkSQLParser.js";
-import { ParenthesizedExpressionContext } from "./SparkSQLParser.js";
-import { ComplexDataTypeFieldExpressionContext } from "./SparkSQLParser.js";
-import { FunctionCallContext } from "./SparkSQLParser.js";
-import { UidForColumnNameContext } from "./SparkSQLParser.js";
-import { SearchedCaseContext } from "./SparkSQLParser.js";
-import { PositionContext } from "./SparkSQLParser.js";
-import { FirstContext } from "./SparkSQLParser.js";
-import { ComplexDataTypeExpressionContext } from "./SparkSQLParser.js";
-import { ArrayExpressionContext } from "./SparkSQLParser.js";
-import { StructExpressionContext } from "./SparkSQLParser.js";
-import { RowExpressionContext } from "./SparkSQLParser.js";
-import { MapExpressionContext } from "./SparkSQLParser.js";
-import { DataTypeExpressionContext } from "./SparkSQLParser.js";
-import { SqlSimpleTypeContext } from "./SparkSQLParser.js";
-import { FunctionNameContext } from "./SparkSQLParser.js";
-import { FunctionParamContext } from "./SparkSQLParser.js";
-import { FilterClauseContext } from "./SparkSQLParser.js";
-import { CorrelationNameContext } from "./SparkSQLParser.js";
-import { QualifiedNameContext } from "./SparkSQLParser.js";
-import { TimeIntervalExpressionContext } from "./SparkSQLParser.js";
-import { ErrorCapturingMultiUnitsIntervalContext } from "./SparkSQLParser.js";
-import { MultiUnitsIntervalContext } from "./SparkSQLParser.js";
-import { ErrorCapturingUnitToUnitIntervalContext } from "./SparkSQLParser.js";
-import { UnitToUnitIntervalContext } from "./SparkSQLParser.js";
-import { IntervalValueContext } from "./SparkSQLParser.js";
-import { ColumnAliasContext } from "./SparkSQLParser.js";
-import { TableAliasContext } from "./SparkSQLParser.js";
-import { AnyAliasContext } from "./SparkSQLParser.js";
-import { ErrorCapturingIdentifierContext } from "./SparkSQLParser.js";
-import { ErrorIdentContext } from "./SparkSQLParser.js";
-import { IdentifierListContext } from "./SparkSQLParser.js";
-import { IdentifierSeqContext } from "./SparkSQLParser.js";
-import { UnquotedIdentifierAlternativeContext } from "./SparkSQLParser.js";
-import { QuotedIdentifierAlternativeContext } from "./SparkSQLParser.js";
-import { NonReservedKeywordsAlternativeContext } from "./SparkSQLParser.js";
-import { UrefVarAlternativeContext } from "./SparkSQLParser.js";
-import { UnquotedAnyStringContext } from "./SparkSQLParser.js";
-import { RefVarContext } from "./SparkSQLParser.js";
-import { UnquotedIdentifierContext } from "./SparkSQLParser.js";
-import { WhenClauseContext } from "./SparkSQLParser.js";
-import { CatalogPathContext } from "./SparkSQLParser.js";
-import { DatabasePathContext } from "./SparkSQLParser.js";
-import { DatabasePathCreateContext } from "./SparkSQLParser.js";
-import { TablePathCreateContext } from "./SparkSQLParser.js";
-import { TablePathContext } from "./SparkSQLParser.js";
-import { AnonymousWindowsNameContext } from "./SparkSQLParser.js";
-import { UidContext } from "./SparkSQLParser.js";
-import { WithOptionContext } from "./SparkSQLParser.js";
-import { IfNotExistsContext } from "./SparkSQLParser.js";
-import { IfExistsContext } from "./SparkSQLParser.js";
-import { TablePropertyListContext } from "./SparkSQLParser.js";
-import { TablePropertyContext } from "./SparkSQLParser.js";
-import { TablePropertyKeyContext } from "./SparkSQLParser.js";
-import { PropertyNameContext } from "./SparkSQLParser.js";
-import { TablePropertyValueContext } from "./SparkSQLParser.js";
-import { ComparisonOperatorContext } from "./SparkSQLParser.js";
-import { ConstantContext } from "./SparkSQLParser.js";
-import { TimePointLiteralContext } from "./SparkSQLParser.js";
-import { StringLiteralContext } from "./SparkSQLParser.js";
-import { DecimalLiteralContext } from "./SparkSQLParser.js";
-import { BooleanLiteralContext } from "./SparkSQLParser.js";
-import { SetQuantifierContext } from "./SparkSQLParser.js";
-import { TimePointUnitContext } from "./SparkSQLParser.js";
-import { TimeIntervalUnitContext } from "./SparkSQLParser.js";
-import { ReservedKeywordsUsedAsFuncParamContext } from "./SparkSQLParser.js";
-import { ReservedKeywordsUsedAsFuncNameContext } from "./SparkSQLParser.js";
-import { NonReservedKeywordsContext } from "./SparkSQLParser.js";
-import { SqlStatementContext } from "./SparkSQLParser.js";
-import { CommonSelectContext } from "./SparkSQLParser.js";
-import { SparkStyleSelectContext } from "./SparkSQLParser.js";
-import { MatchRecognizeSelectContext } from "./SparkSQLParser.js";
-import { TableSampleContext } from "./SparkSQLParser.js";
-import { SelectPlusContext } from "./SparkSQLParser.js";
-import { WindowsProrjectItemContext } from "./SparkSQLParser.js";
-import { ExpressionProjectItemContext } from "./SparkSQLParser.js";
-import { HiveStyleProjectItemContext } from "./SparkSQLParser.js";
-import { HiveOverWindowItemContext } from "./SparkSQLParser.js";
-import { SelectStatementPlusContext } from "./SparkSQLParser.js";
-import { PlusStatementContext } from "./SparkSQLParser.js";
-import { DescribeStatementContext } from "./SparkSQLParser.js";
-import { ExplainStatementContext } from "./SparkSQLParser.js";
-import { ExplainDetailsContext } from "./SparkSQLParser.js";
-import { ExplainDetailContext } from "./SparkSQLParser.js";
-import { UseStatementContext } from "./SparkSQLParser.js";
-import { UseModuleStatementContext } from "./SparkSQLParser.js";
-import { ShowStatementContext } from "./SparkSQLParser.js";
-import { LoadStatementContext } from "./SparkSQLParser.js";
-import { UnloadStatementContext } from "./SparkSQLParser.js";
-import { SetStatementContext } from "./SparkSQLParser.js";
-import { ResetStatementContext } from "./SparkSQLParser.js";
-import { FileStatementContext } from "./SparkSQLParser.js";
-import { RefreshStatementContext } from "./SparkSQLParser.js";
-import { AnalyzeStatementContext } from "./SparkSQLParser.js";
-import { AnalyzePartitionDefinitionContext } from "./SparkSQLParser.js";
-import { CreateCatalogContext } from "./SparkSQLParser.js";
-import { CreateDatabaseContext } from "./SparkSQLParser.js";
-import { CreateViewContext } from "./SparkSQLParser.js";
-import { CreateFunctionContext } from "./SparkSQLParser.js";
-import { ReplaceTableContext } from "./SparkSQLParser.js";
-import { CacheStatementContext } from "./SparkSQLParser.js";
-import { AlterMaterializedTableContext } from "./SparkSQLParser.js";
-import { AlterTableContext } from "./SparkSQLParser.js";
-import { AlterContext } from "./SparkSQLParser.js";
-import { AddOrModifyNewColumnContext } from "./SparkSQLParser.js";
-import { AddOrModifyNewColumnsContext } from "./SparkSQLParser.js";
-import { AddNewPartitionsContext } from "./SparkSQLParser.js";
-import { DropcolumnContext } from "./SparkSQLParser.js";
-import { ReplaceColumnsContext } from "./SparkSQLParser.js";
-import { AlterColumnCommentContext } from "./SparkSQLParser.js";
-import { DropColumnListContext } from "./SparkSQLParser.js";
-import { DropPrimaryKeyContext } from "./SparkSQLParser.js";
-import { RenamePartitionColumnContext } from "./SparkSQLParser.js";
-import { DropPartitionsContext } from "./SparkSQLParser.js";
-import { DropWatermarkContext } from "./SparkSQLParser.js";
-import { RenameColumnContext } from "./SparkSQLParser.js";
-import { RenameTableContext } from "./SparkSQLParser.js";
-import { SetPropertiyContext } from "./SparkSQLParser.js";
-import { SetPartitionPropertyContext } from "./SparkSQLParser.js";
-import { ResetPropertiyContext } from "./SparkSQLParser.js";
-import { UnsetContext } from "./SparkSQLParser.js";
-import { CommonSetContext } from "./SparkSQLParser.js";
-import { SetLocationContext } from "./SparkSQLParser.js";
-import { SetSerdeContext } from "./SparkSQLParser.js";
-import { SetTblProContext } from "./SparkSQLParser.js";
-import { DropCatalogContext } from "./SparkSQLParser.js";
-import { DropTableContext } from "./SparkSQLParser.js";
-import { DropDatabaseContext } from "./SparkSQLParser.js";
-import { DropViewContext } from "./SparkSQLParser.js";
-import { DropFunctionContext } from "./SparkSQLParser.js";
-import { TruncateTableContext } from "./SparkSQLParser.js";
-import { RepairTableContext } from "./SparkSQLParser.js";
-import { AlertViewContext } from "./SparkSQLParser.js";
-import { AlterDatabaseContext } from "./SparkSQLParser.js";
-import { AlterFunctionContext } from "./SparkSQLParser.js";
-import { OneExpresionContext } from "./SparkSQLParser.js";
-import { StackContext } from "./SparkSQLParser.js";
-import { Json_tupleContext } from "./SparkSQLParser.js";
-import { Parse_urlContext } from "./SparkSQLParser.js";
-import { ShowTableStatementBodyContext } from "./SparkSQLParser.js";
-import { ShowFunctionStatementBodyContext } from "./SparkSQLParser.js";
-import { TransformClauseContext } from "./SparkSQLParser.js";
-import { InsertSparkDirectoryStatementContext } from "./SparkSQLParser.js";
-import { InsertSparkDirectoryBodyContext } from "./SparkSQLParser.js";
-import { InsertHiveDirectoryStatementContext } from "./SparkSQLParser.js";
-import { HiveRowFormatPartContext } from "./SparkSQLParser.js";
-import { InsertMulStatementCompatibilityContext } from "./SparkSQLParser.js";
-import { InsertMulStatementContext } from "./SparkSQLParser.js";
-import { InsertFromTableContext } from "./SparkSQLParser.js";
-import { CreateExternalTableContext } from "./SparkSQLParser.js";
-import { CreateExternalTableNoSortElementContext } from "./SparkSQLParser.js";
-import { HiveFormatCreateContext } from "./SparkSQLParser.js";
-import { HiveFormatCreateNoSortElementContext } from "./SparkSQLParser.js";
+import { StatementContext } from "./SparkSQLParser";
+import { SqlStatementsContext } from "./SparkSQLParser";
+import { EmptyStatementContext } from "./SparkSQLParser";
+import { CreateStatementContext } from "./SparkSQLParser";
+import { CreateTableContext } from "./SparkSQLParser";
+import { SimpleCreateTableContext } from "./SparkSQLParser";
+import { SimpleCreateTableNoSortElementContext } from "./SparkSQLParser";
+import { LocationContext } from "./SparkSQLParser";
+import { SortedByContext } from "./SparkSQLParser";
+import { UsingCreateContext } from "./SparkSQLParser";
+import { TblPropertiesContext } from "./SparkSQLParser";
+import { DefaultColumnUsingContext } from "./SparkSQLParser";
+import { DefaultColumnUsingNoSortElementContext } from "./SparkSQLParser";
+import { ColumnUsingContext } from "./SparkSQLParser";
+import { ColumnUsingNoSortElementContext } from "./SparkSQLParser";
+import { UsingByQueryContext } from "./SparkSQLParser";
+import { UsingByQueryNoSortElementContext } from "./SparkSQLParser";
+import { IntoBucketsContext } from "./SparkSQLParser";
+import { HiveFormatpartitionDefinitionContext } from "./SparkSQLParser";
+import { RowFormatSerdeContext } from "./SparkSQLParser";
+import { FieldsTerminatedByContext } from "./SparkSQLParser";
+import { StoredAsContext } from "./SparkSQLParser";
+import { StoredAsInputformatContext } from "./SparkSQLParser";
+import { OutputformatContext } from "./SparkSQLParser";
+import { RowFormatDelimtedContext } from "./SparkSQLParser";
+import { ColumnsBodyContext } from "./SparkSQLParser";
+import { CreateCustomSerdeContext } from "./SparkSQLParser";
+import { CreateCustomSerdeNoSortElementContext } from "./SparkSQLParser";
+import { CreateCustomSerdeExternalContext } from "./SparkSQLParser";
+import { CreateCustomSerdeExternalNoSortElementContext } from "./SparkSQLParser";
+import { CreateTableAsSelectContext } from "./SparkSQLParser";
+import { CreateMaterializedTableAsSelectContext } from "./SparkSQLParser";
+import { CreateMaterializedTableAsSelectNoSortElementContext } from "./SparkSQLParser";
+import { UsingClauseContext } from "./SparkSQLParser";
+import { JarFileNameContext } from "./SparkSQLParser";
+import { FilePathContext } from "./SparkSQLParser";
+import { IfExistsPartContext } from "./SparkSQLParser";
+import { ColumnPositionContext } from "./SparkSQLParser";
+import { RenameDefinitionContext } from "./SparkSQLParser";
+import { SetKeyValueDefinitionContext } from "./SparkSQLParser";
+import { AddConstraintContext } from "./SparkSQLParser";
+import { DropConstraintContext } from "./SparkSQLParser";
+import { AddUniqueContext } from "./SparkSQLParser";
+import { NotForcedContext } from "./SparkSQLParser";
+import { InsertStatementContext } from "./SparkSQLParser";
+import { InsertSimpleStatementContext } from "./SparkSQLParser";
+import { InsertPartitionDefinitionContext } from "./SparkSQLParser";
+import { WithQueryContext } from "./SparkSQLParser";
+import { BracketQueryContext } from "./SparkSQLParser";
+import { OpQueryContext } from "./SparkSQLParser";
+import { CommonQueryContext } from "./SparkSQLParser";
+import { WithClauseContext } from "./SparkSQLParser";
+import { ValuesCaluseContext } from "./SparkSQLParser";
+import { InlineBodyContext } from "./SparkSQLParser";
+import { WithItemContext } from "./SparkSQLParser";
+import { WithItemNameContext } from "./SparkSQLParser";
+import { SelectClauseContext } from "./SparkSQLParser";
+import { FilterPartContext } from "./SparkSQLParser";
+import { OverWindowItemContext } from "./SparkSQLParser";
+import { OverClauseContext } from "./SparkSQLParser";
+import { WindowFunctioPartContext } from "./SparkSQLParser";
+import { WindowFunctionNameContext } from "./SparkSQLParser";
+import { AnalyticFunctionContext } from "./SparkSQLParser";
+import { RangkingFunctionContext } from "./SparkSQLParser";
+import { FromClauseContext } from "./SparkSQLParser";
+import { WindowFrameForWindowsQueryContext } from "./SparkSQLParser";
+import { FrameExpessionContext } from "./SparkSQLParser";
+import { WindowTVFClauseForTableExprContext } from "./SparkSQLParser";
+import { TvfClauseTableExprContext } from "./SparkSQLParser";
+import { ValuesClauseContext } from "./SparkSQLParser";
+import { TableRefCommaTableRefContext } from "./SparkSQLParser";
+import { TableRefViewRefContext } from "./SparkSQLParser";
+import { TablePivotRefContext } from "./SparkSQLParser";
+import { TableExpOpTableRefContext } from "./SparkSQLParser";
+import { TvfClauseContext } from "./SparkSQLParser";
+import { RangeClauseContext } from "./SparkSQLParser";
+import { ViewReferenceContext } from "./SparkSQLParser";
+import { PivotReferenceContext } from "./SparkSQLParser";
+import { TableReferenceContext } from "./SparkSQLParser";
+import { TablePathForTablePrimaryContext } from "./SparkSQLParser";
+import { LateralTableContext } from "./SparkSQLParser";
+import { LateralTableExplodeContext } from "./SparkSQLParser";
+import { LateralQueryContext } from "./SparkSQLParser";
+import { SubQueryContext } from "./SparkSQLParser";
+import { UnsetExprContext } from "./SparkSQLParser";
+import { FuntionBodyContext } from "./SparkSQLParser";
+import { UnpivotBodyContext } from "./SparkSQLParser";
+import { PivotBodyContext } from "./SparkSQLParser";
+import { ExpressionAsAliasContext } from "./SparkSQLParser";
+import { ExpressionAsAliasListContext } from "./SparkSQLParser";
+import { SystemTimePeriodContext } from "./SparkSQLParser";
+import { DateTimeExpressionContext } from "./SparkSQLParser";
+import { InlineDataValueClauseContext } from "./SparkSQLParser";
+import { WindowTVFClauseContext } from "./SparkSQLParser";
+import { WindowTVFExpressionContext } from "./SparkSQLParser";
+import { WindowTVFNameContext } from "./SparkSQLParser";
+import { RowFormatDelimitedContext } from "./SparkSQLParser";
+import { HiveSerdeContext } from "./SparkSQLParser";
+import { UsingAsColumnPartContext } from "./SparkSQLParser";
+import { HiveSerdePartContext } from "./SparkSQLParser";
+import { TableCanHasKeyPropertyListContext } from "./SparkSQLParser";
+import { SparkRecordWriterPartContext } from "./SparkSQLParser";
+import { WindowTVFParamContext } from "./SparkSQLParser";
+import { TimeIntervalParamNameContext } from "./SparkSQLParser";
+import { ColumnDescriptorContext } from "./SparkSQLParser";
+import { JoinConditionContext } from "./SparkSQLParser";
+import { WhereClauseContext } from "./SparkSQLParser";
+import { SamplingQueriesContext } from "./SparkSQLParser";
+import { SomeByClauseContext } from "./SparkSQLParser";
+import { ClusterByClauseContext } from "./SparkSQLParser";
+import { ClusteredByClauseContext } from "./SparkSQLParser";
+import { DistributeByClauseContext } from "./SparkSQLParser";
+import { GroupByClauseContext } from "./SparkSQLParser";
+import { GroupItemDefinitionContext } from "./SparkSQLParser";
+import { GroupingSetContext } from "./SparkSQLParser";
+import { GroupingSetsContext } from "./SparkSQLParser";
+import { GroupingSetsNotionNameContext } from "./SparkSQLParser";
+import { GroupWindowFunctionContext } from "./SparkSQLParser";
+import { GroupWindowFunctionNameContext } from "./SparkSQLParser";
+import { TimeAttrColumnContext } from "./SparkSQLParser";
+import { HavingClauseContext } from "./SparkSQLParser";
+import { WindowClauseContext } from "./SparkSQLParser";
+import { NamedWindowContext } from "./SparkSQLParser";
+import { WindowSpecContext } from "./SparkSQLParser";
+import { MatchRecognizeClauseContext } from "./SparkSQLParser";
+import { OrderByCaluseContext } from "./SparkSQLParser";
+import { SortByCaluseContext } from "./SparkSQLParser";
+import { OrderItemDefinitionContext } from "./SparkSQLParser";
+import { LimitClauseContext } from "./SparkSQLParser";
+import { OffsetClauseContext } from "./SparkSQLParser";
+import { PartitionByClauseContext } from "./SparkSQLParser";
+import { QuantifiersContext } from "./SparkSQLParser";
+import { MeasuresClauseContext } from "./SparkSQLParser";
+import { PatternDefinitionContext } from "./SparkSQLParser";
+import { PatternVariableContext } from "./SparkSQLParser";
+import { OutputModeContext } from "./SparkSQLParser";
+import { AfterMatchStrategyContext } from "./SparkSQLParser";
+import { PatternVariablesDefinitionContext } from "./SparkSQLParser";
+import { WindowFrameContext } from "./SparkSQLParser";
+import { FrameBoundContext } from "./SparkSQLParser";
+import { WithinClauseContext } from "./SparkSQLParser";
+import { SelfDefinitionClauseContext } from "./SparkSQLParser";
+import { PartitionDefinitionContext } from "./SparkSQLParser";
+import { TransformListContext } from "./SparkSQLParser";
+import { IdentityTransformContext } from "./SparkSQLParser";
+import { ApplyTransformContext } from "./SparkSQLParser";
+import { TransformArgumentContext } from "./SparkSQLParser";
+import { LikeDefinitionContext } from "./SparkSQLParser";
+import { DistributionContext } from "./SparkSQLParser";
+import { UsingContext } from "./SparkSQLParser";
+import { LikeOptionContext } from "./SparkSQLParser";
+import { ColumnOptionDefinitionContext } from "./SparkSQLParser";
+import { PhysicalColumnDefinitionListContext } from "./SparkSQLParser";
+import { PhysicalColumnDefinitionContext } from "./SparkSQLParser";
+import { ComputedColumnExpressionContext } from "./SparkSQLParser";
+import { WatermarkDefinitionContext } from "./SparkSQLParser";
+import { TableConstraintContext } from "./SparkSQLParser";
+import { ConstraintNameContext } from "./SparkSQLParser";
+import { ValuesDefinitionContext } from "./SparkSQLParser";
+import { ValuesRowDefinitionContext } from "./SparkSQLParser";
+import { LengthOneDimensionContext } from "./SparkSQLParser";
+import { LengthTwoOptionalDimensionContext } from "./SparkSQLParser";
+import { LengthTwoStringDimensionContext } from "./SparkSQLParser";
+import { LengthSymbolsTypeDimensionContext } from "./SparkSQLParser";
+import { MapTypeDimensionContext } from "./SparkSQLParser";
+import { RowSymbolsTypeDimensionContext } from "./SparkSQLParser";
+import { StructSymbolsTypeDimensionContext } from "./SparkSQLParser";
+import { ColumnConstraintContext } from "./SparkSQLParser";
+import { CommentSpecContext } from "./SparkSQLParser";
+import { MetadataColumnDefinitionContext } from "./SparkSQLParser";
+import { MetadataKeyContext } from "./SparkSQLParser";
+import { ComputedColumnDefinitionContext } from "./SparkSQLParser";
+import { ColumnNameContext } from "./SparkSQLParser";
+import { ColumnNameListContext } from "./SparkSQLParser";
+import { ColumnTypeContext } from "./SparkSQLParser";
+import { ExpressionContext } from "./SparkSQLParser";
+import { LogicalNotContext } from "./SparkSQLParser";
+import { PredicatedContext } from "./SparkSQLParser";
+import { ExistsContext } from "./SparkSQLParser";
+import { LogicalNestedContext } from "./SparkSQLParser";
+import { LogicalBinaryContext } from "./SparkSQLParser";
+import { PredicateContext } from "./SparkSQLParser";
+import { LikePredicateContext } from "./SparkSQLParser";
+import { ValueExpressionDefaultContext } from "./SparkSQLParser";
+import { OrContext } from "./SparkSQLParser";
+import { ComparisonContext } from "./SparkSQLParser";
+import { ArithmeticBinaryContext } from "./SparkSQLParser";
+import { ArithmeticUnaryContext } from "./SparkSQLParser";
+import { SimpleCaseContext } from "./SparkSQLParser";
+import { ColumnReferenceContext } from "./SparkSQLParser";
+import { LastContext } from "./SparkSQLParser";
+import { StarContext } from "./SparkSQLParser";
+import { AggregateFunctionsContext } from "./SparkSQLParser";
+import { SubscriptContext } from "./SparkSQLParser";
+import { ValuesContext } from "./SparkSQLParser";
+import { FunctionCallFilterContext } from "./SparkSQLParser";
+import { OrderSetAggregateFunctionsContext } from "./SparkSQLParser";
+import { SubqueryExpressionContext } from "./SparkSQLParser";
+import { CastContext } from "./SparkSQLParser";
+import { ConstantDefaultContext } from "./SparkSQLParser";
+import { ParenthesizedExpressionContext } from "./SparkSQLParser";
+import { ComplexDataTypeFieldExpressionContext } from "./SparkSQLParser";
+import { FunctionCallContext } from "./SparkSQLParser";
+import { UidForColumnNameContext } from "./SparkSQLParser";
+import { SearchedCaseContext } from "./SparkSQLParser";
+import { PositionContext } from "./SparkSQLParser";
+import { FirstContext } from "./SparkSQLParser";
+import { ComplexDataTypeExpressionContext } from "./SparkSQLParser";
+import { ArrayExpressionContext } from "./SparkSQLParser";
+import { StructExpressionContext } from "./SparkSQLParser";
+import { RowExpressionContext } from "./SparkSQLParser";
+import { MapExpressionContext } from "./SparkSQLParser";
+import { DataTypeExpressionContext } from "./SparkSQLParser";
+import { SqlSimpleTypeContext } from "./SparkSQLParser";
+import { FunctionNameContext } from "./SparkSQLParser";
+import { FunctionParamContext } from "./SparkSQLParser";
+import { FilterClauseContext } from "./SparkSQLParser";
+import { CorrelationNameContext } from "./SparkSQLParser";
+import { QualifiedNameContext } from "./SparkSQLParser";
+import { TimeIntervalExpressionContext } from "./SparkSQLParser";
+import { ErrorCapturingMultiUnitsIntervalContext } from "./SparkSQLParser";
+import { MultiUnitsIntervalContext } from "./SparkSQLParser";
+import { ErrorCapturingUnitToUnitIntervalContext } from "./SparkSQLParser";
+import { UnitToUnitIntervalContext } from "./SparkSQLParser";
+import { IntervalValueContext } from "./SparkSQLParser";
+import { ColumnAliasContext } from "./SparkSQLParser";
+import { TableAliasContext } from "./SparkSQLParser";
+import { AnyAliasContext } from "./SparkSQLParser";
+import { ErrorCapturingIdentifierContext } from "./SparkSQLParser";
+import { ErrorIdentContext } from "./SparkSQLParser";
+import { IdentifierListContext } from "./SparkSQLParser";
+import { IdentifierSeqContext } from "./SparkSQLParser";
+import { UnquotedIdentifierAlternativeContext } from "./SparkSQLParser";
+import { QuotedIdentifierAlternativeContext } from "./SparkSQLParser";
+import { NonReservedKeywordsAlternativeContext } from "./SparkSQLParser";
+import { UrefVarAlternativeContext } from "./SparkSQLParser";
+import { UnquotedAnyStringContext } from "./SparkSQLParser";
+import { RefVarContext } from "./SparkSQLParser";
+import { UnquotedIdentifierContext } from "./SparkSQLParser";
+import { WhenClauseContext } from "./SparkSQLParser";
+import { CatalogPathContext } from "./SparkSQLParser";
+import { DatabasePathContext } from "./SparkSQLParser";
+import { DatabasePathCreateContext } from "./SparkSQLParser";
+import { TablePathCreateContext } from "./SparkSQLParser";
+import { TablePathContext } from "./SparkSQLParser";
+import { AnonymousWindowsNameContext } from "./SparkSQLParser";
+import { UidContext } from "./SparkSQLParser";
+import { WithOptionContext } from "./SparkSQLParser";
+import { IfNotExistsContext } from "./SparkSQLParser";
+import { IfExistsContext } from "./SparkSQLParser";
+import { TablePropertyListContext } from "./SparkSQLParser";
+import { TablePropertyContext } from "./SparkSQLParser";
+import { TablePropertyKeyContext } from "./SparkSQLParser";
+import { PropertyNameContext } from "./SparkSQLParser";
+import { TablePropertyValueContext } from "./SparkSQLParser";
+import { ComparisonOperatorContext } from "./SparkSQLParser";
+import { ConstantContext } from "./SparkSQLParser";
+import { TimePointLiteralContext } from "./SparkSQLParser";
+import { StringLiteralContext } from "./SparkSQLParser";
+import { DecimalLiteralContext } from "./SparkSQLParser";
+import { BooleanLiteralContext } from "./SparkSQLParser";
+import { SetQuantifierContext } from "./SparkSQLParser";
+import { TimePointUnitContext } from "./SparkSQLParser";
+import { TimeIntervalUnitContext } from "./SparkSQLParser";
+import { ReservedKeywordsUsedAsFuncParamContext } from "./SparkSQLParser";
+import { ReservedKeywordsUsedAsFuncNameContext } from "./SparkSQLParser";
+import { NonReservedKeywordsContext } from "./SparkSQLParser";
+import { SqlStatementContext } from "./SparkSQLParser";
+import { CommonSelectContext } from "./SparkSQLParser";
+import { SparkStyleSelectContext } from "./SparkSQLParser";
+import { MatchRecognizeSelectContext } from "./SparkSQLParser";
+import { TableSampleContext } from "./SparkSQLParser";
+import { SelectPlusContext } from "./SparkSQLParser";
+import { WindowsProrjectItemContext } from "./SparkSQLParser";
+import { ExpressionProjectItemContext } from "./SparkSQLParser";
+import { HiveStyleProjectItemContext } from "./SparkSQLParser";
+import { HiveOverWindowItemContext } from "./SparkSQLParser";
+import { SelectTvfContext } from "./SparkSQLParser";
+import { SelectInlineTableContext } from "./SparkSQLParser";
+import { SelectTransformContext } from "./SparkSQLParser";
+import { SelectSemicolonContext } from "./SparkSQLParser";
+import { PlusStatementContext } from "./SparkSQLParser";
+import { DescribeStatementContext } from "./SparkSQLParser";
+import { ExplainStatementContext } from "./SparkSQLParser";
+import { ExplainDetailsContext } from "./SparkSQLParser";
+import { ExplainDetailContext } from "./SparkSQLParser";
+import { UseStatementContext } from "./SparkSQLParser";
+import { UseModuleStatementContext } from "./SparkSQLParser";
+import { ShowStatementContext } from "./SparkSQLParser";
+import { LoadStatementContext } from "./SparkSQLParser";
+import { UnloadStatementContext } from "./SparkSQLParser";
+import { SetStatementContext } from "./SparkSQLParser";
+import { ResetStatementContext } from "./SparkSQLParser";
+import { FileStatementContext } from "./SparkSQLParser";
+import { RefreshStatementContext } from "./SparkSQLParser";
+import { AnalyzeStatementContext } from "./SparkSQLParser";
+import { AnalyzePartitionDefinitionContext } from "./SparkSQLParser";
+import { CreateCatalogContext } from "./SparkSQLParser";
+import { CreateDatabaseContext } from "./SparkSQLParser";
+import { CreateViewContext } from "./SparkSQLParser";
+import { CreateFunctionContext } from "./SparkSQLParser";
+import { ReplaceTableContext } from "./SparkSQLParser";
+import { CacheStatementContext } from "./SparkSQLParser";
+import { AlterMaterializedTableContext } from "./SparkSQLParser";
+import { AlterTableContext } from "./SparkSQLParser";
+import { AlterContext } from "./SparkSQLParser";
+import { AddOrModifyNewColumnContext } from "./SparkSQLParser";
+import { AddOrModifyNewColumnsContext } from "./SparkSQLParser";
+import { AddNewPartitionsContext } from "./SparkSQLParser";
+import { DropcolumnContext } from "./SparkSQLParser";
+import { ReplaceColumnsContext } from "./SparkSQLParser";
+import { AlterColumnCommentContext } from "./SparkSQLParser";
+import { DropColumnListContext } from "./SparkSQLParser";
+import { DropPrimaryKeyContext } from "./SparkSQLParser";
+import { RenamePartitionColumnContext } from "./SparkSQLParser";
+import { DropPartitionsContext } from "./SparkSQLParser";
+import { DropWatermarkContext } from "./SparkSQLParser";
+import { RenameColumnContext } from "./SparkSQLParser";
+import { RenameTableContext } from "./SparkSQLParser";
+import { SetPropertiyContext } from "./SparkSQLParser";
+import { SetPartitionPropertyContext } from "./SparkSQLParser";
+import { ResetPropertiyContext } from "./SparkSQLParser";
+import { UnsetContext } from "./SparkSQLParser";
+import { CommonSetContext } from "./SparkSQLParser";
+import { SetLocationContext } from "./SparkSQLParser";
+import { SetSerdeContext } from "./SparkSQLParser";
+import { SetTblProContext } from "./SparkSQLParser";
+import { DropCatalogContext } from "./SparkSQLParser";
+import { DropTableContext } from "./SparkSQLParser";
+import { DropDatabaseContext } from "./SparkSQLParser";
+import { DropViewContext } from "./SparkSQLParser";
+import { DropFunctionContext } from "./SparkSQLParser";
+import { TruncateTableContext } from "./SparkSQLParser";
+import { RepairTableContext } from "./SparkSQLParser";
+import { AlertViewContext } from "./SparkSQLParser";
+import { AlterDatabaseContext } from "./SparkSQLParser";
+import { AlterFunctionContext } from "./SparkSQLParser";
+import { OneExpresionContext } from "./SparkSQLParser";
+import { StackContext } from "./SparkSQLParser";
+import { Json_tupleContext } from "./SparkSQLParser";
+import { Parse_urlContext } from "./SparkSQLParser";
+import { ShowTableStatementBodyContext } from "./SparkSQLParser";
+import { ShowFunctionStatementBodyContext } from "./SparkSQLParser";
+import { TransformClauseContext } from "./SparkSQLParser";
+import { InsertSparkDirectoryStatementContext } from "./SparkSQLParser";
+import { InsertSparkDirectoryBodyContext } from "./SparkSQLParser";
+import { InsertHiveDirectoryStatementContext } from "./SparkSQLParser";
+import { HiveRowFormatPartContext } from "./SparkSQLParser";
+import { InsertMulStatementCompatibilityContext } from "./SparkSQLParser";
+import { InsertMulStatementContext } from "./SparkSQLParser";
+import { InsertFromTableContext } from "./SparkSQLParser";
+import { CreateExternalTableContext } from "./SparkSQLParser";
+import { CreateExternalTableNoSortElementContext } from "./SparkSQLParser";
+import { HiveFormatCreateContext } from "./SparkSQLParser";
+import { HiveFormatCreateNoSortElementContext } from "./SparkSQLParser";
 
 
 /**
@@ -395,87 +406,15 @@ export class SparkSQLListener implements ParseTreeListener {
      */
     exitCreateStatement?: (ctx: CreateStatementContext) => void;
     /**
-     * Enter a parse tree produced by `SparkSQLParser.dmlStatement`.
+     * Enter a parse tree produced by `SparkSQLParser.createTable`.
      * @param ctx the parse tree
      */
-    enterDmlStatement?: (ctx: DmlStatementContext) => void;
+    enterCreateTable?: (ctx: CreateTableContext) => void;
     /**
-     * Exit a parse tree produced by `SparkSQLParser.dmlStatement`.
+     * Exit a parse tree produced by `SparkSQLParser.createTable`.
      * @param ctx the parse tree
      */
-    exitDmlStatement?: (ctx: DmlStatementContext) => void;
-    /**
-     * Enter a parse tree produced by the `simple`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    enterSimple?: (ctx: SimpleContext) => void;
-    /**
-     * Exit a parse tree produced by the `simple`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    exitSimple?: (ctx: SimpleContext) => void;
-    /**
-     * Enter a parse tree produced by the `asSelect`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    enterAsSelect?: (ctx: AsSelectContext) => void;
-    /**
-     * Exit a parse tree produced by the `asSelect`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    exitAsSelect?: (ctx: AsSelectContext) => void;
-    /**
-     * Enter a parse tree produced by the `materialized`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    enterMaterialized?: (ctx: MaterializedContext) => void;
-    /**
-     * Exit a parse tree produced by the `materialized`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    exitMaterialized?: (ctx: MaterializedContext) => void;
-    /**
-     * Enter a parse tree produced by the `customSerde`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    enterCustomSerde?: (ctx: CustomSerdeContext) => void;
-    /**
-     * Exit a parse tree produced by the `customSerde`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    exitCustomSerde?: (ctx: CustomSerdeContext) => void;
-    /**
-     * Enter a parse tree produced by the `customSerdeExternal`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    enterCustomSerdeExternal?: (ctx: CustomSerdeExternalContext) => void;
-    /**
-     * Exit a parse tree produced by the `customSerdeExternal`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    exitCustomSerdeExternal?: (ctx: CustomSerdeExternalContext) => void;
-    /**
-     * Enter a parse tree produced by the `using_create`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    enterUsing_create?: (ctx: Using_createContext) => void;
-    /**
-     * Exit a parse tree produced by the `using_create`
-     * labeled alternative in `SparkSQLParser.createTable`.
-     * @param ctx the parse tree
-     */
-    exitUsing_create?: (ctx: Using_createContext) => void;
+    exitCreateTable?: (ctx: CreateTableContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.simpleCreateTable`.
      * @param ctx the parse tree
@@ -897,15 +836,53 @@ export class SparkSQLListener implements ParseTreeListener {
      */
     exitInsertPartitionDefinition?: (ctx: InsertPartitionDefinitionContext) => void;
     /**
-     * Enter a parse tree produced by `SparkSQLParser.queryStatement`.
+     * Enter a parse tree produced by the `withQuery`
+     * labeled alternative in `SparkSQLParser.queryStatement`.
      * @param ctx the parse tree
      */
-    enterQueryStatement?: (ctx: QueryStatementContext) => void;
+    enterWithQuery?: (ctx: WithQueryContext) => void;
     /**
-     * Exit a parse tree produced by `SparkSQLParser.queryStatement`.
+     * Exit a parse tree produced by the `withQuery`
+     * labeled alternative in `SparkSQLParser.queryStatement`.
      * @param ctx the parse tree
      */
-    exitQueryStatement?: (ctx: QueryStatementContext) => void;
+    exitWithQuery?: (ctx: WithQueryContext) => void;
+    /**
+     * Enter a parse tree produced by the `bracketQuery`
+     * labeled alternative in `SparkSQLParser.queryStatement`.
+     * @param ctx the parse tree
+     */
+    enterBracketQuery?: (ctx: BracketQueryContext) => void;
+    /**
+     * Exit a parse tree produced by the `bracketQuery`
+     * labeled alternative in `SparkSQLParser.queryStatement`.
+     * @param ctx the parse tree
+     */
+    exitBracketQuery?: (ctx: BracketQueryContext) => void;
+    /**
+     * Enter a parse tree produced by the `opQuery`
+     * labeled alternative in `SparkSQLParser.queryStatement`.
+     * @param ctx the parse tree
+     */
+    enterOpQuery?: (ctx: OpQueryContext) => void;
+    /**
+     * Exit a parse tree produced by the `opQuery`
+     * labeled alternative in `SparkSQLParser.queryStatement`.
+     * @param ctx the parse tree
+     */
+    exitOpQuery?: (ctx: OpQueryContext) => void;
+    /**
+     * Enter a parse tree produced by the `commonQuery`
+     * labeled alternative in `SparkSQLParser.queryStatement`.
+     * @param ctx the parse tree
+     */
+    enterCommonQuery?: (ctx: CommonQueryContext) => void;
+    /**
+     * Exit a parse tree produced by the `commonQuery`
+     * labeled alternative in `SparkSQLParser.queryStatement`.
+     * @param ctx the parse tree
+     */
+    exitCommonQuery?: (ctx: CommonQueryContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.withClause`.
      * @param ctx the parse tree
@@ -1067,15 +1044,89 @@ export class SparkSQLListener implements ParseTreeListener {
      */
     exitFrameExpession?: (ctx: FrameExpessionContext) => void;
     /**
-     * Enter a parse tree produced by `SparkSQLParser.tableExpression`.
+     * Enter a parse tree produced by the `windowTVFClauseForTableExpr`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
      * @param ctx the parse tree
      */
-    enterTableExpression?: (ctx: TableExpressionContext) => void;
+    enterWindowTVFClauseForTableExpr?: (ctx: WindowTVFClauseForTableExprContext) => void;
     /**
-     * Exit a parse tree produced by `SparkSQLParser.tableExpression`.
+     * Exit a parse tree produced by the `windowTVFClauseForTableExpr`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
      * @param ctx the parse tree
      */
-    exitTableExpression?: (ctx: TableExpressionContext) => void;
+    exitWindowTVFClauseForTableExpr?: (ctx: WindowTVFClauseForTableExprContext) => void;
+    /**
+     * Enter a parse tree produced by the `tvfClauseTableExpr`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    enterTvfClauseTableExpr?: (ctx: TvfClauseTableExprContext) => void;
+    /**
+     * Exit a parse tree produced by the `tvfClauseTableExpr`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    exitTvfClauseTableExpr?: (ctx: TvfClauseTableExprContext) => void;
+    /**
+     * Enter a parse tree produced by the `valuesClause`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    enterValuesClause?: (ctx: ValuesClauseContext) => void;
+    /**
+     * Exit a parse tree produced by the `valuesClause`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    exitValuesClause?: (ctx: ValuesClauseContext) => void;
+    /**
+     * Enter a parse tree produced by the `tableRefCommaTableRef`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    enterTableRefCommaTableRef?: (ctx: TableRefCommaTableRefContext) => void;
+    /**
+     * Exit a parse tree produced by the `tableRefCommaTableRef`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    exitTableRefCommaTableRef?: (ctx: TableRefCommaTableRefContext) => void;
+    /**
+     * Enter a parse tree produced by the `tableRefViewRef`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    enterTableRefViewRef?: (ctx: TableRefViewRefContext) => void;
+    /**
+     * Exit a parse tree produced by the `tableRefViewRef`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    exitTableRefViewRef?: (ctx: TableRefViewRefContext) => void;
+    /**
+     * Enter a parse tree produced by the `tablePivotRef`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    enterTablePivotRef?: (ctx: TablePivotRefContext) => void;
+    /**
+     * Exit a parse tree produced by the `tablePivotRef`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    exitTablePivotRef?: (ctx: TablePivotRefContext) => void;
+    /**
+     * Enter a parse tree produced by the `tableExpOpTableRef`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    enterTableExpOpTableRef?: (ctx: TableExpOpTableRefContext) => void;
+    /**
+     * Exit a parse tree produced by the `tableExpOpTableRef`
+     * labeled alternative in `SparkSQLParser.tableExpression`.
+     * @param ctx the parse tree
+     */
+    exitTableExpOpTableRef?: (ctx: TableExpOpTableRefContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.tvfClause`.
      * @param ctx the parse tree
@@ -1127,15 +1178,77 @@ export class SparkSQLListener implements ParseTreeListener {
      */
     exitTableReference?: (ctx: TableReferenceContext) => void;
     /**
-     * Enter a parse tree produced by `SparkSQLParser.tablePrimary`.
+     * Enter a parse tree produced by the `tablePathForTablePrimary`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
      * @param ctx the parse tree
      */
-    enterTablePrimary?: (ctx: TablePrimaryContext) => void;
+    enterTablePathForTablePrimary?: (ctx: TablePathForTablePrimaryContext) => void;
     /**
-     * Exit a parse tree produced by `SparkSQLParser.tablePrimary`.
+     * Exit a parse tree produced by the `tablePathForTablePrimary`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
      * @param ctx the parse tree
      */
-    exitTablePrimary?: (ctx: TablePrimaryContext) => void;
+    exitTablePathForTablePrimary?: (ctx: TablePathForTablePrimaryContext) => void;
+    /**
+     * Enter a parse tree produced by the `lateralTable`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
+     * @param ctx the parse tree
+     */
+    enterLateralTable?: (ctx: LateralTableContext) => void;
+    /**
+     * Exit a parse tree produced by the `lateralTable`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
+     * @param ctx the parse tree
+     */
+    exitLateralTable?: (ctx: LateralTableContext) => void;
+    /**
+     * Enter a parse tree produced by the `lateralTableExplode`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
+     * @param ctx the parse tree
+     */
+    enterLateralTableExplode?: (ctx: LateralTableExplodeContext) => void;
+    /**
+     * Exit a parse tree produced by the `lateralTableExplode`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
+     * @param ctx the parse tree
+     */
+    exitLateralTableExplode?: (ctx: LateralTableExplodeContext) => void;
+    /**
+     * Enter a parse tree produced by the `lateralQuery`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
+     * @param ctx the parse tree
+     */
+    enterLateralQuery?: (ctx: LateralQueryContext) => void;
+    /**
+     * Exit a parse tree produced by the `lateralQuery`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
+     * @param ctx the parse tree
+     */
+    exitLateralQuery?: (ctx: LateralQueryContext) => void;
+    /**
+     * Enter a parse tree produced by the `subQuery`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
+     * @param ctx the parse tree
+     */
+    enterSubQuery?: (ctx: SubQueryContext) => void;
+    /**
+     * Exit a parse tree produced by the `subQuery`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
+     * @param ctx the parse tree
+     */
+    exitSubQuery?: (ctx: SubQueryContext) => void;
+    /**
+     * Enter a parse tree produced by the `unsetExpr`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
+     * @param ctx the parse tree
+     */
+    enterUnsetExpr?: (ctx: UnsetExprContext) => void;
+    /**
+     * Exit a parse tree produced by the `unsetExpr`
+     * labeled alternative in `SparkSQLParser.tablePrimary`.
+     * @param ctx the parse tree
+     */
+    exitUnsetExpr?: (ctx: UnsetExprContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.funtionBody`.
      * @param ctx the parse tree
@@ -3151,15 +3264,53 @@ export class SparkSQLListener implements ParseTreeListener {
      */
     exitHiveOverWindowItem?: (ctx: HiveOverWindowItemContext) => void;
     /**
-     * Enter a parse tree produced by `SparkSQLParser.selectStatementPlus`.
+     * Enter a parse tree produced by the `selectTvf`
+     * labeled alternative in `SparkSQLParser.selectStatementPlus`.
      * @param ctx the parse tree
      */
-    enterSelectStatementPlus?: (ctx: SelectStatementPlusContext) => void;
+    enterSelectTvf?: (ctx: SelectTvfContext) => void;
     /**
-     * Exit a parse tree produced by `SparkSQLParser.selectStatementPlus`.
+     * Exit a parse tree produced by the `selectTvf`
+     * labeled alternative in `SparkSQLParser.selectStatementPlus`.
      * @param ctx the parse tree
      */
-    exitSelectStatementPlus?: (ctx: SelectStatementPlusContext) => void;
+    exitSelectTvf?: (ctx: SelectTvfContext) => void;
+    /**
+     * Enter a parse tree produced by the `selectInlineTable`
+     * labeled alternative in `SparkSQLParser.selectStatementPlus`.
+     * @param ctx the parse tree
+     */
+    enterSelectInlineTable?: (ctx: SelectInlineTableContext) => void;
+    /**
+     * Exit a parse tree produced by the `selectInlineTable`
+     * labeled alternative in `SparkSQLParser.selectStatementPlus`.
+     * @param ctx the parse tree
+     */
+    exitSelectInlineTable?: (ctx: SelectInlineTableContext) => void;
+    /**
+     * Enter a parse tree produced by the `selectTransform`
+     * labeled alternative in `SparkSQLParser.selectStatementPlus`.
+     * @param ctx the parse tree
+     */
+    enterSelectTransform?: (ctx: SelectTransformContext) => void;
+    /**
+     * Exit a parse tree produced by the `selectTransform`
+     * labeled alternative in `SparkSQLParser.selectStatementPlus`.
+     * @param ctx the parse tree
+     */
+    exitSelectTransform?: (ctx: SelectTransformContext) => void;
+    /**
+     * Enter a parse tree produced by the `selectSemicolon`
+     * labeled alternative in `SparkSQLParser.selectStatementPlus`.
+     * @param ctx the parse tree
+     */
+    enterSelectSemicolon?: (ctx: SelectSemicolonContext) => void;
+    /**
+     * Exit a parse tree produced by the `selectSemicolon`
+     * labeled alternative in `SparkSQLParser.selectStatementPlus`.
+     * @param ctx the parse tree
+     */
+    exitSelectSemicolon?: (ctx: SelectSemicolonContext) => void;
     /**
      * Enter a parse tree produced by `SparkSQLParser.plusStatement`.
      * @param ctx the parse tree

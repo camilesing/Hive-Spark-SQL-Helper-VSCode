@@ -1,8 +1,6 @@
 import * as vscode from 'vscode';
 import { ExtensionContext } from 'vscode';
-import { Range } from 'vscode'
-import { Selection } from 'vscode'
-import { TextEditorEdit } from 'vscode'
+
 
 import { HiveSQLLexer as HiveSQLLexer } from './HiveSQLLexer';
 import { HiveSQLParser as HiveSQLParser } from './HiveSQLParser';
@@ -10,10 +8,11 @@ import { HiveSQLVisitor } from './HiveSQLVisitor';
 import { SparkSQLLexer as SparkSQLLexer } from './SparkSQLLexer';
 import { SparkSQLParser as SparkSQLParser } from './SparkSQLParser';
 import { SparkSQLVisitor } from './SparkSQLVisitor';
-import { CharStream, CommonTokenStream, Parser, Token, ANTLRErrorListener, RecognitionException, Recognizer, ATNSimulator, ATNConfigSet, BitSet, DFA } from 'antlr4ng';
+import { CharStream, CommonTokenStream, Parser, Token, ANTLRErrorListener, RecognitionException, Recognizer, ATNSimulator, ATNConfigSet, BitSet, DFA, ParseTreeWalker } from 'antlr4ng';
 
 import { SQLRenameProvider as SQLRenameProvider } from './Rename';
 import { SQLReferenceProvider } from './Reference';
+
 
 
 const vkbeautify = require('./format.js')
@@ -134,13 +133,13 @@ function updateFeatureStatus() {
                     }
                 },
                 reportAmbiguity: function (recognizer: Parser, dfa: DFA, startIndex: number, stopIndex: number, exact: boolean, ambigAlts: BitSet | undefined, configs: ATNConfigSet): void {
-                   // throw new Error('Function not implemented.');
+                    // throw new Error('Function not implemented.');
                 },
                 reportAttemptingFullContext: function (recognizer: Parser, dfa: DFA, startIndex: number, stopIndex: number, conflictingAlts: BitSet | undefined, configs: ATNConfigSet): void {
-                  //  throw new Error('Function not implemented.');
+                    //  throw new Error('Function not implemented.');
                 },
                 reportContextSensitivity: function (recognizer: Parser, dfa: DFA, startIndex: number, stopIndex: number, prediction: number, configs: ATNConfigSet): void {
-                   // throw new Error('Function not implemented.');
+                    // throw new Error('Function not implemented.');
                 }
             })
             parser.compileParseTreePattern
@@ -150,6 +149,8 @@ function updateFeatureStatus() {
             if (parser instanceof HiveSQLParser) {
                 parser.statement();
             }
+
+            const walker = new ParseTreeWalker();
         });
     }
 }
@@ -172,4 +173,3 @@ function hiveHandle(sourceText: string): Parser {
     return parser;
 
 }
- 
