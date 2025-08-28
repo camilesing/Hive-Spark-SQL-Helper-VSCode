@@ -34,13 +34,19 @@
     "preview": false,
     "contributes": {
         "configuration": {
-            "title": "Error grammar Check Settings",
+            "title": "Error SQL Check Settings",
+            "type": "array",
             "properties": {
                 "sql-grammar-check.enable": {
                     "type": "boolean",
                     "default": false,
                     "description": "Enable hive & spark sql grammar check."
-                }
+                },
+               "spark-sql-semantic-check.enable": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable spark sql semantic check."
+               }
             }
         },
         "languages": [

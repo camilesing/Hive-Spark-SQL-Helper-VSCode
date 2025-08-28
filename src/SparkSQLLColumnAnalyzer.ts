@@ -36,8 +36,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
     private readonly warnReport: (warnMsg: string) => void;
     private readonly analyzeReport: (warnMsg: string) => void;
 
-    constructor(context: SemanticContext, errorReport: (errorMsg: string) => void, warnReport: (errorMsg: string) => void,
-                analyzeReport: (errorMsg: string) => void) {
+    constructor(context: SemanticContext, errorReport: (errorMsg: string) => void, warnReport: (errorMsg: string) => void, analyzeReport: (errorMsg: string) => void) {
         super();
         this.semanticContext = context;
         this.errorReport = errorReport;
@@ -215,7 +214,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         }
 
         if (!tableMetadata?.hasColumn(filedName)) {
-            this.analyzeReport(`cannot find column name ${filedName} from table ${tableName}`)
+            this.analyzeReport(`cannot find column '${filedName}' from table ${tableName}`)
         }
     };
 

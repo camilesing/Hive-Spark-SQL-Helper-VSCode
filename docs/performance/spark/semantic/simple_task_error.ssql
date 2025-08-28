@@ -1,0 +1,30 @@
+CREATE TABLE IF NOT EXISTS ods_user_info (
+    user_id INT,
+    username STRING,
+    email STRING,
+    age1 INT, --error
+    register_date DATE
+)
+USING PARQUET
+LOCATION '/data/ods/user_info';
+
+CREATE TABLE IF NOT EXISTS dwv_user_profile (
+    user_id INT,
+    username STRING,
+    email STRING,
+    age INT,
+    register_date DATE,
+    full_name STRING
+)
+USING PARQUET
+LOCATION '/data/dwv/user_profile';
+
+INSERT OVERWRITE TABLE dwv_user_profile
+SELECT 
+    user_id,
+    username,
+    email,
+    age,
+    register_date,
+    username AS full_name 
+FROM ods_user_info;
