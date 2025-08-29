@@ -1,3 +1,6 @@
+### 1.7.0
+- Support semantic analyze(experiment).
+
 ### 1.6.1
 - Update README.
 

@@ -25,10 +25,7 @@ import {
     WindowsProrjectItemContext
 } from "./SparkSQLParser";
 
-//本期目标
-// 大多数query（working）
-// simpleCreateTable、(done)
-// insertStatement(基于queryStatement)
+
 export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
     private currentStatementType: CurrentStatementType = CurrentStatementType.Null;
     private semanticContext: SemanticContext;

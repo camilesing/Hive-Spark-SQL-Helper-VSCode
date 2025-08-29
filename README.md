@@ -1,6 +1,6 @@
 # Hive&Spark SQL-Helper
 
-Help you efficiently and focus on Spark SQL(v4.0.0) & Hive(v3.x) development. support Spark & Hive SQL error grammar check, syntax highlighting, complete keywords, rename, find all references and code format.
+Help you efficiently and focus on Spark SQL(v4.0.0) & Hive(v3.x) development. support Spark & Hive SQL error grammar, semantic check, syntax highlighting, complete keywords, rename, find all references and code format.
 
 > If you like develop Spark SQL in IDEA, you can use IDEA version of the plugin——[Spark SQL Helper](https://plugins.jetbrains.com/plugin/26079-spark-sql-helper), Its grammar error message is more powerful and supports all statement.
 > Or you like develop Spark SQL in VsCode. i suggest that you develop and debug on vscode based on [the information](https://code.visualstudio.com/docs/java/java-debugging) to obtain a better experience.
@@ -8,7 +8,7 @@ Help you efficiently and focus on Spark SQL(v4.0.0) & Hive(v3.x) development. su
 
 ---
 
-一款帮助你更高效、专注开发SparkSQL(v4.0.0)、HiveSQL(v3.x)的插件。支持SparkSQL和HiveSQL的语法校验提示、代码高亮、关键字补全、重命名、查找全部引用、代码格式化等。
+一款帮助你更高效、专注开发SparkSQL(v4.0.0)、HiveSQL(v3.x)的插件。支持SparkSQL和HiveSQL的语法、语义校验提示、代码高亮、关键字补全、重命名、查找全部引用、代码格式化等。
 
 
 反馈问题可以在QQ群`337405995` or 公众号后台反馈（欢迎关注我公众号一起学习大数据知识）。
@@ -86,6 +86,23 @@ You can use the right-click menu to format:
 你可以右键菜单进行格式化：
 
 ![](docs/images/format.gif)
+
+### 2.1 Semantic Check
+
+Setting plugin config like
+
+需要开启配置，就像这样：
+1. ![](docs/images/sparksql_semantic_check_option.jpg)
+ 
+
+then the plugin will check semantic when you save edit (suggest you turn off automatic saving).
+
+当你保存时，插件会对你的SQL进行语义检查。
+
+example:
+
+例子：
+![](docs/images/sparksql_semantic_check.jpg)
 
 ## 2. User Guide(用户手册)
 
