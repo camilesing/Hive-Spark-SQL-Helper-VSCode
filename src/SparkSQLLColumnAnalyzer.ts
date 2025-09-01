@@ -9,15 +9,15 @@ import {
     ExpressionContext,
     ExpressionProjectItemContext,
     FromClauseContext,
-    HiveStyleProjectItemContext,
+    HiveStyleProjectItemContext, InsertSimpleStatementContext,
     MatchRecognizeSelectContext,
     PredicatedContext, PrimaryExpressionContext,
     SelectClauseContext,
     SelectPlusContext,
     SelectStatementPlusContext,
     SimpleCreateTableContext,
-    SparkStyleSelectContext, StarContext,
-    TableExpOpTableRefContext,
+    SparkStyleSelectContext, SqlStatementContext, SqlStatementsContext, StarContext,
+    TableExpOpTableRefContext, TablePathContext,
     TablePathForTablePrimaryContext, TableRefCommaTableRefContext,
     TableSampleContext,
     UidForColumnNameContext,
@@ -41,91 +41,139 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         this.analyzeReport = analyzeReport;
     };
 
+    enterSqlStatement = (ctx: SqlStatementContext): void => {
+        if (ctx.insertStatement() != null) {
+            this.currentStatementType = CurrentStatementType.INSERT;
+        }
+    };
+
+    exitSqlStatement = (ctx: SqlStatementContext): void => {
+        if (ctx.insertStatement() != null && this.currentStatementType == CurrentStatementType.INSERT) {
+            this.currentStatementType = CurrentStatementType.Null;
+        }
+
+    };
+
+    enterInsertSimpleStatement = (ctx: InsertSimpleStatementContext): void => {
+        this.currentStatementType = CurrentStatementType.INSERT;
+        let tablePathContexts = ctx.tablePath();
+        if (tablePathContexts.length == 0) {
+            this.errorReport("columnDefinitionList cannot be null");
+            return
+        }
+        let insertTargetTable: string = tablePathContexts[0].uid().getText();
+        if (ctx.columnNameList() != null) {
+            ctx.columnNameList()!.columnName().forEach(columnNameContext => {
+                if (columnNameContext.uid() != null) {
+                    let idList = columnNameContext.uid()?.identifier();
+                    if (idList != null && idList.length > 0) {
+                        this.checkMetadata(insertTargetTable, idList![0].getText());
+                    } else {
+                        this.warnReport("unexpect branch for columnList. we cannot check metadata")
+                    }
+                } else {
+                    this.warnReport("unexpect branch for columnList")
+                }
+
+            })
+        } else if (ctx.queryStatement() != null && ctx.queryStatement() instanceof CommonQueryContext) {
+            let commonContext = (ctx.queryStatement() as CommonQueryContext);
+            if (commonContext.selectClause() != null) {
+                this.parseExpressionForTableName(commonContext.selectClause()!, insertTargetTable, true);
+            } else {
+                let selectStatementContext = commonContext.selectStatement();
+                if (selectStatementContext instanceof CommonSelectContext) {
+                    let commonSelectContext = (selectStatementContext as CommonSelectContext);
+                    this.parseExpressionForTableName(commonSelectContext.selectClause()!, insertTargetTable, true);
+                } else if (selectStatementContext instanceof SparkStyleSelectContext) {
+                    let sparkStyleSelectContext = (selectStatementContext as SparkStyleSelectContext);
+                    this.parseExpressionForTableName(sparkStyleSelectContext.selectClause()!, insertTargetTable, true);
+                } else if (selectStatementContext instanceof MatchRecognizeSelectContext) {
+                    let matchRecognizeSelectContext = (selectStatementContext as MatchRecognizeSelectContext);
+                    this.parseExpressionForTableName(matchRecognizeSelectContext.selectClause()!, insertTargetTable, true);
+                } else if (selectStatementContext instanceof TableSampleContext) {
+                    let tableSampleContext = (selectStatementContext as TableSampleContext);
+                    this.parseExpressionForTableName(tableSampleContext.selectClause()!, insertTargetTable, true);
+                } else if (selectStatementContext instanceof SelectPlusContext) {
+                    this.warnReport("We will support for advance select statement in the future.")
+                    return;
+                } else {
+                    this.errorReport("not support select statement");
+                    return;
+                }
+            }
+        } else {
+            return;
+        }
+    }
+
     enterSelectPlus = (ctx: SelectStatementPlusContext): void => {
+        if (this.currentStatementType != CurrentStatementType.Null) {
+            this.currentStatementType = CurrentStatementType.Query;
+        }
         this.warnReport("We will support for advance select statement in the future.")
+    };
+
+    exitSelectPlus = (ctx: SelectStatementPlusContext): void => {
+        if (this.currentStatementType == CurrentStatementType.Query) {
+            this.currentStatementType = CurrentStatementType.Null;
+        }
     };
 
 
     enterCommonSelect = (ctx: CommonSelectContext): void => {
+        if (this.currentStatementType != CurrentStatementType.Null) {
+            this.currentStatementType = CurrentStatementType.Query;
+        }
         this.parseSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
+    };
+
+    exitCommonSelect = (ctx: CommonSelectContext): void => {
+        if (this.currentStatementType == CurrentStatementType.Query) {
+            this.currentStatementType = CurrentStatementType.Null;
+        }
     };
 
     enterSparkStyleSelect = (ctx: SparkStyleSelectContext): void => {
+        if (this.currentStatementType != CurrentStatementType.Null) {
+            this.currentStatementType = CurrentStatementType.Query;
+        }
         this.parseSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
     };
 
+    exitSparkStyleSelect = (ctx: SparkStyleSelectContext): void => {
+        if (this.currentStatementType == CurrentStatementType.Query) {
+            this.currentStatementType = CurrentStatementType.Null;
+        }
+    };
+
     enterMatchRecognizeSelect = (ctx: MatchRecognizeSelectContext): void => {
+        if (this.currentStatementType != CurrentStatementType.Null) {
+            this.currentStatementType = CurrentStatementType.Query;
+        }
         this.parseSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
+    };
+
+    exitMatchRecognizeSelect = (ctx: MatchRecognizeSelectContext): void => {
+        if (this.currentStatementType == CurrentStatementType.Query) {
+            this.currentStatementType = CurrentStatementType.Null;
+        }
     };
 
 
     enterSelectClause = (ctx: SelectClauseContext): void => {
-        this.currentStatementType = CurrentStatementType.SELECT;
+        if (this.currentStatementType != CurrentStatementType.Null) {
+            this.currentStatementType = CurrentStatementType.Query;
+        }
+        this.currentStatementType = CurrentStatementType.Query;
     };
 
     enterTableSample = (ctx: TableSampleContext): void => {
+        if (this.currentStatementType != CurrentStatementType.Null) {
+            this.currentStatementType = CurrentStatementType.Query;
+        }
         this.parseSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
     };
-
-    private parseSelectAndFromClause(selectCtx: SelectClauseContext, fromCtx: FromClauseContext): void {
-        let tableName: string | null;
-        if (fromCtx.tableExpression() instanceof TableExpOpTableRefContext) {
-
-            let tableExpOpTableRefContext = (fromCtx.tableExpression() as TableExpOpTableRefContext)
-            tableName = this.extraTableNameFromCommonTableRefCtx(tableExpOpTableRefContext);
-            if (tableName == null) {
-                return;
-            }
-        } else if (fromCtx.tableExpression() instanceof TableRefCommaTableRefContext) {
-            let tableRefCommaTableRefContext = (fromCtx.tableExpression() as TableRefCommaTableRefContext)
-            tableName = this.extraTableNameFromCommonTableRefCtx(tableRefCommaTableRefContext);
-            if (tableName == null) {
-                return;
-            }
-        } else {
-            this.warnReport("Only support common table define");
-            return;
-        }
-
-
-        let projectItemDefinitionList = selectCtx.projectItemDefinition();
-        projectItemDefinitionList.forEach(projectItemDefinition => {
-            if (projectItemDefinition instanceof WindowsProrjectItemContext || projectItemDefinition instanceof HiveStyleProjectItemContext) {
-                this.warnReport("We will support for WindowsProjectItem in the future.")
-            } else if (projectItemDefinition instanceof ExpressionProjectItemContext) {
-                this.analyzeExpression(tableName, projectItemDefinition);
-            }
-        })
-    };
-
-
-    private extraTableNameFromCommonTableRefCtx(ctx: TableExpOpTableRefContext | TableRefCommaTableRefContext): string | null {
-        let tableName: string;
-
-        if (ctx.tableReference().length == 1) {
-            let firstTableRef = ctx.tableReference()[0];
-            if (firstTableRef.tablePrimary() instanceof TablePathForTablePrimaryContext) {
-                let tablePathForTablePrimaryContext = (firstTableRef.tablePrimary() as TablePathForTablePrimaryContext);
-                tableName = tablePathForTablePrimaryContext.tablePath().uid().getText();
-            } else {
-                this.warnReport("Table name not found in table reference");
-                return null;
-            }
-        } else if (ctx.tableReference().length == 2) {
-            let secondATableRef = ctx.tableReference()[1];
-            if (secondATableRef.tablePrimary() instanceof TablePathForTablePrimaryContext) {
-                let tablePathForTablePrimaryContext = (secondATableRef.tablePrimary() as TablePathForTablePrimaryContext);
-                tableName = tablePathForTablePrimaryContext.tablePath().uid().getText();
-            } else {
-                this.warnReport("Table name not found in table reference");
-                return null;
-            }
-        } else {
-            this.errorReport("Table name not found in this statement");
-            return null;
-        }
-        return tableName
-    }
 
     enterSimpleCreateTable = (ctx: SimpleCreateTableContext): void => {
         let identifierList = ctx.tablePathCreate().uid().identifier();
@@ -157,11 +205,78 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
 
     };
 
-    private analyzeExpression(tableName: string, ctx: ExpressionProjectItemContext): void {
+
+    private parseSelectAndFromClause(selectCtx: SelectClauseContext, fromCtx: FromClauseContext): void {
+        let tableName: string | null;
+        if (fromCtx.tableExpression() instanceof TableExpOpTableRefContext) {
+
+            let tableExpOpTableRefContext = (fromCtx.tableExpression() as TableExpOpTableRefContext)
+            tableName = this.extraTableNameFromCommonTableRefCtx(tableExpOpTableRefContext);
+            if (tableName == null) {
+                return;
+            }
+        } else if (fromCtx.tableExpression() instanceof TableRefCommaTableRefContext) {
+            let tableRefCommaTableRefContext = (fromCtx.tableExpression() as TableRefCommaTableRefContext)
+            tableName = this.extraTableNameFromCommonTableRefCtx(tableRefCommaTableRefContext);
+            if (tableName == null) {
+                return;
+            }
+        } else {
+            this.warnReport("Only support common table define");
+            return;
+        }
+        this.parseExpressionForTableName(selectCtx, tableName, false);
+    };
+
+
+    private parseExpressionForTableName(selectCtx: SelectClauseContext, tableName: string, careAs: boolean) {
+        let projectItemDefinitionList = selectCtx.projectItemDefinition();
+        projectItemDefinitionList.forEach(projectItemDefinition => {
+            if (projectItemDefinition instanceof WindowsProrjectItemContext || projectItemDefinition instanceof HiveStyleProjectItemContext) {
+                this.warnReport("We will support for WindowsProjectItem in the future.")
+            } else if (projectItemDefinition instanceof ExpressionProjectItemContext) {
+                this.analyzeExpression(tableName, projectItemDefinition, careAs);
+            }
+        })
+    }
+
+    private extraTableNameFromCommonTableRefCtx(ctx: TableExpOpTableRefContext | TableRefCommaTableRefContext): string | null {
+        let tableName: string;
+
+        if (ctx.tableReference().length == 1) {
+            let firstTableRef = ctx.tableReference()[0];
+            if (firstTableRef.tablePrimary() instanceof TablePathForTablePrimaryContext) {
+                let tablePathForTablePrimaryContext = (firstTableRef.tablePrimary() as TablePathForTablePrimaryContext);
+                tableName = tablePathForTablePrimaryContext.tablePath().uid().getText();
+            } else {
+                this.warnReport("Table name not found in table reference");
+                return null;
+            }
+        } else if (ctx.tableReference().length == 2) {
+            let secondATableRef = ctx.tableReference()[1];
+            if (secondATableRef.tablePrimary() instanceof TablePathForTablePrimaryContext) {
+                let tablePathForTablePrimaryContext = (secondATableRef.tablePrimary() as TablePathForTablePrimaryContext);
+                tableName = tablePathForTablePrimaryContext.tablePath().uid().getText();
+            } else {
+                this.warnReport("Table name not found in table reference");
+                return null;
+            }
+        } else {
+            this.errorReport("Table name not found in this statement");
+            return null;
+        }
+        return tableName
+    }
+
+
+    private analyzeExpression(tableName: string, ctx: ExpressionProjectItemContext, careAs: boolean): void {
         let expressionContext: BooleanExpressionContext;
         if (ctx.expression().length == 2) {
-            //考虑as的情况。取第1个
-            expressionContext = (ctx.expression()[0] as BooleanExpressionContext);
+            if (careAs) {
+                expressionContext = (ctx.expression()[1] as BooleanExpressionContext);
+            } else {
+                expressionContext = (ctx.expression()[0] as BooleanExpressionContext);
+            }
         } else if (ctx.expression().length == 1) {
             expressionContext = (ctx.expression()[0] as BooleanExpressionContext);
         } else {
@@ -180,10 +295,10 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         let primaryExpression: PrimaryExpressionContext;
         if (valueExpression.children[0] instanceof ColumnReferenceContext || valueExpression.children[0] instanceof UidForColumnNameContext) {
             primaryExpression = valueExpression.children[0];
-        } else if (valueExpression.children[0] instanceof StarContext){
+        } else if (valueExpression.children[0] instanceof StarContext) {
             //ignore start
             return;
-        }else {
+        } else {
             this.warnReport("Unsupported primaryExpression");
             return;
         }
@@ -195,7 +310,11 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
             if (identifierList.length == 1) {
                 filedName = identifierList[0].getText();
             } else if (identifierList.length == 2) {
-                filedName = identifierList[1].getText();
+                if (careAs) {
+                    filedName = identifierList[1].getText();
+                } else {
+                    filedName = identifierList[0].getText();
+                }
             } else {
                 this.warnReport("Unsupported column name");
                 return;
@@ -204,6 +323,10 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
             this.warnReport("Unsupported primaryExpression");
             return;
         }
+        this.checkMetadata(tableName, filedName);
+    };
+
+    private checkMetadata(tableName: string, filedName: string) {
         let tableMetadata = this.semanticContext.getMetaData(tableName);
         if (tableMetadata == null) {
             this.warnReport(`cannot find metadata for table ${tableName}`);
@@ -213,7 +336,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         if (!tableMetadata?.hasColumn(filedName)) {
             this.analyzeReport(`cannot find column '${filedName}' from table ${tableName}`)
         }
-    };
+    }
 
     private recordColumnInfo(tableName: string, columnDefinitionList: ColumnOptionDefinitionContext[]) {
         columnDefinitionList?.forEach(columnCtx => {
@@ -254,7 +377,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
 }
 
 enum CurrentStatementType {
-    SELECT,
+    Query,
     INSERT,
     CREATE,
     CREATE_TEMP,

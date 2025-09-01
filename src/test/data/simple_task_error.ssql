@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS dwv_user_profile (
     age INT,
     register_date DATE,
     is_adult BOOLEAN,
-    full_name STRING
+    full_name1 STRING  --故意写错
 )
 USING PARQUET
 LOCATION '/data/dwv/user_profile';
