@@ -225,6 +225,11 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
             this.warnReport("Only support common table define");
             return;
         }
+        let tableMetadata = this.semanticContext.getMetaData(tableName);
+        if (tableMetadata == null) {
+            this.analyzeReport(`cannot find table ${tableName} in the context`);
+            return;
+        }
         this.parseExpressionForTableName(selectCtx, tableName, false);
     };
 

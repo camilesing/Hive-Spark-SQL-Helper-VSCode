@@ -37,5 +37,5 @@ SELECT
     username AS full_name  -- 简单处理，实际中可以是first_name和last_name的拼接
 FROM ods_user_info;
 
--- 4. 验证数据是否成功插入
-SELECT * FROM dwv_user_profile LIMIT 10;
+-- 4. 故意查错的表
+SELECT * FROM dwv_user_profile1 LIMIT 10;

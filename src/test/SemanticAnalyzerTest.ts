@@ -68,7 +68,7 @@ describe('SparkSQL Semantic Analyzer', function () {
 
             assert.equal(errorCnt, 0);
             assert.ok(warnCnt >= 0);
-            assert.ok(analyzeCnt == 2);
+            assert.ok(analyzeCnt == 3);
         });
     });
 });
