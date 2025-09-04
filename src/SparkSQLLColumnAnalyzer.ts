@@ -56,55 +56,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
 
     enterInsertSimpleStatement = (ctx: InsertSimpleStatementContext): void => {
         this.currentStatementType = CurrentStatementType.INSERT;
-        let tablePathContexts = ctx.tablePath();
-        if (tablePathContexts.length == 0) {
-            this.errorReport("columnDefinitionList cannot be null");
-            return
-        }
-        let insertTargetTable: string = tablePathContexts[0].uid().getText();
-        if (ctx.columnNameList() != null) {
-            ctx.columnNameList()!.columnName().forEach(columnNameContext => {
-                if (columnNameContext.uid() != null) {
-                    let idList = columnNameContext.uid()?.identifier();
-                    if (idList != null && idList.length > 0) {
-                        this.checkMetadata(insertTargetTable, idList![0].getText());
-                    } else {
-                        this.warnReport("unexpect branch for columnList. we cannot check metadata")
-                    }
-                } else {
-                    this.warnReport("unexpect branch for columnList")
-                }
-
-            })
-        } else if (ctx.queryStatement() != null && ctx.queryStatement() instanceof CommonQueryContext) {
-            let commonContext = (ctx.queryStatement() as CommonQueryContext);
-            if (commonContext.selectClause() != null) {
-                this.parseExpressionForTableName(commonContext.selectClause()!, insertTargetTable, true);
-            } else {
-                let selectStatementContext = commonContext.selectStatement();
-                if (selectStatementContext instanceof CommonSelectContext) {
-                    let commonSelectContext = (selectStatementContext as CommonSelectContext);
-                    this.parseExpressionForTableName(commonSelectContext.selectClause()!, insertTargetTable, true);
-                } else if (selectStatementContext instanceof SparkStyleSelectContext) {
-                    let sparkStyleSelectContext = (selectStatementContext as SparkStyleSelectContext);
-                    this.parseExpressionForTableName(sparkStyleSelectContext.selectClause()!, insertTargetTable, true);
-                } else if (selectStatementContext instanceof MatchRecognizeSelectContext) {
-                    let matchRecognizeSelectContext = (selectStatementContext as MatchRecognizeSelectContext);
-                    this.parseExpressionForTableName(matchRecognizeSelectContext.selectClause()!, insertTargetTable, true);
-                } else if (selectStatementContext instanceof TableSampleContext) {
-                    let tableSampleContext = (selectStatementContext as TableSampleContext);
-                    this.parseExpressionForTableName(tableSampleContext.selectClause()!, insertTargetTable, true);
-                } else if (selectStatementContext instanceof SelectPlusContext) {
-                    this.warnReport("We will support for advance select statement in the future.")
-                    return;
-                } else {
-                    this.errorReport("not support select statement");
-                    return;
-                }
-            }
-        } else {
-            return;
-        }
+        this.handleInsertSimpleStatementContext(ctx);
     }
 
     enterSelectPlus = (ctx: SelectStatementPlusContext): void => {
@@ -125,7 +77,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         if (this.currentStatementType != CurrentStatementType.Null) {
             this.currentStatementType = CurrentStatementType.Query;
         }
-        this.parseSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
+        this.handleSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
     };
 
     exitCommonSelect = (ctx: CommonSelectContext): void => {
@@ -138,7 +90,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         if (this.currentStatementType != CurrentStatementType.Null) {
             this.currentStatementType = CurrentStatementType.Query;
         }
-        this.parseSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
+        this.handleSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
     };
 
     exitSparkStyleSelect = (ctx: SparkStyleSelectContext): void => {
@@ -151,7 +103,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         if (this.currentStatementType != CurrentStatementType.Null) {
             this.currentStatementType = CurrentStatementType.Query;
         }
-        this.parseSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
+        this.handleSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
     };
 
     exitMatchRecognizeSelect = (ctx: MatchRecognizeSelectContext): void => {
@@ -172,7 +124,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         if (this.currentStatementType != CurrentStatementType.Null) {
             this.currentStatementType = CurrentStatementType.Query;
         }
-        this.parseSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
+        this.handleSelectAndFromClause(ctx.selectClause(), ctx.fromClause());
     };
 
     enterSimpleCreateTable = (ctx: SimpleCreateTableContext): void => {
@@ -205,20 +157,80 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
 
     };
 
+    private handleInsertSimpleStatementContext(ctx: InsertSimpleStatementContext): void {
+        let tablePathContexts = ctx.tablePath();
+        if (tablePathContexts.length == 0) {
+            this.errorReport("columnDefinitionList cannot be null");
+            return
+        }
+        let insertTargetTable: string = tablePathContexts[0].uid().getText();
 
-    private parseSelectAndFromClause(selectCtx: SelectClauseContext, fromCtx: FromClauseContext): void {
+        let tableMetadata = this.semanticContext.getMetaData(insertTargetTable);
+        if (tableMetadata == null) {
+            this.warnReport(`cannot find table ${insertTargetTable} in the context`);
+            return;
+        }
+
+        if (ctx.columnNameList() != null) {
+            ctx.columnNameList()!.columnName().forEach(columnNameContext => {
+                if (columnNameContext.uid() != null) {
+                    let idList = columnNameContext.uid()?.identifier();
+                    if (idList != null && idList.length > 0) {
+                        this.checkMetadata(insertTargetTable, idList![0].getText());
+                    } else {
+                        this.warnReport("unexpected branch for columnList. we cannot check metadata")
+                    }
+                } else {
+                    this.warnReport("unexpected branch for columnList")
+                }
+
+            })
+        } else if (ctx.queryStatement() != null && ctx.queryStatement() instanceof CommonQueryContext) {
+            let commonContext = (ctx.queryStatement() as CommonQueryContext);
+            if (commonContext.selectClause() != null) {
+                this.handleSelectClauseWithTableName(commonContext.selectClause()!, insertTargetTable, true);
+            } else {
+                let selectStatementContext = commonContext.selectStatement();
+                if (selectStatementContext instanceof CommonSelectContext) {
+                    let commonSelectContext = (selectStatementContext as CommonSelectContext);
+                    this.handleSelectClauseWithTableName(commonSelectContext.selectClause()!, insertTargetTable, true);
+                } else if (selectStatementContext instanceof SparkStyleSelectContext) {
+                    let sparkStyleSelectContext = (selectStatementContext as SparkStyleSelectContext);
+                    this.handleSelectClauseWithTableName(sparkStyleSelectContext.selectClause()!, insertTargetTable, true);
+                } else if (selectStatementContext instanceof MatchRecognizeSelectContext) {
+                    let matchRecognizeSelectContext = (selectStatementContext as MatchRecognizeSelectContext);
+                    this.handleSelectClauseWithTableName(matchRecognizeSelectContext.selectClause()!, insertTargetTable, true);
+                } else if (selectStatementContext instanceof TableSampleContext) {
+                    let tableSampleContext = (selectStatementContext as TableSampleContext);
+                    this.handleSelectClauseWithTableName(tableSampleContext.selectClause()!, insertTargetTable, true);
+                } else if (selectStatementContext instanceof SelectPlusContext) {
+                    this.warnReport("We will support for advance select statement in the future.")
+                    return;
+                } else {
+                    this.errorReport("not support select statement");
+                    return;
+                }
+            }
+        } else {
+            return;
+        }
+    }
+
+    private handleSelectAndFromClause(selectCtx: SelectClauseContext, fromCtx: FromClauseContext): void {
         let tableName: string | null;
         if (fromCtx.tableExpression() instanceof TableExpOpTableRefContext) {
 
             let tableExpOpTableRefContext = (fromCtx.tableExpression() as TableExpOpTableRefContext)
             tableName = this.extraTableNameFromCommonTableRefCtx(tableExpOpTableRefContext);
             if (tableName == null) {
+                this.errorReport("Cannot get table name");
                 return;
             }
         } else if (fromCtx.tableExpression() instanceof TableRefCommaTableRefContext) {
             let tableRefCommaTableRefContext = (fromCtx.tableExpression() as TableRefCommaTableRefContext)
             tableName = this.extraTableNameFromCommonTableRefCtx(tableRefCommaTableRefContext);
             if (tableName == null) {
+                this.errorReport("Cannot get table name");
                 return;
             }
         } else {
@@ -230,11 +242,11 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
             this.analyzeReport(`cannot find table ${tableName} in the context`);
             return;
         }
-        this.parseExpressionForTableName(selectCtx, tableName, false);
+        this.handleSelectClauseWithTableName(selectCtx, tableName, false);
     };
 
 
-    private parseExpressionForTableName(selectCtx: SelectClauseContext, tableName: string, careAs: boolean) {
+    private handleSelectClauseWithTableName(selectCtx: SelectClauseContext, tableName: string, careAs: boolean) {
         let projectItemDefinitionList = selectCtx.projectItemDefinition();
         projectItemDefinitionList.forEach(projectItemDefinition => {
             if (projectItemDefinition instanceof WindowsProrjectItemContext || projectItemDefinition instanceof HiveStyleProjectItemContext) {
@@ -290,11 +302,13 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         }
 
         if (!(expressionContext.children[0] instanceof PredicatedContext)) {
+            this.errorReport(`Unsupported expression context type ${typeof expressionContext.children[0]}`);
             return;
         }
 
         let valueExpression = (expressionContext.children[0] as PredicatedContext).valueExpression();
         if (!(valueExpression instanceof ValueExpressionDefaultContext)) {
+            this.errorReport(`Unsupported value expression type ${typeof valueExpression}`);
             return;
         }
         let primaryExpression: PrimaryExpressionContext;
