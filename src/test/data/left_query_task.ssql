@@ -1,0 +1,93 @@
+
+-- 1. 创建ODS表
+CREATE TABLE IF NOT EXISTS ods_user_info (
+    user_id INT,
+    username STRING,
+    email STRING,
+    age INT,
+    register_date DATE
+)
+USING PARQUET
+LOCATION '/data/ods/user_info';
+
+-- 2. 创建用户详情表
+CREATE TABLE IF NOT EXISTS ods_user_details (
+    user_id INT,
+    first_name STRING,
+    last_name STRING,
+    phone STRING,
+    address STRING
+)
+USING PARQUET
+LOCATION '/data/ods/user_details';
+
+-- 3. 创建用户偏好表
+CREATE TABLE IF NOT EXISTS ods_user_preferences (
+    user_id INT,
+    theme STRING,
+    use_language STRING,
+    notification BOOLEAN
+)
+USING PARQUET
+LOCATION '/data/ods/user_preferences';
+
+-- 4. 创建DWV表 (目标表)
+CREATE TABLE IF NOT EXISTS dwv_user_profile (
+    user_id INT,
+    username STRING,
+    email STRING,
+    age INT,
+    register_date DATE,
+    is_adult BOOLEAN,
+    full_name STRING,
+    phone STRING,
+    address STRING,
+    theme STRING,
+    use_language STRING,
+    notification BOOLEAN
+)
+USING PARQUET
+LOCATION '/data/dwv/user_profile';
+
+-- 5. 创建临时视图，通过主表left join另外两张表
+CREATE TEMPORARY VIEW user_complete_info AS
+SELECT
+    ui.user_id,
+    ui.username,
+    ui.email,
+    ui.age,
+    ui.register_date,
+    ud.first_name,
+    ud.last_name,
+    ud.phone,
+    ud.address,
+    up.theme,
+    up.use_language,
+    up.notification,
+    CONCAT(ud.first_name, ' ', ud.last_name) AS full_name
+FROM ods_user_info ui
+LEFT JOIN ods_user_details ud ON ui.user_id = ud.user_id
+LEFT JOIN ods_user_preferences up ON ui.user_id = up.user_id;
+
+-- 6. 从临时视图读取数据并插入到DWV表
+INSERT OVERWRITE TABLE dwv_user_profile
+SELECT
+    user_id,
+    username,
+    email,
+    age,
+    register_date,
+    CASE
+        WHEN age >= 18 THEN true
+        ELSE false
+    END AS is_adult,
+    full_name,
+    phone,
+    address,
+    theme,
+    use_language,
+    notification
+FROM user_complete_info;
+
+-- 7. 验证数据是否成功插入
+SELECT * FROM dwv_user_profile LIMIT 10;

@@ -1,24 +1,24 @@
 import {ColumnMetaData, SemanticContext, TableMetaData} from "./SemanticContext";
 import {SparkSQLListener} from "./SparkSQLListener";
 import {
-    BooleanExpressionContext,
+    BooleanExpressionContext, ColumnNameListContext,
     ColumnOptionDefinitionContext,
     ColumnReferenceContext,
     CommonQueryContext,
-    CommonSelectContext,
+    CommonSelectContext, CreateViewContext,
     ExpressionContext,
     ExpressionProjectItemContext,
     FromClauseContext,
     HiveStyleProjectItemContext, InsertSimpleStatementContext,
     MatchRecognizeSelectContext,
-    PredicatedContext, PrimaryExpressionContext,
+    PredicatedContext, PrimaryExpressionContext, QueryStatementContext,
     SelectClauseContext,
     SelectPlusContext,
     SelectStatementPlusContext,
     SimpleCreateTableContext,
-    SparkStyleSelectContext, SqlStatementContext, SqlStatementsContext, StarContext,
-    TableExpOpTableRefContext, TablePathContext,
-    TablePathForTablePrimaryContext, TableRefCommaTableRefContext,
+    SparkStyleSelectContext, SqlStatementContext, SqlStatementsContext, StarContext, TableAliasContext,
+    TableExpOpTableRefContext, TableExpressionContext, TablePathContext,
+    TablePathForTablePrimaryContext, TablePivotRefContext, TablePrimaryContext, TableRefCommaTableRefContext,
     TableSampleContext,
     UidForColumnNameContext,
     ValueExpressionDefaultContext,
@@ -157,6 +157,10 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
 
     };
 
+    enterCreateView = (ctx: CreateViewContext): void => {
+        this.handleColumnNameListOrQueryStatement(ctx.columnNameList(), ctx.queryStatement(), null);
+    };
+
     private handleInsertSimpleStatementContext(ctx: InsertSimpleStatementContext): void {
         let tablePathContexts = ctx.tablePath();
         if (tablePathContexts.length == 0) {
@@ -170,13 +174,24 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
             this.warnReport(`cannot find table ${insertTargetTable} in the context`);
             return;
         }
+        this.handleColumnNameListOrQueryStatement(ctx.columnNameList(), ctx.queryStatement(), insertTargetTable);
+    }
 
-        if (ctx.columnNameList() != null) {
-            ctx.columnNameList()!.columnName().forEach(columnNameContext => {
+
+    private handleColumnNameListOrQueryStatement(columnNameCtx: ColumnNameListContext | null,
+                                                 queryStatementContext: QueryStatementContext | null, targetTable: string | null): void {
+        if (columnNameCtx != null) {
+            columnNameCtx.columnName().forEach(columnNameContext => {
                 if (columnNameContext.uid() != null) {
                     let idList = columnNameContext.uid()?.identifier();
                     if (idList != null && idList.length > 0) {
-                        this.checkMetadata(insertTargetTable, idList![0].getText());
+                        if (targetTable != null) { //point table name
+                            this.checkMetadata(targetTable, idList![0].getText());
+                        } else if (idList!.length == 2) { //no point table name, so we get index 0 as table name
+                            this.checkMetadata(idList![0].getText(), idList![1].getText());
+                        } else {
+                            this.errorReport(`handleColumnNameListOrQueryStatement unexpected branch, ${idList.length}`)
+                        }
                     } else {
                         this.warnReport("unexpected branch for columnList. we cannot check metadata")
                     }
@@ -185,24 +200,18 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
                 }
 
             })
-        } else if (ctx.queryStatement() != null && ctx.queryStatement() instanceof CommonQueryContext) {
-            let commonContext = (ctx.queryStatement() as CommonQueryContext);
+        } else if (queryStatementContext != null && queryStatementContext instanceof CommonQueryContext) {
+            let commonContext = (queryStatementContext as CommonQueryContext);
             if (commonContext.selectClause() != null) {
-                this.handleSelectClauseWithTableName(commonContext.selectClause()!, insertTargetTable, true);
+                this.handleSelectClauseWithTableName(commonContext.selectClause()!, targetTable, new Map<string, string>(), true);
             } else {
                 let selectStatementContext = commonContext.selectStatement();
-                if (selectStatementContext instanceof CommonSelectContext) {
+                if (selectStatementContext instanceof CommonSelectContext || selectStatementContext instanceof SparkStyleSelectContext
+                    || selectStatementContext instanceof MatchRecognizeSelectContext || selectStatementContext instanceof TableSampleContext) {
                     let commonSelectContext = (selectStatementContext as CommonSelectContext);
-                    this.handleSelectClauseWithTableName(commonSelectContext.selectClause()!, insertTargetTable, true);
-                } else if (selectStatementContext instanceof SparkStyleSelectContext) {
-                    let sparkStyleSelectContext = (selectStatementContext as SparkStyleSelectContext);
-                    this.handleSelectClauseWithTableName(sparkStyleSelectContext.selectClause()!, insertTargetTable, true);
-                } else if (selectStatementContext instanceof MatchRecognizeSelectContext) {
-                    let matchRecognizeSelectContext = (selectStatementContext as MatchRecognizeSelectContext);
-                    this.handleSelectClauseWithTableName(matchRecognizeSelectContext.selectClause()!, insertTargetTable, true);
-                } else if (selectStatementContext instanceof TableSampleContext) {
-                    let tableSampleContext = (selectStatementContext as TableSampleContext);
-                    this.handleSelectClauseWithTableName(tableSampleContext.selectClause()!, insertTargetTable, true);
+                    let fromClause = commonSelectContext.fromClause();
+                    let tableNameMapping = this.extraTableMappingFromClause(fromClause);
+                    this.handleSelectClauseWithTableName(commonSelectContext.selectClause()!, targetTable, tableNameMapping, true);
                 } else if (selectStatementContext instanceof SelectPlusContext) {
                     this.warnReport("We will support for advance select statement in the future.")
                     return;
@@ -242,12 +251,18 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
             this.analyzeReport(`cannot find table ${tableName} in the context`);
             return;
         }
-        this.handleSelectClauseWithTableName(selectCtx, tableName, false);
+        let tableNameMapping = this.extraTableMappingFromClause(fromCtx);
+        this.handleSelectClauseWithTableName(selectCtx, tableName, tableNameMapping, false);
     };
 
 
-    private handleSelectClauseWithTableName(selectCtx: SelectClauseContext, tableName: string, careAs: boolean) {
+    private handleSelectClauseWithTableName(selectCtx: SelectClauseContext, tableName: string | null, tableNameMapping: Map<string, string>, careAs: boolean) {
         let projectItemDefinitionList = selectCtx.projectItemDefinition();
+        //todo for local test
+        if (tableName == null) {
+            return;
+        }
+
         projectItemDefinitionList.forEach(projectItemDefinition => {
             if (projectItemDefinition instanceof WindowsProrjectItemContext || projectItemDefinition instanceof HiveStyleProjectItemContext) {
                 this.warnReport("We will support for WindowsProjectItem in the future.")
@@ -285,6 +300,57 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         return tableName
     }
 
+    /**
+     * if return empty mpa, mean no table name. see warn info
+     * */
+    private extraTableMappingFromClause(ctx: FromClauseContext): Map<string, string> {
+        let tableExpression = ctx.tableExpression();
+        return this.extraTableNameFrom(tableExpression);
+    }
+
+    private extraTableNameFrom(ctx: TableExpressionContext): Map<string, string> {
+        let result = new Map<string, string>();
+        if (ctx instanceof TableRefCommaTableRefContext) {
+            let tableRefCommaTableRefContext = (ctx as TableRefCommaTableRefContext);
+            //todo support join condition 
+            if (tableRefCommaTableRefContext.tableReference().length == 1) {
+                let tableReference = tableRefCommaTableRefContext.tableReference()[0];
+                let tablePrimary = tableReference.tablePrimary();
+                let tableAlias = tableReference.tableAlias();
+                result = this.extraTableNameFromTablePrimary(tablePrimary, tableAlias);
+            } else if (tableRefCommaTableRefContext.tableReference().length > 1) {
+                this.warnReport(`tableRefCommaTableRefContext.tableReference().length is ${tableRefCommaTableRefContext.tableReference().length}`)
+            }
+        } else if (ctx instanceof TableExpOpTableRefContext) {
+            ctx.tableExpression().forEach(tableExpression => {
+                let r = this.extraTableNameFrom(tableExpression);
+                r.forEach((value, key) => {
+                    result.set(key, value);
+                })
+            });
+        } else {
+            this.warnReport("I think extraTableMappingFromClause no need this condition branch.")
+        }
+        return result;
+    }
+
+    private extraTableNameFromTablePrimary(tablePrimaryContext: TablePrimaryContext, tableAlias: TableAliasContext | null): Map<string, string> {
+        if (!(tablePrimaryContext instanceof TablePathForTablePrimaryContext)) {
+            this.warnReport("I think extraTableNameFromTablePrimary no need this condition branch.")
+        }
+        let result = new Map<string, string>();
+        let idList = (tablePrimaryContext as TablePathForTablePrimaryContext).tablePath().uid().identifier();
+        if (tableAlias != null) {
+            // aliasName is key
+            let key = tableAlias.anyAlias().identifier().getText();
+            result.set(key, idList[0].getText());
+        } else if (idList.length == 1) {
+            result.set(idList[0].getText(), idList[0].getText());
+        } else {
+            this.warnReport(`idList.length size is unexpected ${idList.length}`)
+        }
+        return result;
+    }
 
     private analyzeExpression(tableName: string, ctx: ExpressionProjectItemContext, careAs: boolean): void {
         let expressionContext: BooleanExpressionContext;
