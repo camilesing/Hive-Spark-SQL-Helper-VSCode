@@ -159,6 +159,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
 
     enterCreateView = (ctx: CreateViewContext): void => {
         this.handleColumnNameListOrQueryStatement(ctx.columnNameList(), ctx.queryStatement(), null);
+        //todo save export column name
     };
 
     private handleInsertSimpleStatementContext(ctx: InsertSimpleStatementContext): void {
@@ -228,18 +229,17 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
     private handleSelectAndFromClause(selectCtx: SelectClauseContext, fromCtx: FromClauseContext): void {
         let tableName: string | null;
         if (fromCtx.tableExpression() instanceof TableExpOpTableRefContext) {
-
             let tableExpOpTableRefContext = (fromCtx.tableExpression() as TableExpOpTableRefContext)
-            tableName = this.extraTableNameFromCommonTableRefCtx(tableExpOpTableRefContext);
+            tableName = this.extraTableNameFromTableExpOpTableRef(tableExpOpTableRefContext);
             if (tableName == null) {
-                this.errorReport("Cannot get table name");
+                this.errorReport("Cannot get table name when handleSelectAndFromClause");
                 return;
             }
         } else if (fromCtx.tableExpression() instanceof TableRefCommaTableRefContext) {
             let tableRefCommaTableRefContext = (fromCtx.tableExpression() as TableRefCommaTableRefContext)
-            tableName = this.extraTableNameFromCommonTableRefCtx(tableRefCommaTableRefContext);
+            tableName = this.extraTableNameFromCommonTableRef(tableRefCommaTableRefContext);
             if (tableName == null) {
-                this.errorReport("Cannot get table name");
+                this.errorReport("Cannot get table name when handleSelectAndFromClause");
                 return;
             }
         } else {
@@ -253,13 +253,21 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         }
         let tableNameMapping = this.extraTableMappingFromClause(fromCtx);
         this.handleSelectClauseWithTableName(selectCtx, tableName, tableNameMapping, false);
+        if (fromCtx.tableExpression() instanceof TableExpOpTableRefContext) {
+            let tableExpOpTableRefContext = (fromCtx.tableExpression() as TableExpOpTableRefContext)
+            if (tableExpOpTableRefContext.joinCondition() != null) {
+                let joinConditionUnitList: Array<Pair<JoinConditionUnit>> = [];
+                this.analyzeTableExpressionForJoinCondition(tableExpOpTableRefContext, joinConditionUnitList)
+            }
+        }
     };
 
 
     private handleSelectClauseWithTableName(selectCtx: SelectClauseContext, tableName: string | null, tableNameMapping: Map<string, string>, careAs: boolean) {
         let projectItemDefinitionList = selectCtx.projectItemDefinition();
-        //todo for local test
-        if (tableName == null) {
+
+        if (tableName == null && tableNameMapping.size == 0) {
+            this.errorReport("tableName and tableNameMapping cannot be null on same time when handleSelectClauseWithTableName.")
             return;
         }
 
@@ -267,12 +275,12 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
             if (projectItemDefinition instanceof WindowsProrjectItemContext || projectItemDefinition instanceof HiveStyleProjectItemContext) {
                 this.warnReport("We will support for WindowsProjectItem in the future.")
             } else if (projectItemDefinition instanceof ExpressionProjectItemContext) {
-                this.analyzeExpression(tableName, projectItemDefinition, careAs);
+                this.analyzeExpression(tableName, tableNameMapping, projectItemDefinition, careAs);
             }
         })
     }
 
-    private extraTableNameFromCommonTableRefCtx(ctx: TableExpOpTableRefContext | TableRefCommaTableRefContext): string | null {
+    private extraTableNameFromCommonTableRef(ctx: TableRefCommaTableRefContext): string | null {
         let tableName: string;
 
         if (ctx.tableReference().length == 1) {
@@ -300,6 +308,18 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         return tableName
     }
 
+    private extraTableNameFromTableExpOpTableRef(ctx: TableExpOpTableRefContext): string | null {
+        let firstExp = ctx.tableExpression()[0];
+        if (firstExp instanceof TableRefCommaTableRefContext) {
+            return this.extraTableNameFromCommonTableRef(ctx.tableExpression()[0] as TableRefCommaTableRefContext);
+        } else if (firstExp instanceof TableExpOpTableRefContext) {
+            return this.extraTableNameFromTableExpOpTableRef(firstExp);
+        } else {
+            this.errorReport("extraTableNameFromTableExpOpTableRef not consider this branch");
+            return null;
+        }
+    }
+
     /**
      * if return empty mpa, mean no table name. see warn info
      * */
@@ -312,7 +332,6 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         let result = new Map<string, string>();
         if (ctx instanceof TableRefCommaTableRefContext) {
             let tableRefCommaTableRefContext = (ctx as TableRefCommaTableRefContext);
-            //todo support join condition 
             if (tableRefCommaTableRefContext.tableReference().length == 1) {
                 let tableReference = tableRefCommaTableRefContext.tableReference()[0];
                 let tablePrimary = tableReference.tablePrimary();
@@ -352,27 +371,46 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
         return result;
     }
 
-    private analyzeExpression(tableName: string, ctx: ExpressionProjectItemContext, careAs: boolean): void {
-        let expressionContext: BooleanExpressionContext;
+    private analyzeTableExpressionForJoinCondition(ctx: TableExpOpTableRefContext, array: Array<Pair<JoinConditionUnit>>): void {
+        let booleanExp = ctx.joinCondition()?.booleanExpression();
+        if (booleanExp != null) {
+            //todo care predicated, logicalBinary, logicalBinary,logicalNested type. so complex
+        }
+    }
+
+    private analyzeExpression(tableName: string | null, tableNameMapping: Map<string, string>, ctx: ExpressionProjectItemContext, careAs: boolean): void {
+        let afterExpressionContext: BooleanExpressionContext | null = null;
+        let beforeExpressionContext: BooleanExpressionContext | null = null;
         if (ctx.expression().length == 2) {
             if (careAs) {
-                expressionContext = (ctx.expression()[1] as BooleanExpressionContext);
+                afterExpressionContext = (ctx.expression()[1] as BooleanExpressionContext);
+                beforeExpressionContext = (ctx.expression()[0] as BooleanExpressionContext);
             } else {
-                expressionContext = (ctx.expression()[0] as BooleanExpressionContext);
+                beforeExpressionContext = (ctx.expression()[0] as BooleanExpressionContext);
             }
         } else if (ctx.expression().length == 1) {
-            expressionContext = (ctx.expression()[0] as BooleanExpressionContext);
+            beforeExpressionContext = (ctx.expression()[0] as BooleanExpressionContext);
         } else {
             this.errorReport("Unsupported expression");
             return;
         }
+        if (afterExpressionContext != null) {
+            this.analyzeBooleanExpression(tableName, tableNameMapping, afterExpressionContext, true);
+        } else if (beforeExpressionContext != null) {
+            this.analyzeBooleanExpression(tableName, tableNameMapping, beforeExpressionContext, false);
+        } else {
+            this.errorReport("why afterExpressionContext and beforeExpressionContext all null? ")
+        }
 
-        if (!(expressionContext.children[0] instanceof PredicatedContext)) {
-            this.errorReport(`Unsupported expression context type ${typeof expressionContext.children[0]}`);
+    };
+
+    private analyzeBooleanExpression(tableName: string | null, tableNameMapping: Map<string, string>, ctx: BooleanExpressionContext, isAfter: boolean): void {
+        if (!(ctx.children[0] instanceof PredicatedContext)) {
+            this.errorReport(`Unsupported expression context type ${typeof ctx.children[0]}`);
             return;
         }
 
-        let valueExpression = (expressionContext.children[0] as PredicatedContext).valueExpression();
+        let valueExpression = (ctx.children[0] as PredicatedContext).valueExpression();
         if (!(valueExpression instanceof ValueExpressionDefaultContext)) {
             this.errorReport(`Unsupported value expression type ${typeof valueExpression}`);
             return;
@@ -384,22 +422,62 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
             //ignore start
             return;
         } else {
+            this.warnReport(`Unsupported valueExpression.children[0] type . type is ${typeof valueExpression.children[0]}`);
+            return;
+        }
+        if (isAfter) {
+            if (tableName != null) {
+                this.analyzeBooleanPrimaryExpressionCareAfter(tableName, primaryExpression);
+            } else {
+                this.warnReport(`table is null maybe cause upstream is query, so dont care`)
+            }
+        } else if (!isAfter) {
+            this.analyzeBooleanPrimaryExpressionCareBefore(tableName, tableNameMapping, primaryExpression);
+        } else {
+            this.warnReport("Unsupported condition branch in analyzeBooleanExpression");
+        }
+
+    }
+
+    private analyzeBooleanPrimaryExpressionCareAfter(tableName: string, ctx: PrimaryExpressionContext): void {
+        let filedName: string;
+        if (ctx instanceof ColumnReferenceContext) {
+            filedName = (ctx as ColumnReferenceContext).identifier().getText();
+        } else if (ctx instanceof UidForColumnNameContext) {
+            let identifierList = (ctx as UidForColumnNameContext).uid().identifier();
+            if (identifierList.length == 1) {
+                filedName = identifierList[0].getText();
+            } else {
+                this.warnReport(`identifierList size must == 1, but get ${identifierList.length}`);
+                return;
+            }
+        } else {
             this.warnReport("Unsupported primaryExpression");
             return;
         }
+        if (tableName != null) {
+            this.checkMetadata(tableName, filedName);
+        } else {
+            this.errorReport(`cannot find table name when analyzeBooleanPrimaryExpressionCareAfter`);
+        }
+    }
+
+    private analyzeBooleanPrimaryExpressionCareBefore(tableName: string | null, tableNameMapping: Map<string, string>, ctx: PrimaryExpressionContext): void {
         let filedName: string;
-        if (primaryExpression instanceof ColumnReferenceContext) {
-            filedName = (primaryExpression as ColumnReferenceContext).identifier().getText();
-        } else if (primaryExpression instanceof UidForColumnNameContext) {
-            let identifierList = (primaryExpression as UidForColumnNameContext).uid().identifier();
+        let tableRealName: string | undefined | null = null;
+        if (ctx instanceof ColumnReferenceContext) {
+            filedName = (ctx as ColumnReferenceContext).identifier().getText();
+        } else if (ctx instanceof UidForColumnNameContext) {
+            let identifierList = (ctx as UidForColumnNameContext).uid().identifier();
             if (identifierList.length == 1) {
                 filedName = identifierList[0].getText();
             } else if (identifierList.length == 2) {
-                if (careAs) {
-                    filedName = identifierList[1].getText();
-                } else {
-                    filedName = identifierList[0].getText();
-                }
+                //如果是2，就是表名.字段名
+
+                let tableAlias = identifierList[0].getText();
+                tableRealName = tableNameMapping.get(tableAlias);
+                filedName = identifierList[1].getText();
+
             } else {
                 this.warnReport("Unsupported column name");
                 return;
@@ -408,8 +486,14 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
             this.warnReport("Unsupported primaryExpression");
             return;
         }
-        this.checkMetadata(tableName, filedName);
-    };
+        if (tableRealName != null) {
+            this.checkMetadata(tableRealName, filedName);
+        } else if (tableName != null) {
+            this.checkMetadata(tableName, filedName);
+        } else {
+            this.errorReport(`cannot find table name when analyzeBooleanPrimaryExpressionCareBefore`);
+        }
+    }
 
     private checkMetadata(tableName: string, filedName: string) {
         let tableMetadata = this.semanticContext.getMetaData(tableName);
@@ -467,4 +551,40 @@ enum CurrentStatementType {
     CREATE,
     CREATE_TEMP,
     Null
+}
+
+class Pair<T> {
+    private readonly left: T;
+    private readonly right: T;
+
+    constructor(left: T, right: T) {
+        this.left = left;
+        this.right = right;
+    }
+
+    getLeft(): T {
+        return this.left;
+    }
+
+    getRight(): T {
+        return this.right;
+    }
+}
+
+class JoinConditionUnit {
+    private readonly tableName: string;
+    private readonly fieldName: string;
+
+    constructor(tableName: string, fieldName: string) {
+        this.tableName = tableName;
+        this.fieldName = fieldName;
+    }
+
+    getTableName(): string {
+        return this.tableName;
+    }
+
+    getFieldName(): string {
+        return this.fieldName;
+    }
 }

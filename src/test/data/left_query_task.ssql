@@ -52,7 +52,7 @@ LOCATION '/data/dwv/user_profile';
 -- 5. 创建临时视图，通过主表left join另外两张表
 CREATE TEMPORARY VIEW user_complete_info AS
 SELECT
-    ui.user_id,
+    ui.user_id as user_id,
     ui.username,
     ui.email,
     ui.age,
