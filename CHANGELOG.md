@@ -1,3 +1,7 @@
+### 1.7.2
+
+- Improve semantic analyze for join query.
+
 ### 1.7.1
 
 - Improve semantic analyze.
