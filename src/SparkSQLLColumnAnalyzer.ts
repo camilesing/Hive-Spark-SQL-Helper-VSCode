@@ -5,11 +5,12 @@ import {
     ColumnOptionDefinitionContext,
     ColumnReferenceContext,
     CommonQueryContext,
-    CommonSelectContext, CreateViewContext,
+    CommonSelectContext, ComparisonContext, CreateViewContext,
     ExpressionContext,
     ExpressionProjectItemContext,
     FromClauseContext,
     HiveStyleProjectItemContext, InsertSimpleStatementContext,
+    LogicalBinaryContext, LogicalNestedContext,
     MatchRecognizeSelectContext,
     PredicatedContext, PrimaryExpressionContext, QueryStatementContext,
     SelectClauseContext,
@@ -159,7 +160,7 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
 
     enterCreateView = (ctx: CreateViewContext): void => {
         this.handleColumnNameListOrQueryStatement(ctx.columnNameList(), ctx.queryStatement(), null);
-        //todo save export column name
+        this.saveViewMetadata(ctx);
     };
 
     private handleInsertSimpleStatementContext(ctx: InsertSimpleStatementContext): void {
@@ -374,8 +375,117 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
     private analyzeTableExpressionForJoinCondition(ctx: TableExpOpTableRefContext, array: Array<Pair<JoinConditionUnit>>): void {
         let booleanExp = ctx.joinCondition()?.booleanExpression();
         if (booleanExp != null) {
-            //todo care predicated, logicalBinary, logicalBinary,logicalNested type. so complex
+            let tableNameMapping = this.extraTableNameFrom(ctx);
+            this.analyzeJoinBooleanExpression(booleanExp, tableNameMapping, array);
         }
+    }
+
+
+    private analyzeJoinBooleanExpression(ctx: BooleanExpressionContext, tableNameMapping: Map<string, string>, joinConditionUnits: Array<Pair<JoinConditionUnit>>): void {
+        if (ctx instanceof PredicatedContext) {
+            // 处理基本谓词表达式
+            this.analyzeJoinPredicatedContext(ctx, tableNameMapping, joinConditionUnits);
+        } else if (ctx instanceof LogicalBinaryContext) {
+            // 处理逻辑二元表达式 (AND, OR)
+            let left = ctx.booleanExpression()[0];
+            let right = ctx.booleanExpression()[1];
+            if (left != null) {
+                this.analyzeJoinBooleanExpression(left, tableNameMapping, joinConditionUnits);
+            }
+            if (right != null) {
+                this.analyzeJoinBooleanExpression(right, tableNameMapping, joinConditionUnits);
+            }
+        } else if (ctx instanceof LogicalNestedContext) {
+            // 处理嵌套逻辑表达式 (IS TRUE, IS FALSE, IS NULL等)
+            let innerExpression = ctx.booleanExpression();
+            if (innerExpression != null) {
+                this.analyzeJoinBooleanExpression(innerExpression, tableNameMapping, joinConditionUnits);
+            }
+        } else {
+            this.warnReport(`Unsupported boolean expression type in join condition: ${typeof ctx}`);
+        }
+    }
+
+ 
+    private analyzeJoinPredicatedContext(ctx: PredicatedContext, tableNameMapping: Map<string, string>, joinConditionUnits: Array<Pair<JoinConditionUnit>>): void {
+        let valueExpression = ctx.valueExpression();
+        if (valueExpression instanceof ComparisonContext) {
+            // for join condition ui.user_id = ud.user_id
+            this.analyzeJoinComparisonContext(valueExpression, tableNameMapping, joinConditionUnits);
+        } else if (valueExpression instanceof ValueExpressionDefaultContext) {
+            this.analyzeJoinValueExpressionDefault(valueExpression, tableNameMapping, joinConditionUnits);
+        } else {
+            this.warnReport(`Unsupported value expression type in join condition: ${typeof valueExpression}`);
+        }
+    }
+
+    /**
+     * 分析join条件中的比较表达式
+     */
+    private analyzeJoinComparisonContext(ctx: ComparisonContext, tableNameMapping: Map<string, string>, joinConditionUnits: Array<Pair<JoinConditionUnit>>): void {
+        let leftExpression = ctx.valueExpression()[0];
+        let rightExpression = ctx.valueExpression()[1];
+        
+        let leftJoinUnit = this.extractJoinConditionUnitFromValueExpression(leftExpression, tableNameMapping);
+        let rightJoinUnit = this.extractJoinConditionUnitFromValueExpression(rightExpression, tableNameMapping);
+        
+        if (leftJoinUnit != null && rightJoinUnit != null) {
+            joinConditionUnits.push(new Pair(leftJoinUnit, rightJoinUnit));
+            // 检查字段是否存在于对应的表中
+            this.checkMetadata(leftJoinUnit.getTableName(), leftJoinUnit.getFieldName());
+            this.checkMetadata(rightJoinUnit.getTableName(), rightJoinUnit.getFieldName());
+        }
+    }
+
+    private analyzeJoinValueExpressionDefault(ctx: ValueExpressionDefaultContext, tableNameMapping: Map<string, string>, joinConditionUnits: Array<Pair<JoinConditionUnit>>): void {
+        if (ctx.children && ctx.children.length > 0) {
+            let primaryExpression = ctx.children[0];
+            let joinUnit = this.extractJoinConditionUnitFromPrimaryExpression(primaryExpression, tableNameMapping);
+            if (joinUnit != null) {
+                // still check metadata for one filed ref
+                this.checkMetadata(joinUnit.getTableName(), joinUnit.getFieldName());
+            }
+        }
+    }
+
+
+    private extractJoinConditionUnitFromValueExpression(valueExpression: any, tableNameMapping: Map<string, string>): JoinConditionUnit | null {
+        if (valueExpression instanceof ValueExpressionDefaultContext) {
+            if (valueExpression.children && valueExpression.children.length > 0) {
+                return this.extractJoinConditionUnitFromPrimaryExpression(valueExpression.children[0], tableNameMapping);
+            }
+        }
+        return null;
+    }
+
+
+    private extractJoinConditionUnitFromPrimaryExpression(primaryExpression: any, tableNameMapping: Map<string, string>): JoinConditionUnit | null {
+        if (primaryExpression instanceof ColumnReferenceContext) {
+            let fieldName = primaryExpression.identifier().getText();
+            // if not define table alias, try get table from mapping
+            for (let [_, realTableName] of tableNameMapping) {
+                return new JoinConditionUnit(realTableName, fieldName);
+            }
+        } else if (primaryExpression instanceof UidForColumnNameContext) {
+            let identifierList = primaryExpression.uid().identifier();
+            if (identifierList.length == 2) {
+                let tableAlias = identifierList[0].getText();
+                let fieldName = identifierList[1].getText();
+                let realTableName = tableNameMapping.get(tableAlias);
+                if (realTableName != null) {
+                    return new JoinConditionUnit(realTableName, fieldName);
+                } else {
+                    this.warnReport(`Cannot find real table name for alias: ${tableAlias}`);
+                }
+            } else if (identifierList.length == 1) {
+                let fieldName = identifierList[0].getText();
+                //need to infer table name
+                for (let [_, realTableName] of tableNameMapping) {
+                    return new JoinConditionUnit(realTableName, fieldName);
+                }
+            }
+        }
+        return null;
     }
 
     private analyzeExpression(tableName: string | null, tableNameMapping: Map<string, string>, ctx: ExpressionProjectItemContext, careAs: boolean): void {
@@ -472,8 +582,6 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
             if (identifierList.length == 1) {
                 filedName = identifierList[0].getText();
             } else if (identifierList.length == 2) {
-                //如果是2，就是表名.字段名
-
                 let tableAlias = identifierList[0].getText();
                 tableRealName = tableNameMapping.get(tableAlias);
                 filedName = identifierList[1].getText();
@@ -543,6 +651,152 @@ export class SparkSQLLColumnAnalyzer extends SparkSQLListener {
 
         });
     }
+
+    private saveViewMetadata(ctx: CreateViewContext): void {
+
+        let viewName: string;
+        let identifierList = ctx.uid().identifier();
+        if (identifierList.length > 2) {
+            this.errorReport("View name cannot have more than two identifiers");
+            return;
+        } else if (identifierList.length == 2) {
+            let schemaName = identifierList[0].getText();
+            let tableName = identifierList[1].getText();
+            viewName = schemaName + "." + tableName;
+        } else if (identifierList.length == 1) {
+            viewName = identifierList[0].getText();
+        } else {
+            this.errorReport("View name cannot be null");
+            return;
+        }
+        this.collectAndSaveViewColumns(viewName, ctx);
+    }
+
+    private collectAndSaveViewColumns(viewName: string, ctx: CreateViewContext): void {
+        let columnNameList = ctx.columnNameList();
+        let queryStatement = ctx.queryStatement();
+        
+        if (columnNameList != null) {
+            // 如果显式指定了列名列表，使用这些列名
+            this.saveViewColumnsFromColumnNameList(viewName, columnNameList);
+        } else if (queryStatement != null) {
+            // 如果没有显式列名，从查询语句推断列信息
+            this.saveViewColumnsFromQueryStatement(viewName, queryStatement);
+        } else {
+            this.warnReport(`Cannot determine columns for view ${viewName}`);
+        }
+    }
+
+    private saveViewColumnsFromColumnNameList(viewName: string, columnNameList: ColumnNameListContext): void {
+        let tableMetaData = new TableMetaData();
+        
+        columnNameList.columnName().forEach(columnNameContext => {
+            if (columnNameContext.uid() != null) {
+                let columnName = columnNameContext.uid()?.identifier()[0].getText();
+                if (columnName != null) {
+                    // 对于显式指定的列名，类型设为unknown，因为无法从列名推断类型
+                    let columnMetaData = new ColumnMetaData(columnName, "unknown");
+                    tableMetaData.addColumnMetaData(columnMetaData);
+                }
+            }
+        });
+        
+        this.semanticContext.putMetaData(viewName, tableMetaData);
+        this.analyzeReport(`View ${viewName} metadata saved with ${tableMetaData.getColumnMetaDataList().size} columns`);
+    }
+
+    private saveViewColumnsFromQueryStatement(viewName: string, queryStatement: QueryStatementContext): void {
+        // 对于从查询语句推断的情况，我们创建一个基本的元数据占位符
+        // 在实际应用中，这里可能需要更复杂的逻辑来分析SELECT子句
+        let tableMetaData = new TableMetaData();
+        
+        if (queryStatement instanceof CommonQueryContext) {
+            let commonContext = queryStatement as CommonQueryContext;
+            if (commonContext.selectClause() != null) {
+                // 分析SELECT子句来推断列信息
+                this.analyzeSelectClauseForViewColumns(tableMetaData, commonContext.selectClause()!);
+            } else {
+                let selectStatement = commonContext.selectStatement();
+                if (selectStatement instanceof CommonSelectContext || 
+                    selectStatement instanceof SparkStyleSelectContext ||
+                    selectStatement instanceof MatchRecognizeSelectContext ||
+                    selectStatement instanceof TableSampleContext) {
+                    let commonSelectContext = selectStatement as CommonSelectContext;
+                    if (commonSelectContext.selectClause() != null) {
+                        this.analyzeSelectClauseForViewColumns(tableMetaData, commonSelectContext.selectClause()!);
+                    }
+                }
+            }
+        }
+        
+        // 如果没有找到任何列，至少创建一个通用占位符
+        if (tableMetaData.getColumnMetaDataList().size === 0) {
+            let columnMetaData = new ColumnMetaData("*", "unknown");
+            tableMetaData.addColumnMetaData(columnMetaData);
+        }
+        
+        this.semanticContext.putMetaData(viewName, tableMetaData);
+ 
+    }
+
+    private analyzeSelectClauseForViewColumns(tableMetaData: TableMetaData, selectClause: SelectClauseContext): void {
+        let projectItemDefinitionList = selectClause.projectItemDefinition();
+        
+        projectItemDefinitionList.forEach((projectItem, index) => {
+            if (projectItem instanceof ExpressionProjectItemContext) {
+                let expressions = projectItem.expression();
+                let columnName: string;
+                
+                // 尝试从表达式中提取列名
+                if (expressions.length >= 2) {
+                    // 有AS别名的情况
+                    let aliasExpression = expressions[1] as BooleanExpressionContext;
+                    columnName = this.extractColumnNameFromExpression(aliasExpression);
+                } else if (expressions.length === 1) {
+                    // 没有别名，尝试从表达式本身提取列名
+                    let mainExpression = expressions[0] as BooleanExpressionContext;
+                    columnName = this.extractColumnNameFromExpression(mainExpression);
+                } else {
+                    columnName = `column_${index + 1}`;
+                }
+                
+                if (columnName == null || columnName.trim() === "") {
+                    columnName = `column_${index + 1}`;
+                }
+                
+                let columnMetaData = new ColumnMetaData(columnName, "unknown");
+                tableMetaData.addColumnMetaData(columnMetaData);
+            } else {
+                // 对于其他类型的投影项，使用默认命名
+                let columnMetaData = new ColumnMetaData(`column_${index + 1}`, "unknown");
+                tableMetaData.addColumnMetaData(columnMetaData);
+            }
+        });
+    }
+
+    private extractColumnNameFromExpression(expression: BooleanExpressionContext): string {
+        if (expression.children && expression.children.length > 0) {
+            let firstChild = expression.children[0];
+            if (firstChild instanceof PredicatedContext) {
+                let valueExpression = firstChild.valueExpression();
+                if (valueExpression instanceof ValueExpressionDefaultContext) {
+                    if (valueExpression.children && valueExpression.children.length > 0) {
+                        let primaryExpression = valueExpression.children[0];
+                        if (primaryExpression instanceof ColumnReferenceContext) {
+                            return primaryExpression.identifier().getText();
+                        } else if (primaryExpression instanceof UidForColumnNameContext) {
+                            let identifiers = primaryExpression.uid().identifier();
+                            // 返回最后一个标识符作为列名
+                            return identifiers[identifiers.length - 1].getText();
+                        } else if (primaryExpression instanceof StarContext) {
+                            return "*";
+                        }
+                    }
+                }
+            }
+        }
+        return "";
+    }
 }
 
 enum CurrentStatementType {
@@ -582,7 +836,7 @@ class JoinConditionUnit {
 
     getTableName(): string {
         return this.tableName;
-    }
+}
 
     getFieldName(): string {
         return this.fieldName;

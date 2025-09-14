@@ -74,6 +74,40 @@ describe('SparkSQL Semantic Analyzer', function () {
         });
     });
 
+
+    describe('join_test_detailed', function () {
+        it('should detect multiple join condition field validation issues', function () {
+            const parseTree = parseSQLFile('left_query_task_error.ssql');
+
+            let errorCnt = 0;
+            let errorConsumer = (errorMsg: string): void => {
+                console.log("ERROR: " + errorMsg);
+                errorCnt += 1;
+            };
+
+            let warnCnt = 0;
+            let warnConsumer = (warnMsg: string): void => {
+                console.log("WARN: " + warnMsg);
+                warnCnt += 1;
+            };
+
+            let analyzeCnt = 0;
+            let analyzeConsumer = (msg: string): void => {
+                console.log("ANALYZE: " + msg);
+                analyzeCnt += 1;
+            };
+
+            let context = new SemanticContext(parseTree);
+            const analyzer = new SparkSQLLColumnAnalyzer(context, errorConsumer, warnConsumer, analyzeConsumer);
+            const walker = new ParseTreeWalker();
+            walker.walk(analyzer, parseTree);
+
+            console.log(`Error count: ${errorCnt}, Warn count: ${warnCnt}, Analyze count: ${analyzeCnt}`);
+            
+            assert.ok(analyzeCnt == 2, "Should detect multiple join condition field validation issues");
+        });
+    });
+
     describe('simple_task_error', function () {
         it('should not pass semantic analysis for valid CREATE and INSERT statements', function () {
             const parseTree = parseSQLFile('simple_task_error.ssql');

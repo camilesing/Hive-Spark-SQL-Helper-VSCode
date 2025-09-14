@@ -1,0 +1,38 @@
+CREATE TABLE IF NOT EXISTS test_table_a (
+    id INT,
+    name STRING,
+    age INT
+)
+USING PARQUET
+LOCATION '/data/test_table_a';
+
+
+CREATE TABLE IF NOT EXISTS test_table_b (
+    id INT,
+    address STRING,
+    phone STRING
+)
+USING PARQUET
+LOCATION '/data/test_table_b';
+
+CREATE TABLE IF NOT EXISTS test_table_c (
+    id_wrong INT,  -- wrong field
+    email STRING
+)
+USING PARQUET
+LOCATION '/data/test_table_c';
+
+-- shou pass
+SELECT a.id, a.name, b.address
+FROM test_table_a a
+LEFT JOIN test_table_b b ON a.id = b.id;
+
+-- test_table_c not have id, only id_wrong
+SELECT a.id, a.name, c.email
+FROM test_table_a a
+LEFT JOIN test_table_c c ON a.id = c.id;
+
+SELECT a.id, a.name, b.address, c.email
+FROM test_table_a a
+LEFT JOIN test_table_b b ON a.id = b.id
+LEFT JOIN test_table_c c ON a.id = c.id;  -- c.id not exist
