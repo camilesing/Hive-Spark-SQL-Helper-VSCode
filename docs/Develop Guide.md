@@ -12,3 +12,4 @@
 - Edit `*SQL.g4`
 - Run `npm run antlr4ts_spark && npm run antlr4ts_hive` generate for ts code then move to src directory. 
 - Copy ./gen ts file to src directory
+- If you have some test data, you can use `npm run unit-test` to run tests.
