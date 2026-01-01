@@ -11,7 +11,7 @@ Help you efficiently and focus on Spark SQL(v4.0.0) & Hive(v3.x) development. su
 一款帮助你更高效、专注开发SparkSQL(v4.0.0)、HiveSQL(v3.x)的插件。支持SparkSQL和HiveSQL的语法、语义校验提示、代码高亮、关键字补全、重命名、查找全部引用、代码格式化等。
 
 
-反馈问题可以在QQ群`337405995` or 公众号后台反馈（欢迎关注我公众号一起学习大数据知识）。
+反馈问题可以直接开issue。用户QQ群：`913711491`，也欢迎关注我公众号一起学习更多的大数据知识。
 ![](docs/images/Wechat.jpg)
 
 > 如果你喜欢在IDEA中进行SparkkSQL的开发。我建议你使用[IDEA版的Spark SQL Helper](https://plugins.jetbrains.com/plugin/26079-spark-sql-helper)，它支持了所有语句，在VsCode插件的基础上，它的报错信息也更加清晰。
