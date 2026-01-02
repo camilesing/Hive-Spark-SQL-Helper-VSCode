@@ -1,4 +1,8 @@
-### 1.7.2
+### 1.7.4
+
+- Update README.
+
+### 1.7.3
 
 - Improve semantic analyze for join query again.
 
